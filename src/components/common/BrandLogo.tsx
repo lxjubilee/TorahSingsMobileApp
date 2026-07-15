@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 
 /**
- * Wordmark span colors: "Torah" is white and "Sings" is the gold highlight.
+ * Wordmark span colors: "Torah" and ".com" are white, "Sings" is the gold
+ * highlight.
  */
 const WHITE = '#FFFFFF';
 const GOLD = '#ffbd59';
@@ -25,9 +26,9 @@ interface BrandLogoProps {
 }
 
 /**
- * App wordmark: the circular logo followed by the "TorahSings"
+ * App wordmark: the circular logo followed by the "TorahSings.com"
  * text in the Orbitron brand font (loaded in App.tsx)
- * — "Torah" white, "Sings" gold.
+ * — "Torah" white, "Sings" gold, ".com" white.
  *
  * Pass `textStyle` to control the size per header; `fontWeight` and `color`
  * from it are stripped because the Orbitron_600SemiBold family already encodes
@@ -48,6 +49,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 28, textStyle, styl
       <Text allowFontScaling={false} style={[textRest, styles.wordmark]}>
         <Text style={styles.white}>Torah</Text>
         <Text style={styles.gold}>Sings</Text>
+        <Text style={styles.white}>.com</Text>
       </Text>
     </View>
   );

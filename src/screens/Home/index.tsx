@@ -16,7 +16,7 @@ import { Screen, Loader, AppText, LanguagePanel } from '@/components/common';
 import { useAppDispatch, useAppSelector, usePlayer, useVisibleAlbums, useVisibleRails } from '@/hooks';
 import { fetchHomeFeed } from '@/redux';
 import { onMobileConfigUpdated, resetMobileConfigCache } from '@/services/mobileConfig';
-import { DEFAULT_LANG, langName, localizeCategory } from '@/localization';
+import { DEFAULT_LANG, langName } from '@/localization';
 import { AlbumRepository } from '@/repositories';
 import { Album, Artist, ResolvedRail } from '@/types';
 import { logger } from '@/utils';
@@ -52,10 +52,13 @@ export const HomeScreen: React.FC = () => {
   // blank gap is left where an all-missing rail used to be.
   const railsWithArt = useVisibleRails(feed?.rails ?? []);
 
+  // NB: the header chips are hardcoded/decorative now (see HomeHeader), so this
+  // list no longer renders anywhere — it only keeps `filter` pinned to the first
+  // category page (via the reset effect below), which decides what content shows.
   // Config mode: every rail carries a categoryLabel (admin-managed categories,
-  // first one is "Home"), so the chips ARE the categories and "Home" is a real
-  // category. Fallback mode (manifest-derived): some rails are uncategorized, so
-  // we prepend a synthetic "Home" chip that shows everything (legacy behavior).
+  // first one is "Home") and "Home" is a real category. Fallback mode
+  // (manifest-derived): some rails are uncategorized, so a synthetic "Home"
+  // sentinel shows everything (legacy behavior).
   const { filters, showAllChip } = useMemo<{ filters: HomeFilter[]; showAllChip: boolean }>(() => {
     // Config mode: the chips ARE the configured pages, in order — including a
     // page that currently has only a hero and no rails, so a newly created page
@@ -82,17 +85,6 @@ export const HomeScreen: React.FC = () => {
   useEffect(() => {
     if (!filters.includes(filter)) setFilter(filters[0] ?? HOME_FILTER_ALL);
   }, [filters, filter]);
-
-  // Localized chip TEXT only — the raw `value` stays the filter identity (rail
-  // match + hero lookup). Config chips translate by their stable key; the
-  // fallback-mode "all" sentinel reuses the Home tab label.
-  const labelFor = useCallback(
-    (value: HomeFilter) =>
-      value === HOME_FILTER_ALL && showAllChip
-        ? t('tabs.home', { defaultValue: value })
-        : localizeCategory(t, feed?.categoryKeys?.[value], value),
-    [t, feed?.categoryKeys, showAllChip],
-  );
 
   // The "all" chip shows every rail; any category chip shows only its rails.
   const visibleRails = useMemo(
@@ -290,15 +282,11 @@ export const HomeScreen: React.FC = () => {
 
       {/* Fixed Netflix-style header overlaying the hero. */}
       <HomeHeader
-        filters={filters}
-        selected={filter}
-        onSelect={setFilter}
         chipsAnim={chipsAnim}
         bgAnim={bgAnim}
         onPressProfile={openProfile}
         language={language}
         onPressLanguage={() => setLangPanelOpen(true)}
-        getLabel={labelFor}
       />
 
       {langPanelOpen ? (

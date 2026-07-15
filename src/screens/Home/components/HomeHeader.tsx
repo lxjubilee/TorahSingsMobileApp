@@ -1,7 +1,6 @@
 import React from 'react';
 import { Animated, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from '@/context';
 import { AppText, BrandLogo, ProfileButton } from '@/components/common';
 import { langFlagUrl } from '@/localization';
 
@@ -14,11 +13,16 @@ export type HomeFilter = string;
 /** Height the chips row collapses from / expands to. */
 export const CHIP_ROW_HEIGHT = 48;
 
+/**
+ * Hardcoded nav chips (visual only for now — no press action). The first one
+ * renders as the active tab: gold text in a gold-bordered rounded rectangle.
+ */
+const NAV_CHIPS = ['TORAH SINGS', 'HEBRAIC CHRISTIANITY', 'LEARN HEBREW', 'MEMBERSHIP'];
+
+/** Active-chip gold — matches the "Sings" span of the brand wordmark. */
+const GOLD = '#ffbd59';
+
 interface HomeHeaderProps {
-  /** Chips to render, e.g. ['Home', 'Inspire Family', …] derived from the feed. */
-  filters: HomeFilter[];
-  selected: HomeFilter;
-  onSelect: (filter: HomeFilter) => void;
   /** 1 = chips fully visible, 0 = fully collapsed. */
   chipsAnim: Animated.Value;
   /** 0 = transparent/gradient (at top), 1 = solid black (scrolled). */
@@ -29,9 +33,6 @@ interface HomeHeaderProps {
   language?: string;
   /** Opens the language picker. */
   onPressLanguage?: () => void;
-  /** Maps a chip's raw value (the filter identity) → its localized display text.
-   *  Defaults to identity, so the chip renders its raw value when omitted. */
-  getLabel?: (value: HomeFilter) => string;
 }
 
 /**
@@ -42,17 +43,12 @@ interface HomeHeaderProps {
  * The collapse/solid state is driven by `chipsAnim` / `bgAnim` from the screen.
  */
 export const HomeHeader: React.FC<HomeHeaderProps> = ({
-  filters,
-  selected,
-  onSelect,
   chipsAnim,
   bgAnim,
   onPressProfile,
   language,
   onPressLanguage,
-  getLabel,
 }) => {
-  const theme = useTheme();
   const insets = useSafeAreaInsets();
 
   return (
@@ -107,27 +103,17 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.chipsRow}
           >
-            {filters.map((filter) => {
-              const active = filter === selected;
+            {NAV_CHIPS.map((label, index) => {
+              const active = index === 0;
               return (
-                <Pressable
-                  key={filter}
-                  onPress={() => onSelect(filter)}
-                  style={[
-                    styles.chip,
-                    {
-                      borderColor: active ? '#FFFFFF' : 'rgba(255,255,255,0.18)',
-                      backgroundColor: active ? '#FFFFFF' : 'rgba(255,255,255,0.08)',
-                    },
-                  ]}
-                >
+                <View key={label} style={[styles.chip, active && styles.chipActive]}>
                   <AppText
                     variant="label"
-                    style={{ color: active ? '#000' : theme.colors.text }}
+                    style={[styles.chipText, { color: active ? GOLD : '#FFFFFF' }]}
                   >
-                    {getLabel ? getLabel(filter) : filter}
+                    {label}
                   </AppText>
-                </Pressable>
+                </View>
               );
             })}
           </ScrollView>
@@ -176,13 +162,17 @@ const styles = StyleSheet.create({
   },
   countText: { color: '#fff', fontSize: 9, lineHeight: 12, fontWeight: '700' },
   chipsWrap: { overflow: 'hidden', justifyContent: 'center' },
-  chipsRow: { paddingRight: 16, gap: 10, alignItems: 'center' },
+  chipsRow: { paddingRight: 16, gap: 18, alignItems: 'center' },
   chip: {
-    height: 40,
-    paddingHorizontal: 18,
-    borderRadius: 8,
-    borderWidth: 1,
+    height: 34,
+    paddingHorizontal: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  chipActive: {
+    borderWidth: 1.5,
+    borderColor: GOLD,
+    borderRadius: 6,
+  },
+  chipText: { fontWeight: '700', letterSpacing: 0.6 },
 });

@@ -30,7 +30,6 @@ import { getMobileConfig, onMobileConfigUpdated } from '@/services/mobileConfig'
 import { CONFIG } from '@/constants';
 import { SplashScreen } from '@/components/SplashScreen';
 import { PlaybackLimitGate } from '@/components/PlaybackLimitGate';
-import { AppUpdateGate } from '@/components/AppUpdateGate';
 import { PlaylistMenuProvider } from '@/components/playlists';
 import { storage, STORAGE_KEYS } from '@/services/storage';
 import { i18n } from '@/localization'; // initialize i18next
@@ -151,8 +150,8 @@ export default function App() {
               </PlaylistMenuProvider>
               {/* Free-plan daily-limit popup (shown when playback hits the cap). */}
               <PlaybackLimitGate />
-              {/* Post-splash "update available" prompt (checks once per launch). */}
-              <AppUpdateGate enabled={!showSplash && fontsLoaded} />
+              {/* Post-splash "update available" prompt — disabled for now; remount
+                  <AppUpdateGate enabled={!showSplash && fontsLoaded} /> to restore. */}
             </ThemeProvider>
           </SafeAreaProvider>
         </PersistGate>

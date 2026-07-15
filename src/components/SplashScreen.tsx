@@ -7,12 +7,12 @@ interface SplashScreenProps {
   onFinish: () => void;
 }
 
-/** Wordmark span colors — "Torah" white, "Sings" gold (matches header). */
+/** Wordmark span colors — "Torah" and ".com" white, "Sings" gold (matches header). */
 const WHITE = '#FFFFFF';
 const GOLD = '#ffbd59';
 
 /**
- * Netflix-style intro splash: the logo and "TorahSings" wordmark
+ * Netflix-style intro splash: the logo and "TorahSings.com" wordmark
  * (Orbitron brand font) settle in (scale + fade), hold, then zoom toward the
  * viewer while the black overlay fades out, revealing the app. Uses RN Animated
  * (native driver) so it runs in Expo Go.
@@ -94,6 +94,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
           <Text style={styles.wordmark} allowFontScaling={false}>
             <Text style={styles.white}>Torah</Text>
             <Text style={styles.gold}>Sings</Text>
+            <Text style={styles.white}>.com</Text>
           </Text>
         ) : null}
       </Animated.View>
