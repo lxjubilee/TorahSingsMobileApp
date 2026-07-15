@@ -1,0 +1,209 @@
+{
+  "common": {
+    "play": "PhÃ¡t",
+    "pause": "Táº¡m dá»«ng",
+    "shuffle": "PhÃ¡t ngáº«u nhiÃªn",
+    "shufflePlay": "PhÃ¡t ngáº«u nhiÃªn",
+    "download": "Táº£i xuá»‘ng",
+    "seeAll": "Xem táº¥t cáº£",
+    "retry": "Thá»­ láº¡i",
+    "follow": "Theo dÃµi",
+    "following": "Äang theo dÃµi",
+    "save": "LÆ°u",
+    "saved": "ÄÃ£ lÆ°u",
+    "cancel": "Há»§y",
+    "ok": "OK",
+    "delete": "XÃ³a",
+    "done": "Xong"
+  },
+  "tabs": {
+    "home": "Trang chá»§",
+    "browse": "KhÃ¡m phÃ¡",
+    "search": "TÃ¬m kiáº¿m",
+    "library": "ThÆ° viá»‡n"
+  },
+  "home": {
+    "greetingMorning": "ChÃ o buá»•i sÃ¡ng",
+    "greetingAfternoon": "ChÃ o buá»•i chiá»u",
+    "greetingEvening": "ChÃ o buá»•i tá»‘i",
+    "loadError": "KhÃ´ng thá»ƒ táº£i nháº¡c cá»§a báº¡n. KÃ©o Ä‘á»ƒ lÃ m má»›i hoáº·c thá»­ láº¡i.",
+    "comingSoon": "ChÆ°a cÃ³ nháº¡c báº±ng {{language}} â€” chÃºng tÃ´i sáº½ sá»›m thÃªm nhiá»u ngÃ´n ngá»¯ hÆ¡n."
+  },
+  "categories": {
+    "home": "Trang chá»§",
+    "inspire_family": "Gia Ä‘Ã¬nh Inspire",
+    "family_friendly": "PhÃ¹ há»£p vá»›i gia Ä‘Ã¬nh",
+    "children": "Nháº¡c thiáº¿u nhi",
+    "music_type": "Thá»ƒ loáº¡i nháº¡c",
+    "christmas": "GiÃ¡ng sinh"
+  },
+  "railTitles": {
+    "contemporary": "ÄÆ°Æ¡ng Ä‘áº¡i",
+    "praise-worship": "Ngá»£i khen vÃ  thá» phÆ°á»£ng",
+    "country": "Country",
+    "pentecostal-shout": "Tiáº¿ng reo NgÅ© Tuáº§n",
+    "gospel": "Gospel"
+  },
+  "language": {
+    "title": "NgÃ´n ngá»¯",
+    "search": "TÃ¬m ngÃ´n ngá»¯â€¦",
+    "recentlyUsed": "DÃ¹ng gáº§n Ä‘Ã¢y",
+    "allLanguages": "Táº¥t cáº£ ngÃ´n ngá»¯"
+  },
+  "search": {
+    "placeholder": "Nghá»‡ sÄ©, bÃ i hÃ¡t hoáº·c album",
+    "recent": "TÃ¬m kiáº¿m gáº§n Ä‘Ã¢y",
+    "clear": "XÃ³a",
+    "noResults": "KhÃ´ng cÃ³ káº¿t quáº£ cho \"{{query}}\"",
+    "sectionAlbums": "Album",
+    "sectionArtists": "Nghá»‡ sÄ©",
+    "sectionTracks": "BÃ i hÃ¡t"
+  },
+  "album": {
+    "tracks": "{{count}} bÃ i hÃ¡t",
+    "addToLibrary": "ThÃªm vÃ o thÆ° viá»‡n"
+  },
+  "artist": {
+    "monthlyListeners": "{{listeners}} ngÆ°á»i nghe hÃ ng thÃ¡ng",
+    "popular": "Phá»• biáº¿n",
+    "discography": "Danh sÃ¡ch Ä‘Ä©a nháº¡c"
+  },
+  "library": {
+    "title": "ThÆ° viá»‡n cá»§a báº¡n",
+    "favorites": "BÃ i hÃ¡t Ä‘Ã£ thÃ­ch",
+    "albums": "Album",
+    "artists": "Nghá»‡ sÄ©",
+    "downloads": "Táº£i xuá»‘ng",
+    "playlists": "Danh sÃ¡ch phÃ¡t",
+    "empty": "CÃ¡c bÃ i hÃ¡t vÃ  album báº¡n lÆ°u sáº½ xuáº¥t hiá»‡n á»Ÿ Ä‘Ã¢y.",
+    "emptyLiked": "CÃ¡c bÃ i hÃ¡t báº¡n thÃ­ch sáº½ xuáº¥t hiá»‡n á»Ÿ Ä‘Ã¢y. Cháº¡m vÃ o trÃ¡i tim trÃªn báº¥t ká»³ bÃ i hÃ¡t nÃ o Ä‘á»ƒ thÃªm.",
+    "emptyArtists": "CÃ¡c nghá»‡ sÄ© báº¡n theo dÃµi sáº½ xuáº¥t hiá»‡n á»Ÿ Ä‘Ã¢y. Cháº¡m theo dÃµi trÃªn báº¥t ká»³ nghá»‡ sÄ© nÃ o Ä‘á»ƒ thÃªm.",
+    "emptyPlaylists": "CÃ¡c danh sÃ¡ch phÃ¡t báº¡n táº¡o sáº½ xuáº¥t hiá»‡n á»Ÿ Ä‘Ã¢y."
+  },
+  "downloads": {
+    "title": "Táº£i xuá»‘ng",
+    "empty": "Nháº¡c Ä‘Ã£ táº£i xuá»‘ng sáº½ xuáº¥t hiá»‡n á»Ÿ Ä‘Ã¢y Ä‘á»ƒ nghe ngoáº¡i tuyáº¿n."
+  },
+  "profile": {
+    "title": "Há»“ sÆ¡",
+    "signIn": "ÄÄƒng nháº­p",
+    "settings": "CÃ i Ä‘áº·t",
+    "changePassword": "Äá»•i máº­t kháº©u",
+    "privacyPolicy": "ChÃ­nh sÃ¡ch quyá»n riÃªng tÆ°",
+    "termsOfUse": "Äiá»u khoáº£n sá»­ dá»¥ng",
+    "deleteAccount": "XÃ³a tÃ i khoáº£n",
+    "signOut": "ÄÄƒng xuáº¥t",
+    "guest": "KhÃ¡ch",
+    "notSignedIn": "ChÆ°a Ä‘Äƒng nháº­p",
+    "deleteTitle": "XÃ³a tÃ i khoáº£n?",
+    "deleteMessage": "Thao tÃ¡c nÃ y sáº½ xÃ³a vÄ©nh viá»…n tÃ i khoáº£n vÃ  toÃ n bá»™ dá»¯ liá»‡u cá»§a báº¡n. KhÃ´ng thá»ƒ hoÃ n tÃ¡c.",
+    "deletedTitle": "ÄÃ£ xÃ³a tÃ i khoáº£n",
+    "deletedMessage": "TÃ i khoáº£n cá»§a báº¡n Ä‘Ã£ bá»‹ xÃ³a vÄ©nh viá»…n.",
+    "deleteFailedTitle": "KhÃ´ng thá»ƒ xÃ³a tÃ i khoáº£n"
+  },
+  "player": {
+    "queue": "HÃ ng Ä‘á»£i",
+    "upNext": "Tiáº¿p theo",
+    "like": "ThÃ­ch",
+    "removeFromLiked": "XÃ³a khá»i bÃ i hÃ¡t Ä‘Ã£ thÃ­ch",
+    "goToAlbum": "Äáº¿n album",
+    "goToArtist": "Äáº¿n nghá»‡ sÄ©",
+    "share": "Chia sáº»",
+    "nothingPlaying": "KhÃ´ng cÃ³ gÃ¬ Ä‘ang phÃ¡t.",
+    "queueEmpty": "HÃ ng Ä‘á»£i trá»‘ng."
+  },
+  "changePassword": {
+    "title": "Äá»•i máº­t kháº©u",
+    "instruction": "Nháº­p máº­t kháº©u hiá»‡n táº¡i vÃ  chá»n máº­t kháº©u má»›i (Ã­t nháº¥t 8 kÃ½ tá»±).",
+    "currentPlaceholder": "Máº­t kháº©u hiá»‡n táº¡i",
+    "newPlaceholder": "Máº­t kháº©u má»›i (tá»‘i thiá»ƒu 8 kÃ½ tá»±)",
+    "confirmPlaceholder": "XÃ¡c nháº­n máº­t kháº©u má»›i",
+    "mismatch": "Máº­t kháº©u khÃ´ng khá»›p.",
+    "success": "Máº­t kháº©u cá»§a báº¡n Ä‘Ã£ Ä‘Æ°á»£c thay Ä‘á»•i. Báº¡n váº«n Ä‘Äƒng nháº­p á»Ÿ Ä‘Ã¢y; cÃ¡c thiáº¿t bá»‹ khÃ¡c Ä‘Ã£ bá»‹ Ä‘Äƒng xuáº¥t.",
+    "done": "Xong",
+    "submit": "Cáº­p nháº­t máº­t kháº©u",
+    "error": "KhÃ´ng thá»ƒ Ä‘á»•i máº­t kháº©u cá»§a báº¡n. Vui lÃ²ng thá»­ láº¡i."
+  },
+  "auth": {
+    "signin": {
+      "title": "Sáºµn sÃ ng nghe chÆ°a?",
+      "subtitle": "Nháº­p email vÃ  máº­t kháº©u Ä‘á»ƒ Ä‘Äƒng nháº­p.",
+      "email": "Email",
+      "password": "Máº­t kháº©u",
+      "submit": "ÄÄƒng nháº­p",
+      "forgot": "QuÃªn máº­t kháº©u?",
+      "newPrompt": "Má»›i Ä‘áº¿n vá»›i TorahSings? ",
+      "signUp": "ÄÄƒng kÃ½",
+      "botNotice": "Trang nÃ y Ä‘Æ°á»£c báº£o vá»‡ Ä‘á»ƒ Ä‘áº£m báº£o báº¡n khÃ´ng pháº£i lÃ  bot."
+    },
+    "signup": {
+      "title": "Táº¡o tÃ i khoáº£n cá»§a báº¡n",
+      "subtitle": "Tham gia TorahSings Ä‘á»ƒ lÆ°u nháº¡c, táº¡o danh sÃ¡ch phÃ¡t vÃ  nghe á»Ÿ má»i nÆ¡i.",
+      "firstName": "TÃªn",
+      "lastName": "Há»",
+      "dateOfBirth": "NgÃ y sinh",
+      "ageError": "Báº¡n pháº£i Ä‘á»§ {{age}} tuá»•i Ä‘á»ƒ táº¡o tÃ i khoáº£n.",
+      "email": "Email",
+      "password": "Máº­t kháº©u (tá»‘i thiá»ƒu 8 kÃ½ tá»±)",
+      "confirm": "XÃ¡c nháº­n máº­t kháº©u",
+      "mismatch": "Máº­t kháº©u khÃ´ng khá»›p.",
+      "agreePrefix": "TÃ´i Ä‘á»“ng Ã½ vá»›i ",
+      "and": " vÃ  ",
+      "submit": "Táº¡o tÃ i khoáº£n",
+      "havePrompt": "ÄÃ£ cÃ³ tÃ i khoáº£n? ",
+      "signIn": "ÄÄƒng nháº­p",
+      "error": "KhÃ´ng thá»ƒ báº¯t Ä‘áº§u Ä‘Äƒng kÃ½. Vui lÃ²ng thá»­ láº¡i."
+    },
+    "forgot": {
+      "title": "Äáº·t láº¡i máº­t kháº©u",
+      "instruction": "Nháº­p email tÃ i khoáº£n cá»§a báº¡n vÃ  chÃºng tÃ´i sáº½ gá»­i liÃªn káº¿t Ä‘á»ƒ Ä‘áº·t láº¡i máº­t kháº©u.",
+      "email": "Email",
+      "submit": "Gá»­i liÃªn káº¿t Ä‘áº·t láº¡i",
+      "sentMessage": "Náº¿u tÃ i khoáº£n cho {{email}} tá»“n táº¡i, chÃºng tÃ´i Ä‘Ã£ gá»­i liÃªn káº¿t Ä‘áº·t láº¡i. Má»Ÿ trÃªn web Ä‘á»ƒ chá»n máº­t kháº©u má»›i, rá»“i quay láº¡i Ä‘Äƒng nháº­p.",
+      "backToSignIn": "Quay láº¡i Ä‘Äƒng nháº­p"
+    },
+    "twoFactor": {
+      "title": "XÃ¡c minh Ä‘Ã³ lÃ  báº¡n",
+      "subtitle": "Nháº­p mÃ£ xÃ¡c minh chÃºng tÃ´i Ä‘Ã£ gá»­i Ä‘á»ƒ giá»¯ an toÃ n cho tÃ i khoáº£n cá»§a báº¡n.",
+      "codePlaceholder": "MÃ£ 6 chá»¯ sá»‘",
+      "trustDevice": "Tin cáº­y thiáº¿t bá»‹ nÃ y",
+      "submit": "XÃ¡c minh"
+    },
+    "verify": {
+      "title": "XÃ¡c minh email cá»§a báº¡n",
+      "subtitle": "Nháº­p mÃ£ 6 chá»¯ sá»‘ chÃºng tÃ´i Ä‘Ã£ gá»­i Ä‘áº¿n {{email}} Ä‘á»ƒ hoÃ n táº¥t viá»‡c táº¡o tÃ i khoáº£n.",
+      "submit": "XÃ¡c minh vÃ  táº¡o tÃ i khoáº£n",
+      "noCodePrompt": "ChÆ°a nháº­n Ä‘Æ°á»£c mÃ£? ",
+      "resend": "Gá»­i láº¡i mÃ£",
+      "resendIn": "Gá»­i láº¡i sau {{seconds}} giÃ¢y",
+      "failed": "XÃ¡c minh tháº¥t báº¡i. Vui lÃ²ng thá»­ láº¡i.",
+      "resendFailed": "KhÃ´ng thá»ƒ gá»­i láº¡i mÃ£."
+    }
+  },
+  "errors": {
+    "albumNotFound": "KhÃ´ng tÃ¬m tháº¥y album.",
+    "artistNotFound": "KhÃ´ng tÃ¬m tháº¥y nghá»‡ sÄ©.",
+    "generic": "ÄÃ£ xáº£y ra lá»—i. Vui lÃ²ng thá»­ láº¡i."
+  },
+  "playlist": {
+    "namePrompt": "Äáº·t tÃªn cho danh sÃ¡ch phÃ¡t cá»§a báº¡n",
+    "namePlaceholder": "TÃªn danh sÃ¡ch phÃ¡t",
+    "create": "Táº¡o",
+    "save": "LÆ°u",
+    "rename": "Äá»•i tÃªn danh sÃ¡ch phÃ¡t",
+    "delete": "XÃ³a danh sÃ¡ch phÃ¡t",
+    "deleteConfirm": "XÃ³a \"{{title}}\"? KhÃ´ng thá»ƒ hoÃ n tÃ¡c.",
+    "addSongs": "ThÃªm bÃ i hÃ¡t",
+    "addToPlaylist": "ThÃªm vÃ o danh sÃ¡ch phÃ¡t",
+    "newPlaylist": "Danh sÃ¡ch phÃ¡t má»›i",
+    "removeFromPlaylist": "XÃ³a khá»i danh sÃ¡ch phÃ¡t nÃ y",
+    "songCount": "{{count}} bÃ i hÃ¡t",
+    "empty": "ChÆ°a cÃ³ nháº¡c",
+    "emptyHint": "Cháº¡m â€œThÃªm bÃ i hÃ¡tâ€ Ä‘á»ƒ thÃªm nháº¡c vÃ o danh sÃ¡ch phÃ¡t nÃ y.",
+    "notFound": "KhÃ´ng tÃ¬m tháº¥y danh sÃ¡ch phÃ¡t."
+  },
+  "stub": {
+    "comingSoon": "Sáº¯p ra máº¯t",
+    "description": "Khu vá»±c nÃ y Ä‘Ã£ Ä‘Æ°á»£c káº¿t ná»‘i vá»›i kiáº¿n trÃºc á»©ng dá»¥ng vÃ  sáºµn sÃ ng Ä‘á»ƒ phÃ¡t triá»ƒn."
+  }
+}

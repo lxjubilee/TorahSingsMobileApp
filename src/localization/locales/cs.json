@@ -1,0 +1,209 @@
+{
+  "common": {
+    "play": "PÅ™ehrÃ¡t",
+    "pause": "Pozastavit",
+    "shuffle": "NÃ¡hodnÄ›",
+    "shufflePlay": "NÃ¡hodnÃ© pÅ™ehrÃ¡vÃ¡nÃ­",
+    "download": "StÃ¡hnout",
+    "seeAll": "Zobrazit vÅ¡e",
+    "retry": "Zkusit znovu",
+    "follow": "Sledovat",
+    "following": "Sledujete",
+    "save": "UloÅ¾it",
+    "saved": "UloÅ¾eno",
+    "cancel": "ZruÅ¡it",
+    "ok": "OK",
+    "delete": "Smazat",
+    "done": "Hotovo"
+  },
+  "tabs": {
+    "home": "DomÅ¯",
+    "browse": "ProchÃ¡zet",
+    "search": "Hledat",
+    "library": "Knihovna"
+  },
+  "home": {
+    "greetingMorning": "DobrÃ© rÃ¡no",
+    "greetingAfternoon": "DobrÃ© odpoledne",
+    "greetingEvening": "DobrÃ½ veÄer",
+    "loadError": "NepodaÅ™ilo se naÄÃ­st vaÅ¡i hudbu. PotÃ¡hnÄ›te pro obnovenÃ­ nebo to zkuste znovu.",
+    "comingSoon": "Hudba v jazyce {{language}} zatÃ­m nenÃ­ â€“ brzy pÅ™idÃ¡me dalÅ¡Ã­ jazyky."
+  },
+  "categories": {
+    "home": "DomÅ¯",
+    "inspire_family": "Rodina Inspire",
+    "family_friendly": "VhodnÃ© pro rodiny",
+    "children": "Hudba pro dÄ›ti",
+    "music_type": "Typ hudby",
+    "christmas": "VÃ¡noce"
+  },
+  "railTitles": {
+    "contemporary": "SouÄasnÃ¡",
+    "praise-worship": "ChvÃ¡la a uctÃ­vÃ¡nÃ­",
+    "country": "Country",
+    "pentecostal-shout": "LetniÄnÃ­ volÃ¡nÃ­",
+    "gospel": "Gospel"
+  },
+  "language": {
+    "title": "Jazyky",
+    "search": "Hledat jazykyâ€¦",
+    "recentlyUsed": "Naposledy pouÅ¾itÃ©",
+    "allLanguages": "VÅ¡echny jazyky"
+  },
+  "search": {
+    "placeholder": "Interpreti, skladby nebo alba",
+    "recent": "NedÃ¡vnÃ¡ hledÃ¡nÃ­",
+    "clear": "Vymazat",
+    "noResults": "Å½Ã¡dnÃ© vÃ½sledky pro \"{{query}}\"",
+    "sectionAlbums": "Alba",
+    "sectionArtists": "Interpreti",
+    "sectionTracks": "Skladby"
+  },
+  "album": {
+    "tracks": "{{count}} skladeb",
+    "addToLibrary": "PÅ™idat do knihovny"
+  },
+  "artist": {
+    "monthlyListeners": "{{listeners}} mÄ›sÃ­ÄnÃ­ch posluchaÄÅ¯",
+    "popular": "PopulÃ¡rnÃ­",
+    "discography": "Diskografie"
+  },
+  "library": {
+    "title": "VaÅ¡e knihovna",
+    "favorites": "OblÃ­benÃ© skladby",
+    "albums": "Alba",
+    "artists": "Interpreti",
+    "downloads": "StaÅ¾enÃ©",
+    "playlists": "Playlisty",
+    "empty": "UloÅ¾enÃ© skladby a alba se zobrazÃ­ zde.",
+    "emptyLiked": "Skladby, kterÃ© se vÃ¡m lÃ­bÃ­, se zobrazÃ­ zde. KlepnutÃ­m na srdÃ­Äko u skladby ji pÅ™idÃ¡te.",
+    "emptyArtists": "Interpreti, kterÃ© sledujete, se zobrazÃ­ zde. KlepnutÃ­m na sledovat u interpreta ho pÅ™idÃ¡te.",
+    "emptyPlaylists": "Playlisty, kterÃ© vytvoÅ™Ã­te, se zobrazÃ­ zde."
+  },
+  "downloads": {
+    "title": "StaÅ¾enÃ©",
+    "empty": "StaÅ¾enÃ¡ hudba se zobrazÃ­ zde pro offline poslech."
+  },
+  "profile": {
+    "title": "Profil",
+    "signIn": "PÅ™ihlÃ¡sit se",
+    "settings": "NastavenÃ­",
+    "changePassword": "ZmÄ›nit heslo",
+    "privacyPolicy": "ZÃ¡sady ochrany soukromÃ­",
+    "termsOfUse": "PodmÃ­nky pouÅ¾itÃ­",
+    "deleteAccount": "Smazat ÃºÄet",
+    "signOut": "OdhlÃ¡sit se",
+    "guest": "Host",
+    "notSignedIn": "NepÅ™ihlÃ¡Å¡en",
+    "deleteTitle": "Smazat ÃºÄet?",
+    "deleteMessage": "TÃ­mto trvale smaÅ¾ete svÅ¯j ÃºÄet a vÅ¡echna svÃ¡ data. Tuto akci nelze vrÃ¡tit zpÄ›t.",
+    "deletedTitle": "ÃšÄet smazÃ¡n",
+    "deletedMessage": "VÃ¡Å¡ ÃºÄet byl trvale smazÃ¡n.",
+    "deleteFailedTitle": "ÃšÄet se nepodaÅ™ilo smazat"
+  },
+  "player": {
+    "queue": "Fronta",
+    "upNext": "DalÅ¡Ã­ na Å™adÄ›",
+    "like": "To se mi lÃ­bÃ­",
+    "removeFromLiked": "Odebrat z oblÃ­benÃ½ch skladeb",
+    "goToAlbum": "PÅ™ejÃ­t na album",
+    "goToArtist": "PÅ™ejÃ­t na interpreta",
+    "share": "SdÃ­let",
+    "nothingPlaying": "Nic se nepÅ™ehrÃ¡vÃ¡.",
+    "queueEmpty": "Fronta je prÃ¡zdnÃ¡."
+  },
+  "changePassword": {
+    "title": "ZmÄ›nit heslo",
+    "instruction": "Zadejte svÃ© souÄasnÃ© heslo a zvolte novÃ© (alespoÅˆ 8 znakÅ¯).",
+    "currentPlaceholder": "SouÄasnÃ© heslo",
+    "newPlaceholder": "NovÃ© heslo (min. 8 znakÅ¯)",
+    "confirmPlaceholder": "PotvrÄte novÃ© heslo",
+    "mismatch": "Hesla se neshodujÃ­.",
+    "success": "VaÅ¡e heslo bylo zmÄ›nÄ›no. Zde zÅ¯stanete pÅ™ihlÃ¡Å¡eni; ostatnÃ­ zaÅ™Ã­zenÃ­ byla odhlÃ¡Å¡ena.",
+    "done": "Hotovo",
+    "submit": "Aktualizovat heslo",
+    "error": "Heslo se nepodaÅ™ilo zmÄ›nit. Zkuste to znovu."
+  },
+  "auth": {
+    "signin": {
+      "title": "PÅ™ipraveni poslouchat?",
+      "subtitle": "Zadejte e-mail a heslo pro pÅ™ihlÃ¡Å¡enÃ­.",
+      "email": "E-mail",
+      "password": "Heslo",
+      "submit": "PÅ™ihlÃ¡sit se",
+      "forgot": "ZapomnÄ›li jste heslo?",
+      "newPrompt": "NovÃ¡Äek v TorahSings? ",
+      "signUp": "Registrovat se",
+      "botNotice": "Tato strÃ¡nka je chrÃ¡nÄ›na, abychom ovÄ›Å™ili, Å¾e nejste robot."
+    },
+    "signup": {
+      "title": "VytvoÅ™te si ÃºÄet",
+      "subtitle": "PÅ™ipojte se k TorahSings, uklÃ¡dejte si hudbu, vytvÃ¡Å™ejte playlisty a poslouchejte kdekoli.",
+      "firstName": "JmÃ©no",
+      "lastName": "PÅ™Ã­jmenÃ­",
+      "dateOfBirth": "Datum narozenÃ­",
+      "ageError": "Pro vytvoÅ™enÃ­ ÃºÄtu vÃ¡m musÃ­ bÃ½t alespoÅˆ {{age}} let.",
+      "email": "E-mail",
+      "password": "Heslo (min. 8 znakÅ¯)",
+      "confirm": "PotvrÄte heslo",
+      "mismatch": "Hesla se neshodujÃ­.",
+      "agreePrefix": "SouhlasÃ­m s ",
+      "and": " a ",
+      "submit": "VytvoÅ™it ÃºÄet",
+      "havePrompt": "UÅ¾ mÃ¡te ÃºÄet? ",
+      "signIn": "PÅ™ihlÃ¡sit se",
+      "error": "Registraci se nepodaÅ™ilo spustit. Zkuste to znovu."
+    },
+    "forgot": {
+      "title": "Obnovit heslo",
+      "instruction": "Zadejte e-mail svÃ©ho ÃºÄtu a my vÃ¡m poÅ¡leme odkaz pro obnovenÃ­ hesla.",
+      "email": "E-mail",
+      "submit": "Odeslat odkaz",
+      "sentMessage": "Pokud pro {{email}} existuje ÃºÄet, poslali jsme odkaz pro obnovenÃ­. OtevÅ™ete jej na webu, zvolte novÃ© heslo a potÃ© se vraÅ¥te a pÅ™ihlaste se.",
+      "backToSignIn": "ZpÄ›t na pÅ™ihlÃ¡Å¡enÃ­"
+    },
+    "twoFactor": {
+      "title": "OvÄ›Å™te, Å¾e jste to vy",
+      "subtitle": "Zadejte ovÄ›Å™ovacÃ­ kÃ³d, kterÃ½ jsme poslali, abychom udrÅ¾eli vÃ¡Å¡ ÃºÄet v bezpeÄÃ­.",
+      "codePlaceholder": "6mÃ­stnÃ½ kÃ³d",
+      "trustDevice": "DÅ¯vÄ›Å™ovat tomuto zaÅ™Ã­zenÃ­",
+      "submit": "OvÄ›Å™it"
+    },
+    "verify": {
+      "title": "OvÄ›Å™te svÅ¯j e-mail",
+      "subtitle": "Zadejte 6mÃ­stnÃ½ kÃ³d, kterÃ½ jsme poslali na {{email}}, abyste dokonÄili vytvoÅ™enÃ­ ÃºÄtu.",
+      "submit": "OvÄ›Å™it a vytvoÅ™it ÃºÄet",
+      "noCodePrompt": "Nedorazil vÃ¡m kÃ³d? ",
+      "resend": "Poslat kÃ³d znovu",
+      "resendIn": "Znovu odeslat za {{seconds}} s",
+      "failed": "OvÄ›Å™enÃ­ selhalo. Zkuste to znovu.",
+      "resendFailed": "KÃ³d se nepodaÅ™ilo odeslat znovu."
+    }
+  },
+  "errors": {
+    "albumNotFound": "Album nebylo nalezeno.",
+    "artistNotFound": "Interpret nebyl nalezen.",
+    "generic": "NÄ›co se pokazilo. Zkuste to znovu."
+  },
+  "playlist": {
+    "namePrompt": "Pojmenujte svÅ¯j playlist",
+    "namePlaceholder": "NÃ¡zev playlistu",
+    "create": "VytvoÅ™it",
+    "save": "UloÅ¾it",
+    "rename": "PÅ™ejmenovat playlist",
+    "delete": "Smazat playlist",
+    "deleteConfirm": "Smazat \"{{title}}\"? Tuto akci nelze vrÃ¡tit zpÄ›t.",
+    "addSongs": "PÅ™idat skladby",
+    "addToPlaylist": "PÅ™idat do playlistu",
+    "newPlaylist": "NovÃ½ playlist",
+    "removeFromPlaylist": "Odebrat z tohoto playlistu",
+    "songCount": "{{count}} skladeb",
+    "empty": "ZatÃ­m Å¾Ã¡dnÃ¡ hudba",
+    "emptyHint": "KlepnutÃ­m na â€žPÅ™idat skladbyâ€œ pÅ™idÃ¡te hudbu do tohoto playlistu.",
+    "notFound": "Playlist nebyl nalezen."
+  },
+  "stub": {
+    "comingSoon": "JiÅ¾ brzy",
+    "description": "Tato oblast je propojena s architekturou aplikace a pÅ™ipravena k rozÅ¡Ã­Å™enÃ­."
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "expo": {
+    "name": "TorahSings",
+    "slug": "torahsings",
+    "scheme": "torahsings",
+    "version": "2.0.7",
+    "orientation": "portrait",
+    "icon": "./assets/Jubilujah-App-Icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0B0B0F",
+    "newArchEnabled": false,
+    "splash": {
+      "image": "./assets/Jubilujah-App-Icon.png",
+      "backgroundColor": "#000000",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.torahsings.app",
+      "associatedDomains": [
+        "applinks:jubilujah.com",
+        "applinks:www.jubilujah.com"
+      ],
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
+      }
+    },
+    "android": {
+      "package": "com.torahsings.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#000000",
+        "foregroundImage": "./assets/Jubilujah-App-Icon.png"
+      },
+      "permissions": [
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.WAKE_LOCK"
+      ],
+      "predictiveBackGestureEnabled": false,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            { "scheme": "https", "host": "jubilujah.com", "pathPrefix": "/album" },
+            { "scheme": "https", "host": "www.jubilujah.com", "pathPrefix": "/album" }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-dev-client",
+      "expo-localization",
+      "expo-asset",
+      "expo-font",
+      "expo-secure-store"
+    ],
+    "extra": {
+      "cdnBaseUrl": "https://cdn.jubileeverse.com",
+      "apiBaseUrl": "https://api.jubileeverse.com/v1",
+      "useMock": false,
+      "dataSource": "manifest",
+      "authBaseUrl": "https://api.jubilujah.com",
+      "mobileConfigBaseUrl": "https://api.jubilujah.com",
+      "turnstileSiteKey": "0x4AAAAAADJah9FpwSaEzlLP",
+      "turnstileBaseUrl": "https://jubileeinspire.com"
+    }
+  }
+}

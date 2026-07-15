@@ -1,0 +1,209 @@
+{
+  "common": {
+    "play": "Lire",
+    "pause": "Pause",
+    "shuffle": "AlÃ©atoire",
+    "shufflePlay": "Lecture alÃ©atoire",
+    "download": "TÃ©lÃ©charger",
+    "seeAll": "Tout voir",
+    "retry": "RÃ©essayer",
+    "follow": "Suivre",
+    "following": "Suivi",
+    "save": "Enregistrer",
+    "saved": "EnregistrÃ©",
+    "cancel": "Annuler",
+    "ok": "OK",
+    "delete": "Supprimer",
+    "done": "TerminÃ©"
+  },
+  "tabs": {
+    "home": "Accueil",
+    "browse": "Parcourir",
+    "search": "Rechercher",
+    "library": "BibliothÃ¨que"
+  },
+  "home": {
+    "greetingMorning": "Bonjour",
+    "greetingAfternoon": "Bon aprÃ¨s-midi",
+    "greetingEvening": "Bonsoir",
+    "loadError": "Impossible de charger votre musique. Tirez pour actualiser ou rÃ©essayez.",
+    "comingSoon": "Pas encore de musique en {{language}} : d'autres langues arrivent bientÃ´t."
+  },
+  "categories": {
+    "home": "Accueil",
+    "inspire_family": "Famille Inspire",
+    "family_friendly": "Pour toute la famille",
+    "children": "Musique pour enfants",
+    "music_type": "Type de musique",
+    "christmas": "NoÃ«l"
+  },
+  "railTitles": {
+    "contemporary": "Contemporain",
+    "praise-worship": "Louange et adoration",
+    "country": "Country",
+    "pentecostal-shout": "Cri pentecÃ´tiste",
+    "gospel": "Gospel"
+  },
+  "language": {
+    "title": "Langues",
+    "search": "Rechercher des languesâ€¦",
+    "recentlyUsed": "RÃ©cemment utilisÃ©es",
+    "allLanguages": "Toutes les langues"
+  },
+  "search": {
+    "placeholder": "Artistes, titres ou albums",
+    "recent": "Recherches rÃ©centes",
+    "clear": "Effacer",
+    "noResults": "Aucun rÃ©sultat pour \"{{query}}\"",
+    "sectionAlbums": "Albums",
+    "sectionArtists": "Artistes",
+    "sectionTracks": "Titres"
+  },
+  "album": {
+    "tracks": "{{count}} titres",
+    "addToLibrary": "Ajouter Ã  la bibliothÃ¨que"
+  },
+  "artist": {
+    "monthlyListeners": "{{listeners}} auditeurs mensuels",
+    "popular": "Populaires",
+    "discography": "Discographie"
+  },
+  "library": {
+    "title": "Votre bibliothÃ¨que",
+    "favorites": "Titres aimÃ©s",
+    "albums": "Albums",
+    "artists": "Artistes",
+    "downloads": "TÃ©lÃ©chargements",
+    "playlists": "Playlists",
+    "empty": "Les titres et albums que vous enregistrez apparaÃ®tront ici.",
+    "emptyLiked": "Les titres que vous aimez apparaÃ®tront ici. Touchez le cÅ“ur sur un titre pour l'ajouter.",
+    "emptyArtists": "Les artistes que vous suivez apparaÃ®tront ici. Touchez suivre pour les ajouter.",
+    "emptyPlaylists": "Les playlists que vous crÃ©ez apparaÃ®tront ici."
+  },
+  "downloads": {
+    "title": "TÃ©lÃ©chargements",
+    "empty": "La musique tÃ©lÃ©chargÃ©e apparaÃ®tra ici pour une Ã©coute hors connexion."
+  },
+  "profile": {
+    "title": "Profil",
+    "signIn": "Se connecter",
+    "settings": "ParamÃ¨tres",
+    "changePassword": "Changer le mot de passe",
+    "privacyPolicy": "Politique de confidentialitÃ©",
+    "termsOfUse": "Conditions d'utilisation",
+    "deleteAccount": "Supprimer le compte",
+    "signOut": "Se dÃ©connecter",
+    "guest": "InvitÃ©",
+    "notSignedIn": "Non connectÃ©",
+    "deleteTitle": "Supprimer le compte ?",
+    "deleteMessage": "Cela supprime dÃ©finitivement votre compte et toutes vos donnÃ©es. Cette action est irrÃ©versible.",
+    "deletedTitle": "Compte supprimÃ©",
+    "deletedMessage": "Votre compte a Ã©tÃ© dÃ©finitivement supprimÃ©.",
+    "deleteFailedTitle": "Impossible de supprimer le compte"
+  },
+  "player": {
+    "queue": "File d'attente",
+    "upNext": "Ã€ suivre",
+    "like": "J'aime",
+    "removeFromLiked": "Retirer des titres aimÃ©s",
+    "goToAlbum": "Aller Ã  l'album",
+    "goToArtist": "Aller Ã  l'artiste",
+    "share": "Partager",
+    "nothingPlaying": "Aucune lecture en cours.",
+    "queueEmpty": "La file d'attente est vide."
+  },
+  "changePassword": {
+    "title": "Changer le mot de passe",
+    "instruction": "Saisissez votre mot de passe actuel et choisissez-en un nouveau (au moins 8 caractÃ¨res).",
+    "currentPlaceholder": "Mot de passe actuel",
+    "newPlaceholder": "Nouveau mot de passe (min. 8 caractÃ¨res)",
+    "confirmPlaceholder": "Confirmer le nouveau mot de passe",
+    "mismatch": "Les mots de passe ne correspondent pas.",
+    "success": "Votre mot de passe a Ã©tÃ© changÃ©. Vous restez connectÃ© ici ; les autres appareils ont Ã©tÃ© dÃ©connectÃ©s.",
+    "done": "TerminÃ©",
+    "submit": "Mettre Ã  jour le mot de passe",
+    "error": "Impossible de changer votre mot de passe. RÃ©essayez."
+  },
+  "auth": {
+    "signin": {
+      "title": "PrÃªt Ã  Ã©couter ?",
+      "subtitle": "Saisissez votre e-mail et votre mot de passe pour vous connecter.",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "forgot": "Mot de passe oubliÃ© ?",
+      "newPrompt": "Nouveau sur TorahSings ? ",
+      "signUp": "S'inscrire",
+      "botNotice": "Cette page est protÃ©gÃ©e pour vÃ©rifier que vous n'Ãªtes pas un robot."
+    },
+    "signup": {
+      "title": "CrÃ©ez votre compte",
+      "subtitle": "Rejoignez TorahSings pour enregistrer votre musique, crÃ©er des playlists et Ã©couter partout.",
+      "firstName": "PrÃ©nom",
+      "lastName": "Nom",
+      "dateOfBirth": "Date de naissance",
+      "ageError": "Vous devez avoir au moins {{age}} ans pour crÃ©er un compte.",
+      "email": "E-mail",
+      "password": "Mot de passe (min. 8 caractÃ¨res)",
+      "confirm": "Confirmer le mot de passe",
+      "mismatch": "Les mots de passe ne correspondent pas.",
+      "agreePrefix": "J'accepte les ",
+      "and": " et la ",
+      "submit": "CrÃ©er un compte",
+      "havePrompt": "Vous avez dÃ©jÃ  un compte ? ",
+      "signIn": "Se connecter",
+      "error": "Impossible de dÃ©marrer l'inscription. RÃ©essayez."
+    },
+    "forgot": {
+      "title": "RÃ©initialiser votre mot de passe",
+      "instruction": "Saisissez l'e-mail de votre compte et nous vous enverrons un lien pour rÃ©initialiser votre mot de passe.",
+      "email": "E-mail",
+      "submit": "Envoyer le lien",
+      "sentMessage": "Si un compte existe pour {{email}}, nous avons envoyÃ© un lien de rÃ©initialisation. Ouvrez-le sur le web pour choisir un nouveau mot de passe, puis revenez vous connecter.",
+      "backToSignIn": "Retour Ã  la connexion"
+    },
+    "twoFactor": {
+      "title": "VÃ©rifiez votre identitÃ©",
+      "subtitle": "Saisissez le code de vÃ©rification que nous avons envoyÃ© pour sÃ©curiser votre compte.",
+      "codePlaceholder": "Code Ã  6 chiffres",
+      "trustDevice": "Faire confiance Ã  cet appareil",
+      "submit": "VÃ©rifier"
+    },
+    "verify": {
+      "title": "VÃ©rifiez votre e-mail",
+      "subtitle": "Saisissez le code Ã  6 chiffres envoyÃ© Ã  {{email}} pour finaliser la crÃ©ation de votre compte.",
+      "submit": "VÃ©rifier et crÃ©er le compte",
+      "noCodePrompt": "Vous n'avez pas reÃ§u de code ? ",
+      "resend": "Renvoyer le code",
+      "resendIn": "Renvoyer dans {{seconds}} s",
+      "failed": "La vÃ©rification a Ã©chouÃ©. RÃ©essayez.",
+      "resendFailed": "Impossible de renvoyer le code."
+    }
+  },
+  "errors": {
+    "albumNotFound": "Album introuvable.",
+    "artistNotFound": "Artiste introuvable.",
+    "generic": "Une erreur s'est produite. RÃ©essayez."
+  },
+  "playlist": {
+    "namePrompt": "Nommez votre playlist",
+    "namePlaceholder": "Nom de la playlist",
+    "create": "CrÃ©er",
+    "save": "Enregistrer",
+    "rename": "Renommer la playlist",
+    "delete": "Supprimer la playlist",
+    "deleteConfirm": "Supprimer \"{{title}}\" ? Cette action est irrÃ©versible.",
+    "addSongs": "Ajouter des titres",
+    "addToPlaylist": "Ajouter Ã  la playlist",
+    "newPlaylist": "Nouvelle playlist",
+    "removeFromPlaylist": "Retirer de cette playlist",
+    "songCount": "{{count}} titres",
+    "empty": "Pas encore de musique",
+    "emptyHint": "Touchez Â« Ajouter des titres Â» pour ajouter de la musique Ã  cette playlist.",
+    "notFound": "Playlist introuvable."
+  },
+  "stub": {
+    "comingSoon": "BientÃ´t disponible",
+    "description": "Cette zone est intÃ©grÃ©e Ã  l'architecture de l'app et prÃªte Ã  Ãªtre dÃ©veloppÃ©e."
+  }
+}

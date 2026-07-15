@@ -1,0 +1,209 @@
+{
+  "common": {
+    "play": "Ã‡al",
+    "pause": "Duraklat",
+    "shuffle": "KarÄ±ÅŸtÄ±r",
+    "shufflePlay": "KarÄ±ÅŸÄ±k Ã§al",
+    "download": "Ä°ndir",
+    "seeAll": "TÃ¼mÃ¼nÃ¼ gÃ¶r",
+    "retry": "Tekrar dene",
+    "follow": "Takip et",
+    "following": "Takip ediliyor",
+    "save": "Kaydet",
+    "saved": "Kaydedildi",
+    "cancel": "Ä°ptal",
+    "ok": "Tamam",
+    "delete": "Sil",
+    "done": "Bitti"
+  },
+  "tabs": {
+    "home": "Ana Sayfa",
+    "browse": "KeÅŸfet",
+    "search": "Ara",
+    "library": "KitaplÄ±k"
+  },
+  "home": {
+    "greetingMorning": "GÃ¼naydÄ±n",
+    "greetingAfternoon": "Ä°yi gÃ¼nler",
+    "greetingEvening": "Ä°yi akÅŸamlar",
+    "loadError": "MÃ¼ziÄŸiniz yÃ¼klenemedi. Yenilemek iÃ§in Ã§ekin veya tekrar deneyin.",
+    "comingSoon": "HenÃ¼z {{language}} dilinde mÃ¼zik yok â€” yakÄ±nda daha fazla dil ekliyoruz."
+  },
+  "categories": {
+    "home": "Ana Sayfa",
+    "inspire_family": "Inspire Ailesi",
+    "family_friendly": "Aileye Uygun",
+    "children": "Ã‡ocuk MÃ¼ziÄŸi",
+    "music_type": "MÃ¼zik TÃ¼rÃ¼",
+    "christmas": "Noel"
+  },
+  "railTitles": {
+    "contemporary": "Ã‡aÄŸdaÅŸ",
+    "praise-worship": "Ã–vgÃ¼ ve TapÄ±nma",
+    "country": "Country",
+    "pentecostal-shout": "Pentikostal HaykÄ±rÄ±ÅŸ",
+    "gospel": "Gospel"
+  },
+  "language": {
+    "title": "Diller",
+    "search": "Dil araâ€¦",
+    "recentlyUsed": "Son kullanÄ±lanlar",
+    "allLanguages": "TÃ¼m diller"
+  },
+  "search": {
+    "placeholder": "SanatÃ§Ä±lar, ÅŸarkÄ±lar veya albÃ¼mler",
+    "recent": "Son aramalar",
+    "clear": "Temizle",
+    "noResults": "\"{{query}}\" iÃ§in sonuÃ§ yok",
+    "sectionAlbums": "AlbÃ¼mler",
+    "sectionArtists": "SanatÃ§Ä±lar",
+    "sectionTracks": "ÅžarkÄ±lar"
+  },
+  "album": {
+    "tracks": "{{count}} ÅŸarkÄ±",
+    "addToLibrary": "KitaplÄ±ÄŸa ekle"
+  },
+  "artist": {
+    "monthlyListeners": "AylÄ±k {{listeners}} dinleyici",
+    "popular": "PopÃ¼ler",
+    "discography": "Diskografi"
+  },
+  "library": {
+    "title": "KitaplÄ±ÄŸÄ±nÄ±z",
+    "favorites": "BeÄŸenilen ÅžarkÄ±lar",
+    "albums": "AlbÃ¼mler",
+    "artists": "SanatÃ§Ä±lar",
+    "downloads": "Ä°ndirilenler",
+    "playlists": "Ã‡alma listeleri",
+    "empty": "KaydettiÄŸiniz ÅŸarkÄ±lar ve albÃ¼mler burada gÃ¶rÃ¼nÃ¼r.",
+    "emptyLiked": "BeÄŸendiÄŸiniz ÅŸarkÄ±lar burada gÃ¶rÃ¼nÃ¼r. Eklemek iÃ§in herhangi bir parÃ§adaki kalbe dokunun.",
+    "emptyArtists": "Takip ettiÄŸiniz sanatÃ§Ä±lar burada gÃ¶rÃ¼nÃ¼r. Eklemek iÃ§in herhangi bir sanatÃ§Ä±da takip et'e dokunun.",
+    "emptyPlaylists": "OluÅŸturduÄŸunuz Ã§alma listeleri burada gÃ¶rÃ¼nÃ¼r."
+  },
+  "downloads": {
+    "title": "Ä°ndirilenler",
+    "empty": "Ä°ndirilen mÃ¼zikler Ã§evrimdÄ±ÅŸÄ± dinlemek iÃ§in burada gÃ¶rÃ¼nÃ¼r."
+  },
+  "profile": {
+    "title": "Profil",
+    "signIn": "GiriÅŸ yap",
+    "settings": "Ayarlar",
+    "changePassword": "Åžifreyi deÄŸiÅŸtir",
+    "privacyPolicy": "Gizlilik PolitikasÄ±",
+    "termsOfUse": "KullanÄ±m KoÅŸullarÄ±",
+    "deleteAccount": "HesabÄ± sil",
+    "signOut": "Ã‡Ä±kÄ±ÅŸ yap",
+    "guest": "Misafir",
+    "notSignedIn": "GiriÅŸ yapÄ±lmadÄ±",
+    "deleteTitle": "Hesap silinsin mi?",
+    "deleteMessage": "Bu, hesabÄ±nÄ±zÄ± ve tÃ¼m verilerinizi kalÄ±cÄ± olarak siler. Bu iÅŸlem geri alÄ±namaz.",
+    "deletedTitle": "Hesap silindi",
+    "deletedMessage": "HesabÄ±nÄ±z kalÄ±cÄ± olarak silindi.",
+    "deleteFailedTitle": "Hesap silinemedi"
+  },
+  "player": {
+    "queue": "SÄ±ra",
+    "upNext": "SÄ±radaki",
+    "like": "BeÄŸen",
+    "removeFromLiked": "BeÄŸenilen ÅžarkÄ±lar'dan kaldÄ±r",
+    "goToAlbum": "AlbÃ¼me git",
+    "goToArtist": "SanatÃ§Ä±ya git",
+    "share": "PaylaÅŸ",
+    "nothingPlaying": "Åžu anda bir ÅŸey Ã§almÄ±yor.",
+    "queueEmpty": "SÄ±ra boÅŸ."
+  },
+  "changePassword": {
+    "title": "Åžifreyi deÄŸiÅŸtir",
+    "instruction": "Mevcut ÅŸifrenizi girin ve yeni bir tane seÃ§in (en az 8 karakter).",
+    "currentPlaceholder": "Mevcut ÅŸifre",
+    "newPlaceholder": "Yeni ÅŸifre (en az 8 karakter)",
+    "confirmPlaceholder": "Yeni ÅŸifreyi onayla",
+    "mismatch": "Åžifreler eÅŸleÅŸmiyor.",
+    "success": "Åžifreniz deÄŸiÅŸtirildi. Burada oturumunuz aÃ§Ä±k kalÄ±r; diÄŸer cihazlarÄ±n oturumu kapatÄ±ldÄ±.",
+    "done": "Bitti",
+    "submit": "Åžifreyi gÃ¼ncelle",
+    "error": "Åžifreniz deÄŸiÅŸtirilemedi. LÃ¼tfen tekrar deneyin."
+  },
+  "auth": {
+    "signin": {
+      "title": "Dinlemeye hazÄ±r mÄ±sÄ±nÄ±z?",
+      "subtitle": "GiriÅŸ yapmak iÃ§in e-postanÄ±zÄ± ve ÅŸifrenizi girin.",
+      "email": "E-posta",
+      "password": "Åžifre",
+      "submit": "GiriÅŸ yap",
+      "forgot": "Åžifrenizi mi unuttunuz?",
+      "newPrompt": "TorahSings'ta yeni misiniz? ",
+      "signUp": "Kaydol",
+      "botNotice": "Bu sayfa, bot olmadÄ±ÄŸÄ±nÄ±zdan emin olmak iÃ§in korunmaktadÄ±r."
+    },
+    "signup": {
+      "title": "HesabÄ±nÄ±zÄ± oluÅŸturun",
+      "subtitle": "MÃ¼ziÄŸinizi kaydetmek, Ã§alma listeleri oluÅŸturmak ve her yerde dinlemek iÃ§in TorahSings'a katÄ±lÄ±n.",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "dateOfBirth": "DoÄŸum tarihi",
+      "ageError": "Hesap oluÅŸturmak iÃ§in en az {{age}} yaÅŸÄ±nda olmalÄ±sÄ±nÄ±z.",
+      "email": "E-posta",
+      "password": "Åžifre (en az 8 karakter)",
+      "confirm": "Åžifreyi onayla",
+      "mismatch": "Åžifreler eÅŸleÅŸmiyor.",
+      "agreePrefix": "ÅžunlarÄ± kabul ediyorum: ",
+      "and": " ve ",
+      "submit": "Hesap oluÅŸtur",
+      "havePrompt": "Zaten bir hesabÄ±nÄ±z var mÄ±? ",
+      "signIn": "GiriÅŸ yap",
+      "error": "KayÄ±t baÅŸlatÄ±lamadÄ±. LÃ¼tfen tekrar deneyin."
+    },
+    "forgot": {
+      "title": "Åžifrenizi sÄ±fÄ±rlayÄ±n",
+      "instruction": "HesabÄ±nÄ±zÄ±n e-postasÄ±nÄ± girin, ÅŸifrenizi sÄ±fÄ±rlamanÄ±z iÃ§in bir baÄŸlantÄ± gÃ¶nderelim.",
+      "email": "E-posta",
+      "submit": "SÄ±fÄ±rlama baÄŸlantÄ±sÄ± gÃ¶nder",
+      "sentMessage": "{{email}} iÃ§in bir hesap varsa, sÄ±fÄ±rlama baÄŸlantÄ±sÄ± gÃ¶nderdik. Yeni bir ÅŸifre seÃ§mek iÃ§in web'de aÃ§Ä±n, ardÄ±ndan geri dÃ¶nÃ¼p giriÅŸ yapÄ±n.",
+      "backToSignIn": "GiriÅŸe geri dÃ¶n"
+    },
+    "twoFactor": {
+      "title": "KimliÄŸinizi doÄŸrulayÄ±n",
+      "subtitle": "HesabÄ±nÄ±zÄ± gÃ¼vende tutmak iÃ§in gÃ¶nderdiÄŸimiz doÄŸrulama kodunu girin.",
+      "codePlaceholder": "6 haneli kod",
+      "trustDevice": "Bu cihaza gÃ¼ven",
+      "submit": "DoÄŸrula"
+    },
+    "verify": {
+      "title": "E-postanÄ±zÄ± doÄŸrulayÄ±n",
+      "subtitle": "HesabÄ±nÄ±zÄ± oluÅŸturmayÄ± tamamlamak iÃ§in {{email}} adresine gÃ¶nderdiÄŸimiz 6 haneli kodu girin.",
+      "submit": "DoÄŸrula ve Hesap OluÅŸtur",
+      "noCodePrompt": "Kod almadÄ±nÄ±z mÄ±? ",
+      "resend": "Kodu tekrar gÃ¶nder",
+      "resendIn": "{{seconds}} sn iÃ§inde tekrar gÃ¶nder",
+      "failed": "DoÄŸrulama baÅŸarÄ±sÄ±z oldu. LÃ¼tfen tekrar deneyin.",
+      "resendFailed": "Kod tekrar gÃ¶nderilemedi."
+    }
+  },
+  "errors": {
+    "albumNotFound": "AlbÃ¼m bulunamadÄ±.",
+    "artistNotFound": "SanatÃ§Ä± bulunamadÄ±.",
+    "generic": "Bir ÅŸeyler ters gitti. LÃ¼tfen tekrar deneyin."
+  },
+  "playlist": {
+    "namePrompt": "Ã‡alma listenize ad verin",
+    "namePlaceholder": "Ã‡alma listesi adÄ±",
+    "create": "OluÅŸtur",
+    "save": "Kaydet",
+    "rename": "Ã‡alma listesini yeniden adlandÄ±r",
+    "delete": "Ã‡alma listesini sil",
+    "deleteConfirm": "\"{{title}}\" silinsin mi? Bu geri alÄ±namaz.",
+    "addSongs": "ÅžarkÄ± ekle",
+    "addToPlaylist": "Ã‡alma listesine ekle",
+    "newPlaylist": "Yeni Ã§alma listesi",
+    "removeFromPlaylist": "Bu Ã§alma listesinden kaldÄ±r",
+    "songCount": "{{count}} ÅŸarkÄ±",
+    "empty": "HenÃ¼z mÃ¼zik yok",
+    "emptyHint": "Bu Ã§alma listesine mÃ¼zik eklemek iÃ§in â€œÅžarkÄ± ekleâ€ye dokunun.",
+    "notFound": "Ã‡alma listesi bulunamadÄ±."
+  },
+  "stub": {
+    "comingSoon": "YakÄ±nda",
+    "description": "Bu alan uygulama mimarisine baÄŸlÄ±dÄ±r ve geliÅŸtirilmeye hazÄ±rdÄ±r."
+  }
+}

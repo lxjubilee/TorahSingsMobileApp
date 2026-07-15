@@ -1,0 +1,209 @@
+{
+  "common": {
+    "play": "OdtwÃ³rz",
+    "pause": "Wstrzymaj",
+    "shuffle": "Losowo",
+    "shufflePlay": "Odtwarzanie losowe",
+    "download": "Pobierz",
+    "seeAll": "Zobacz wszystko",
+    "retry": "SprÃ³buj ponownie",
+    "follow": "Obserwuj",
+    "following": "Obserwujesz",
+    "save": "Zapisz",
+    "saved": "Zapisano",
+    "cancel": "Anuluj",
+    "ok": "OK",
+    "delete": "UsuÅ„",
+    "done": "Gotowe"
+  },
+  "tabs": {
+    "home": "GÅ‚Ã³wna",
+    "browse": "PrzeglÄ…daj",
+    "search": "Szukaj",
+    "library": "Biblioteka"
+  },
+  "home": {
+    "greetingMorning": "DzieÅ„ dobry",
+    "greetingAfternoon": "DzieÅ„ dobry",
+    "greetingEvening": "Dobry wieczÃ³r",
+    "loadError": "Nie udaÅ‚o siÄ™ zaÅ‚adowaÄ‡ Twojej muzyki. PociÄ…gnij, aby odÅ›wieÅ¼yÄ‡, lub sprÃ³buj ponownie.",
+    "comingSoon": "Nie ma jeszcze muzyki w jÄ™zyku {{language}} â€” wkrÃ³tce dodamy wiÄ™cej jÄ™zykÃ³w."
+  },
+  "categories": {
+    "home": "GÅ‚Ã³wna",
+    "inspire_family": "Rodzina Inspire",
+    "family_friendly": "Dla caÅ‚ej rodziny",
+    "children": "Muzyka dla dzieci",
+    "music_type": "Rodzaj muzyki",
+    "christmas": "BoÅ¼e Narodzenie"
+  },
+  "railTitles": {
+    "contemporary": "WspÃ³Å‚czesna",
+    "praise-worship": "Uwielbienie i chwaÅ‚a",
+    "country": "Country",
+    "pentecostal-shout": "ZielonoÅ›wiÄ…tkowy okrzyk",
+    "gospel": "Gospel"
+  },
+  "language": {
+    "title": "JÄ™zyki",
+    "search": "Szukaj jÄ™zykÃ³wâ€¦",
+    "recentlyUsed": "Ostatnio uÅ¼ywane",
+    "allLanguages": "Wszystkie jÄ™zyki"
+  },
+  "search": {
+    "placeholder": "Wykonawcy, utwory lub albumy",
+    "recent": "Ostatnie wyszukiwania",
+    "clear": "WyczyÅ›Ä‡",
+    "noResults": "Brak wynikÃ³w dla \"{{query}}\"",
+    "sectionAlbums": "Albumy",
+    "sectionArtists": "Wykonawcy",
+    "sectionTracks": "Utwory"
+  },
+  "album": {
+    "tracks": "{{count}} utworÃ³w",
+    "addToLibrary": "Dodaj do biblioteki"
+  },
+  "artist": {
+    "monthlyListeners": "{{listeners}} sÅ‚uchaczy miesiÄ™cznie",
+    "popular": "Popularne",
+    "discography": "Dyskografia"
+  },
+  "library": {
+    "title": "Twoja biblioteka",
+    "favorites": "Polubione utwory",
+    "albums": "Albumy",
+    "artists": "Wykonawcy",
+    "downloads": "Pobrane",
+    "playlists": "Playlisty",
+    "empty": "Zapisane utwory i albumy pojawiÄ… siÄ™ tutaj.",
+    "emptyLiked": "Utwory, ktÃ³re polubisz, pojawiÄ… siÄ™ tutaj. Dotknij serca przy dowolnym utworze, aby go dodaÄ‡.",
+    "emptyArtists": "Obserwowani wykonawcy pojawiÄ… siÄ™ tutaj. Dotknij â€žObserwujâ€ przy dowolnym wykonawcy.",
+    "emptyPlaylists": "Utworzone przez Ciebie playlisty pojawiÄ… siÄ™ tutaj."
+  },
+  "downloads": {
+    "title": "Pobrane",
+    "empty": "Pobrana muzyka pojawi siÄ™ tutaj do sÅ‚uchania offline."
+  },
+  "profile": {
+    "title": "Profil",
+    "signIn": "Zaloguj siÄ™",
+    "settings": "Ustawienia",
+    "changePassword": "ZmieÅ„ hasÅ‚o",
+    "privacyPolicy": "Polityka prywatnoÅ›ci",
+    "termsOfUse": "Warunki uÅ¼ytkowania",
+    "deleteAccount": "UsuÅ„ konto",
+    "signOut": "Wyloguj siÄ™",
+    "guest": "GoÅ›Ä‡",
+    "notSignedIn": "Niezalogowany",
+    "deleteTitle": "UsunÄ…Ä‡ konto?",
+    "deleteMessage": "Spowoduje to trwaÅ‚e usuniÄ™cie Twojego konta i wszystkich danych. Tej operacji nie moÅ¼na cofnÄ…Ä‡.",
+    "deletedTitle": "Konto usuniÄ™te",
+    "deletedMessage": "Twoje konto zostaÅ‚o trwale usuniÄ™te.",
+    "deleteFailedTitle": "Nie udaÅ‚o siÄ™ usunÄ…Ä‡ konta"
+  },
+  "player": {
+    "queue": "Kolejka",
+    "upNext": "NastÄ™pny",
+    "like": "Polub",
+    "removeFromLiked": "UsuÅ„ z polubionych utworÃ³w",
+    "goToAlbum": "PrzejdÅº do albumu",
+    "goToArtist": "PrzejdÅº do wykonawcy",
+    "share": "UdostÄ™pnij",
+    "nothingPlaying": "Nic nie jest odtwarzane.",
+    "queueEmpty": "Kolejka jest pusta."
+  },
+  "changePassword": {
+    "title": "ZmieÅ„ hasÅ‚o",
+    "instruction": "WprowadÅº obecne hasÅ‚o i wybierz nowe (co najmniej 8 znakÃ³w).",
+    "currentPlaceholder": "Obecne hasÅ‚o",
+    "newPlaceholder": "Nowe hasÅ‚o (min. 8 znakÃ³w)",
+    "confirmPlaceholder": "PotwierdÅº nowe hasÅ‚o",
+    "mismatch": "HasÅ‚a nie sÄ… takie same.",
+    "success": "Twoje hasÅ‚o zostaÅ‚o zmienione. Pozostaniesz zalogowany tutaj; inne urzÄ…dzenia zostaÅ‚y wylogowane.",
+    "done": "Gotowe",
+    "submit": "Zaktualizuj hasÅ‚o",
+    "error": "Nie udaÅ‚o siÄ™ zmieniÄ‡ hasÅ‚a. SprÃ³buj ponownie."
+  },
+  "auth": {
+    "signin": {
+      "title": "Gotowy do sÅ‚uchania?",
+      "subtitle": "WprowadÅº e-mail i hasÅ‚o, aby siÄ™ zalogowaÄ‡.",
+      "email": "E-mail",
+      "password": "HasÅ‚o",
+      "submit": "Zaloguj siÄ™",
+      "forgot": "Nie pamiÄ™tasz hasÅ‚a?",
+      "newPrompt": "Nowy w TorahSings? ",
+      "signUp": "Zarejestruj siÄ™",
+      "botNotice": "Ta strona jest chroniona, aby upewniÄ‡ siÄ™, Å¼e nie jesteÅ› botem."
+    },
+    "signup": {
+      "title": "UtwÃ³rz konto",
+      "subtitle": "DoÅ‚Ä…cz do TorahSings, aby zapisywaÄ‡ muzykÄ™, tworzyÄ‡ playlisty i sÅ‚uchaÄ‡ wszÄ™dzie.",
+      "firstName": "ImiÄ™",
+      "lastName": "Nazwisko",
+      "dateOfBirth": "Data urodzenia",
+      "ageError": "Aby utworzyÄ‡ konto, musisz mieÄ‡ co najmniej {{age}} lat.",
+      "email": "E-mail",
+      "password": "HasÅ‚o (min. 8 znakÃ³w)",
+      "confirm": "PotwierdÅº hasÅ‚o",
+      "mismatch": "HasÅ‚a nie sÄ… takie same.",
+      "agreePrefix": "AkceptujÄ™ ",
+      "and": " i ",
+      "submit": "UtwÃ³rz konto",
+      "havePrompt": "Masz juÅ¼ konto? ",
+      "signIn": "Zaloguj siÄ™",
+      "error": "Nie udaÅ‚o siÄ™ rozpoczÄ…Ä‡ rejestracji. SprÃ³buj ponownie."
+    },
+    "forgot": {
+      "title": "Zresetuj hasÅ‚o",
+      "instruction": "WprowadÅº e-mail swojego konta, a wyÅ›lemy link do zresetowania hasÅ‚a.",
+      "email": "E-mail",
+      "submit": "WyÅ›lij link",
+      "sentMessage": "JeÅ›li konto dla {{email}} istnieje, wysÅ‚aliÅ›my link do resetu. OtwÃ³rz go w przeglÄ…darce, aby wybraÄ‡ nowe hasÅ‚o, a nastÄ™pnie wrÃ³Ä‡ i zaloguj siÄ™.",
+      "backToSignIn": "PowrÃ³t do logowania"
+    },
+    "twoFactor": {
+      "title": "PotwierdÅº, Å¼e to Ty",
+      "subtitle": "WprowadÅº kod weryfikacyjny, ktÃ³ry wysÅ‚aliÅ›my, aby zabezpieczyÄ‡ Twoje konto.",
+      "codePlaceholder": "6-cyfrowy kod",
+      "trustDevice": "Zaufaj temu urzÄ…dzeniu",
+      "submit": "Zweryfikuj"
+    },
+    "verify": {
+      "title": "Zweryfikuj e-mail",
+      "subtitle": "WprowadÅº 6-cyfrowy kod wysÅ‚any na {{email}}, aby dokoÅ„czyÄ‡ tworzenie konta.",
+      "submit": "Zweryfikuj i utwÃ³rz konto",
+      "noCodePrompt": "Nie otrzymaÅ‚eÅ› kodu? ",
+      "resend": "WyÅ›lij kod ponownie",
+      "resendIn": "WyÅ›lij ponownie za {{seconds}} s",
+      "failed": "Weryfikacja nie powiodÅ‚a siÄ™. SprÃ³buj ponownie.",
+      "resendFailed": "Nie udaÅ‚o siÄ™ ponownie wysÅ‚aÄ‡ kodu."
+    }
+  },
+  "errors": {
+    "albumNotFound": "Nie znaleziono albumu.",
+    "artistNotFound": "Nie znaleziono wykonawcy.",
+    "generic": "CoÅ› poszÅ‚o nie tak. SprÃ³buj ponownie."
+  },
+  "playlist": {
+    "namePrompt": "Nazwij swojÄ… playlistÄ™",
+    "namePlaceholder": "Nazwa playlisty",
+    "create": "UtwÃ³rz",
+    "save": "Zapisz",
+    "rename": "ZmieÅ„ nazwÄ™ playlisty",
+    "delete": "UsuÅ„ playlistÄ™",
+    "deleteConfirm": "UsunÄ…Ä‡ \"{{title}}\"? Tej operacji nie moÅ¼na cofnÄ…Ä‡.",
+    "addSongs": "Dodaj utwory",
+    "addToPlaylist": "Dodaj do playlisty",
+    "newPlaylist": "Nowa playlista",
+    "removeFromPlaylist": "UsuÅ„ z tej playlisty",
+    "songCount": "{{count}} utworÃ³w",
+    "empty": "Nie ma jeszcze muzyki",
+    "emptyHint": "Dotknij â€žDodaj utworyâ€, aby dodaÄ‡ muzykÄ™ do tej playlisty.",
+    "notFound": "Nie znaleziono playlisty."
+  },
+  "stub": {
+    "comingSoon": "WkrÃ³tce",
+    "description": "Ten obszar jest podÅ‚Ä…czony do architektury aplikacji i gotowy do rozbudowy."
+  }
+}
