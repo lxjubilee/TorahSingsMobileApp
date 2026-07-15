@@ -41,7 +41,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 28, textStyle, styl
   return (
     <View style={[styles.row, style]}>
       <Image
-        source={require('../../../assets/Jubilujah-app-logo.png')}
+        source={require('../../../assets/zev-logo.png')}
         style={[styles.logo, { width: size, height: size }]}
         resizeMode="contain"
       />

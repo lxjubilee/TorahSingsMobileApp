@@ -1,6 +1,6 @@
 {
   "name": "torahsings",
-  "version": "2.0.7",
+  "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
     "@expo-google-fonts/bebas-neue": "^0.4.1",

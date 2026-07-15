@@ -86,7 +86,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
     <Animated.View style={[styles.container, { opacity: overlayOpacity }]} pointerEvents="none">
       <Animated.View style={[styles.group, { opacity, transform: [{ scale }] }]}>
         <Image
-          source={require('../../assets/Jubilujah-app-logo.png')}
+          source={require('../../assets/zev-logo.png')}
           style={styles.logo}
           resizeMode="contain"
         />

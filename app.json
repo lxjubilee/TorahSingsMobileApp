@@ -3,7 +3,7 @@
     "name": "TorahSings",
     "slug": "torahsings",
     "scheme": "torahsings",
-    "version": "2.0.7",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/Jubilujah-App-Icon.png",
     "userInterfaceStyle": "dark",
