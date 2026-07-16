@@ -1,6 +1,6 @@
-// Learn Hebrew content package, ported from the TorahSings web app
-// (see learn-hebrew-mobile/LEARN_HEBREW_IMPLEMENTATION.md). The curriculum is
-// bundled — the feature works fully offline; only entitlement is network-derived.
+// Learn Hebrew content package, ported from the TorahSings web app. The
+// curriculum is bundled — the feature works fully offline; only entitlement
+// is network-derived.
 import lessonsJson from './lessons.json';
 import alephBetJson from './aleph-bet.json';
 import type { AlephLetter, Entitlement, LessonAlbum } from './types';
