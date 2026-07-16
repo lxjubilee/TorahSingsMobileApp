@@ -1,0 +1,134 @@
+[
+  {
+    "letter": "א",
+    "name": "Aleph",
+    "sense": "Ox — strength, the first, the leader",
+    "value": 1
+  },
+  {
+    "letter": "ב",
+    "name": "Bet",
+    "sense": "House — tent, dwelling, family within",
+    "value": 2
+  },
+  {
+    "letter": "ג",
+    "name": "Gimel",
+    "sense": "Foot — to gather, to lift up, to walk",
+    "value": 3
+  },
+  {
+    "letter": "ד",
+    "name": "Dalet",
+    "sense": "Door — pathway, to enter, to hang",
+    "value": 4
+  },
+  {
+    "letter": "ה",
+    "name": "Hey",
+    "sense": "Behold — arms lifted, breath, revelation",
+    "value": 5
+  },
+  {
+    "letter": "ו",
+    "name": "Vav",
+    "sense": "Nail — to fasten, to join, and",
+    "value": 6
+  },
+  {
+    "letter": "ז",
+    "name": "Zayin",
+    "sense": "Mattock — to cut, to harvest, a weapon",
+    "value": 7
+  },
+  {
+    "letter": "ח",
+    "name": "Chet",
+    "sense": "Wall — to separate, to enclose, to protect",
+    "value": 8
+  },
+  {
+    "letter": "ט",
+    "name": "Tet",
+    "sense": "Basket — to surround, to contain, to store",
+    "value": 9
+  },
+  {
+    "letter": "י",
+    "name": "Yod",
+    "sense": "Hand — work, deed, that which is made",
+    "value": 10
+  },
+  {
+    "letter": "כ",
+    "name": "Kaf",
+    "sense": "Open palm — to cover, to allow, to bend",
+    "value": 20
+  },
+  {
+    "letter": "ל",
+    "name": "Lamed",
+    "sense": "Shepherd's staff — to teach, to lead, authority",
+    "value": 30
+  },
+  {
+    "letter": "מ",
+    "name": "Mem",
+    "sense": "Water — the deep, chaos, the mighty",
+    "value": 40
+  },
+  {
+    "letter": "נ",
+    "name": "Nun",
+    "sense": "Seed — life, continuation, the heir",
+    "value": 50
+  },
+  {
+    "letter": "ס",
+    "name": "Samech",
+    "sense": "Prop — to support, to uphold, to turn",
+    "value": 60
+  },
+  {
+    "letter": "ע",
+    "name": "Ayin",
+    "sense": "Eye — to see, to know, to experience",
+    "value": 70
+  },
+  {
+    "letter": "פ",
+    "name": "Pey",
+    "sense": "Mouth — to speak, to open, the word",
+    "value": 80
+  },
+  {
+    "letter": "צ",
+    "name": "Tsade",
+    "sense": "Hook — to catch, to desire, the righteous one",
+    "value": 90
+  },
+  {
+    "letter": "ק",
+    "name": "Qof",
+    "sense": "Sun at the horizon — behind, the last, a circle",
+    "value": 100
+  },
+  {
+    "letter": "ר",
+    "name": "Resh",
+    "sense": "Head — the first, the highest, a person",
+    "value": 200
+  },
+  {
+    "letter": "ש",
+    "name": "Shin",
+    "sense": "Teeth — to consume, to press, the sharp",
+    "value": 300
+  },
+  {
+    "letter": "ת",
+    "name": "Tav",
+    "sense": "Mark — a sign, a covenant, the cross",
+    "value": 400
+  }
+]

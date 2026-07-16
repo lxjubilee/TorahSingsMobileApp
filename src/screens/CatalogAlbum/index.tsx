@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { Dimensions, FlatList, Image, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import { StarRating } from '@/components/reviews';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Screen, AppText, IconButton, SectionHeader } from '@/components/common';
@@ -23,11 +25,14 @@ const HEADER_HEIGHT = 38;
 // Preview cap for the horizontal album rails (matches the Home catalog rails).
 const MAX_RAIL = 12;
 
+// Green used for the book pill (border + text), matching the AlbumDetails
+// primary-genre pill and the web album header.
+const GENRE_GREEN = '#3FA45C';
+
 // Web hero palette (globals.css) for continuity with the rest of the port.
 const ACCENT_SOFT = '#ffd877';
 const INK = '#f0ebe3';
 const INK_MUTED = '#7f86a8';
-const INK_BODY = '#b8bcd4';
 
 /** Album + its division, looked up by catalog code. */
 function findAlbum(code: string): { album: CatalogAlbum; category: CatalogCategory } | null {
@@ -49,6 +54,7 @@ export const CatalogAlbumScreen: React.FC = () => {
   const { params } = useRoute<RootStackScreenProps<'CatalogAlbum'>['route']>();
   const navigation = useNavigation<Nav>();
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
 
   const found = useMemo(() => findAlbum(params.code), [params.code]);
 
@@ -118,7 +124,12 @@ export const CatalogAlbumScreen: React.FC = () => {
         {/* Book eyebrow → title → meta line (web album header, centered like
             the app's AlbumDetails). */}
         <View style={styles.headerBlock}>
-          <AppText style={styles.eyebrow}>● {album.book.toUpperCase()}</AppText>
+          {/* Book pill — same green genre-pill treatment as AlbumDetails. */}
+          <View style={styles.bookPill}>
+            <AppText variant="caption" style={styles.bookPillText}>
+              {album.book.toUpperCase()}
+            </AppText>
+          </View>
           <AppText variant="display" style={styles.title}>
             {album.title}
           </AppText>
@@ -127,31 +138,76 @@ export const CatalogAlbumScreen: React.FC = () => {
             {category.title}
           </AppText>
 
-          {/* PLAY ALBUM — visual only for now (audio not wired on mobile yet). */}
-          <View style={styles.playButton}>
-            <Ionicons name="play" size={18} color="#1a1405" style={styles.playIcon} />
-            <AppText style={styles.playLabel}>PLAY ALBUM</AppText>
+        </View>
+
+        {/* Action row (mirrors AlbumDetails: like / share / add-to-playlist ·
+            shuffle / Play) — visual-only until the catalog is backend-wired. */}
+        <View style={styles.actions}>
+          <View style={styles.actionsSide}>
+            <IconButton name="heart-outline" size={28} />
+            <IconButton name="share-outline" size={26} style={styles.actionGap} />
+            <MaterialCommunityIcons
+              name="playlist-plus"
+              size={28}
+              color="#FFFFFF"
+              style={styles.actionGap}
+            />
+          </View>
+          <View style={styles.actionsSide}>
+            <IconButton name="shuffle" size={26} />
+            <View style={[styles.playPill, styles.actionGap]}>
+              <Ionicons name="play" size={18} color="#1a1405" style={styles.playIcon} />
+              <AppText variant="label" style={styles.playLabel}>
+                {t('common.play')}
+              </AppText>
+            </View>
           </View>
         </View>
 
-        {/* Track list. */}
-        <View style={styles.trackList}>
-          <View style={styles.trackListHeader}>
-            <AppText style={styles.trackListHeaderText}>#</AppText>
-            <AppText style={[styles.trackListHeaderText, styles.trackListHeaderTitle]}>TITLE</AppText>
+        {/* Rating summary card (mirrors AlbumDetails' AlbumRatingSummary) —
+            display-only: these albums aren't in the reviews backend yet. */}
+        <View style={styles.ratingCard}>
+          <View style={styles.ratingRow}>
+            <StarRating value={0} size="md" />
+            <AppText variant="bodySm" color="textMuted" style={styles.ratingEmpty} numberOfLines={1}>
+              {t('reviews.noRatingsYet')}
+            </AppText>
           </View>
-          {album.tracks.map((track) => (
-            <View key={track.n} style={styles.trackRow}>
-              {/* Per-track play — visual only for now. */}
-              <View style={styles.trackPlay}>
-                <Ionicons name="play" size={14} color={INK} />
+          <View style={styles.ratingActions}>
+            <View style={styles.rateBtn}>
+              <Ionicons name="create-outline" size={16} color="#1a1405" style={styles.playIcon} />
+              <AppText variant="label" style={styles.rateLabel}>
+                {t('reviews.writeReview')}
+              </AppText>
+            </View>
+            <View style={styles.seeAll}>
+              <AppText variant="label" style={styles.seeAllLabel}>
+                {t('reviews.seeAllReviews')}
+              </AppText>
+              <Ionicons name="chevron-forward" size={16} color={ACCENT_SOFT} />
+            </View>
+          </View>
+        </View>
+
+        {/* Track list — the app's standard row pattern (number column, title +
+            artist line). Rows are visual-only until catalog audio is wired; the
+            number column is where the playing indicator will live. */}
+        <View style={styles.trackList}>
+          {album.tracks.map((track, i) => (
+            <View key={track.n} style={[styles.trackRow, i > 0 && styles.trackRowDivider]}>
+              <View style={styles.trackIndex}>
+                <AppText variant="body" color="textMuted">
+                  {track.n}
+                </AppText>
               </View>
-              <AppText variant="bodySm" color="textMuted" style={styles.trackNum}>
-                {track.n}
-              </AppText>
-              <AppText variant="body" numberOfLines={2} style={styles.trackTitle}>
-                {track.title}
-              </AppText>
+              <View style={styles.trackMeta}>
+                <AppText variant="h3" numberOfLines={1}>
+                  {track.title}
+                </AppText>
+                <AppText variant="bodySm" color="textMuted" numberOfLines={1}>
+                  Sung by the Angels
+                </AppText>
+              </View>
             </View>
           ))}
         </View>
@@ -247,65 +303,74 @@ const styles = StyleSheet.create({
   celestial: { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   glyph: { fontSize: 120, lineHeight: 132 },
   headerBlock: { alignItems: 'center', paddingHorizontal: 24, paddingTop: 18 },
-  eyebrow: {
-    fontSize: 11,
-    letterSpacing: 1.6,
-    fontWeight: '700',
-    color: ACCENT_SOFT,
+  // Green genre pill matching the web album header: green border + text over
+  // a subtle green-tinted fill.
+  bookPill: {
+    borderWidth: 1,
+    borderColor: GENRE_GREEN,
+    borderRadius: 999,
+    backgroundColor: 'rgba(63,164,92,0.14)',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
     marginBottom: 8,
   },
+  bookPillText: { letterSpacing: 0.8, color: GENRE_GREEN, fontWeight: '700' },
   title: { textAlign: 'center', color: INK },
   metaLine: { marginTop: 6, color: INK_MUTED, textAlign: 'center' },
-  playButton: {
+  actions: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: H_PADDING,
+    marginTop: 18,
+  },
+  actionsSide: { flexDirection: 'row', alignItems: 'center' },
+  actionGap: { marginLeft: 18 },
+  playPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: ACCENT_SOFT,
     borderRadius: 999,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingVertical: 11,
+    paddingHorizontal: 24,
+  },
+  playIcon: { marginRight: 6 },
+  playLabel: { color: '#1a1405', fontWeight: '800' },
+  ratingCard: {
+    marginHorizontal: H_PADDING,
+    marginTop: 16,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 14,
+    padding: 16,
+  },
+  ratingRow: { flexDirection: 'row', alignItems: 'center' },
+  ratingEmpty: { flex: 1, marginLeft: 12 },
+  ratingActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: 16,
   },
-  playIcon: { marginRight: 8 },
-  playLabel: { color: '#1a1405', fontWeight: '800', letterSpacing: 1.2, fontSize: 13 },
-  trackList: { paddingHorizontal: H_PADDING, paddingTop: 22 },
-  trackListHeader: {
+  rateBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 10,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'rgba(255,255,255,0.14)',
+    backgroundColor: ACCENT_SOFT,
+    borderRadius: 999,
+    paddingVertical: 10,
+    paddingHorizontal: 18,
   },
-  trackListHeaderText: {
-    fontSize: 11,
-    letterSpacing: 1.4,
-    fontWeight: '700',
-    color: INK_MUTED,
-    width: 44,
-    textAlign: 'center',
+  rateLabel: { color: '#1a1405', fontWeight: '800' },
+  seeAll: { flexDirection: 'row', alignItems: 'center' },
+  seeAllLabel: { color: ACCENT_SOFT },
+  trackList: { paddingHorizontal: H_PADDING, paddingTop: 16 },
+  // Mirrors the app's TrackRow layout (36pt index column, meta block).
+  trackRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },
+  trackRowDivider: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(255,255,255,0.1)',
   },
-  trackListHeaderTitle: { width: undefined, textAlign: 'left', marginLeft: 46 },
-  trackRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 14,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'rgba(255,255,255,0.08)',
-  },
-  trackPlay: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.25)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 5,
-    // Optically center the triangular glyph.
-    paddingLeft: 2,
-  },
-  trackNum: { width: 28, textAlign: 'center', marginRight: 10 },
-  trackTitle: { flex: 1, color: INK_BODY },
+  trackIndex: { width: 36, alignItems: 'center', justifyContent: 'center' },
+  trackMeta: { flex: 1, marginLeft: 12, marginRight: 8 },
   railSection: { paddingTop: 28 },
   railContent: { paddingHorizontal: H_PADDING },
   railSep: { width: 14 },

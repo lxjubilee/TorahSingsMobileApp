@@ -30,6 +30,8 @@ export type RootStackParamList = {
   CatalogAlbum: { code: string };
   HebraicChristianity: undefined;
   LearnHebrew: undefined;
+  /** Learn Hebrew level detail; `slug` is the lesson-album slug. */
+  LearnHebrewLevel: { slug: string };
   Article: { slug: string };
   PlaylistDetails: { playlistId: string };
   PlaylistAddSongs: { playlistId: string };

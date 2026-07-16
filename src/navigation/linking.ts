@@ -21,6 +21,9 @@ export const linking: LinkingOptions<RootStackParamList> = {
       },
       AlbumDetails: 'album/:albumId',
       ArtistDetails: 'artist/:artistId',
+      // Web-parity Learn Hebrew paths (spec §2): hub + level detail by slug.
+      LearnHebrew: 'learn-hebrew',
+      LearnHebrewLevel: 'learn-hebrew/:slug',
       MusicPlayer: 'player',
     },
   },
