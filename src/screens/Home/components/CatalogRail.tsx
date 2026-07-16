@@ -14,10 +14,11 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
 const MAX_PREVIEW = 12;
 
 /** One horizontally-scrolling division rail (title + See all + cover tiles). */
-const CatalogRail: React.FC<{ category: CatalogCategory; onSeeAll: () => void }> = ({
-  category,
-  onSeeAll,
-}) => (
+const CatalogRail: React.FC<{
+  category: CatalogCategory;
+  onSeeAll: () => void;
+  onOpenAlbum: (code: string) => void;
+}> = ({ category, onSeeAll, onOpenAlbum }) => (
   <View style={styles.railWrap}>
     <SectionHeader title={category.title} onSeeAll={onSeeAll} />
     <FlatList
@@ -27,7 +28,9 @@ const CatalogRail: React.FC<{ category: CatalogCategory; onSeeAll: () => void }>
       keyExtractor={(a) => a.code}
       contentContainerStyle={styles.row}
       ItemSeparatorComponent={() => <View style={styles.sep} />}
-      renderItem={({ item }) => <CatalogTile album={item} />}
+      renderItem={({ item }) => (
+        <CatalogTile album={item} onPress={() => onOpenAlbum(item.code)} />
+      )}
     />
   </View>
 );
@@ -42,6 +45,7 @@ export const CatalogRails: React.FC = () => {
           key={cat.id}
           category={cat}
           onSeeAll={() => navigation.navigate('CatalogCategory', { categoryId: cat.id })}
+          onOpenAlbum={(code) => navigation.navigate('CatalogAlbum', { code })}
         />
       ))}
     </>

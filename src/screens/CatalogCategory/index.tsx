@@ -14,14 +14,16 @@ const GAP = 16;
 const CARD_W = (width - GAP * 3) / 2;
 const HEADER_HEIGHT = 38;
 
-/** Full grid of every album in one Angels' Catalog division — the "See all"
- *  target of a Home catalog rail. */
+/** Full grid of albums in one Angels' Catalog division — the "See all" target
+ *  of a Home catalog rail, and (narrowed to one `book`) the album screen's
+ *  "View All" target. */
 export const CatalogCategoryScreen: React.FC = () => {
   const { params } = useRoute<RootStackScreenProps<'CatalogCategory'>['route']>();
   const navigation = useNavigation<Nav>();
   const insets = useSafeAreaInsets();
   const category = angelsCatalog.find((c) => c.id === params.categoryId);
-  const albums = category?.albums ?? [];
+  const allAlbums = category?.albums ?? [];
+  const albums = params.book ? allAlbums.filter((a) => a.book === params.book) : allAlbums;
 
   return (
     <Screen safeArea={false}>
@@ -37,14 +39,20 @@ export const CatalogCategoryScreen: React.FC = () => {
         ListHeaderComponent={
           <View style={styles.header}>
             <AppText variant="display" numberOfLines={2} style={styles.title}>
-              {category?.title ?? 'Catalog'}
+              {params.book ?? category?.title ?? 'Catalog'}
             </AppText>
             <AppText variant="body" color="textMuted">
               {albums.length} albums
             </AppText>
           </View>
         }
-        renderItem={({ item }) => <CatalogTile album={item} width={CARD_W} />}
+        renderItem={({ item }) => (
+          <CatalogTile
+            album={item}
+            width={CARD_W}
+            onPress={() => navigation.navigate('CatalogAlbum', { code: item.code })}
+          />
+        )}
       />
 
       {/* Pinned black header with the back button. */}

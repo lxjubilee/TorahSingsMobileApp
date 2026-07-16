@@ -24,8 +24,12 @@ export type RootStackParamList = {
    *  captions covers the same way the Home rail does. Albums absent from the map
    *  (the catalog gives them no genre) keep their title. */
   AlbumList: { title: string; artistId?: string; albumIds?: string[]; genreByItem?: Record<string, string> };
-  CatalogCategory: { categoryId: string };
+  /** `book` narrows the grid to one source book (the album screen's "View All"). */
+  CatalogCategory: { categoryId: string; book?: string };
+  /** Angels' Catalog album detail; `code` is the catalog album code. */
+  CatalogAlbum: { code: string };
   HebraicChristianity: undefined;
+  LearnHebrew: undefined;
   Article: { slug: string };
   PlaylistDetails: { playlistId: string };
   PlaylistAddSongs: { playlistId: string };

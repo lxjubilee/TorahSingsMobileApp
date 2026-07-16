@@ -20,7 +20,7 @@ export const CHIP_ROW_HEIGHT = 48;
  * Hardcoded nav chips (visual only for now — no press action). The first one
  * renders as the active tab: gold text in a gold-bordered rounded rectangle.
  */
-const NAV_CHIPS = ['TORAH SINGS', 'HEBRAIC CHRISTIANITY', 'LEARN HEBREW', 'MEMBERSHIP'];
+const NAV_CHIPS = ['TORAH SINGS', 'HEBRAIC CHRISTIANITY', 'LEARN HEBREW'];
 
 /** Active-chip gold — matches the "Sings" span of the brand wordmark. */
 const GOLD = '#ffbd59';
@@ -117,13 +117,14 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({
           >
             {NAV_CHIPS.map((label) => {
               const active = label === activeChip;
-              // Torah Sings ↔ Hebraic Christianity are wired; the rest are visual.
               const onPress =
                 label === 'HEBRAIC CHRISTIANITY'
                   ? () => navigation.navigate('HebraicChristianity')
-                  : label === 'TORAH SINGS'
-                    ? () => navigation.navigate('MainTabs', { screen: 'HomeTab' })
-                    : undefined;
+                  : label === 'LEARN HEBREW'
+                    ? () => navigation.navigate('LearnHebrew')
+                    : label === 'TORAH SINGS'
+                      ? () => navigation.navigate('MainTabs', { screen: 'HomeTab' })
+                      : undefined;
               return (
                 <Pressable
                   key={label}

@@ -5,6 +5,8 @@ export const STORAGE_KEYS = {
   AUTH_TOKEN: 'jubilujah:authToken',
   /** Set once the user finishes the first-launch onboarding. */
   ONBOARDING_DONE: 'jubilujah:onboardingDone',
+  /** Set once the "a secret hidden in the text" intro has been dismissed. */
+  DISCOVERY_INTRO_SEEN: 'jubilujah:discoveryIntroSeen',
   /** Catalog manifest is cached chunked (it exceeds Android's ~2 MB row limit). */
   CATALOG_MANIFEST_META: 'jubilujah:catalogManifest:meta',
   CATALOG_MANIFEST_CHUNK: 'jubilujah:catalogManifest:chunk:',
