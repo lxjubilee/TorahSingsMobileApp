@@ -5,12 +5,12 @@
     "scheme": "torahsings",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Jubilujah-App-Icon.png",
+    "icon": "./assets/TorahSings-App-Icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0B0B0F",
     "newArchEnabled": false,
     "splash": {
-      "image": "./assets/Jubilujah-App-Icon.png",
+      "image": "./assets/TorahSings-App-Icon.png",
       "backgroundColor": "#000000",
       "resizeMode": "contain"
     },
@@ -31,7 +31,7 @@
       "package": "com.torahsings.app",
       "adaptiveIcon": {
         "backgroundColor": "#000000",
-        "foregroundImage": "./assets/Jubilujah-App-Icon.png"
+        "foregroundImage": "./assets/TorahSings-Adaptive-Foreground.png"
       },
       "permissions": [
         "android.permission.FOREGROUND_SERVICE",
