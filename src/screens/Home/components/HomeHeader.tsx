@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Animated, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppText, BrandLogo, ProfileButton } from '@/components/common';
 import { langFlagUrl } from '@/localization';
+import type { RootStackParamList } from '@/navigation/types';
 
 /** The "show everything" chip, always first in the filter row. */
 export const HOME_FILTER_ALL = 'Home';
@@ -23,10 +26,12 @@ const NAV_CHIPS = ['TORAH SINGS', 'HEBRAIC CHRISTIANITY', 'LEARN HEBREW', 'MEMBE
 const GOLD = '#ffbd59';
 
 interface HomeHeaderProps {
-  /** 1 = chips fully visible, 0 = fully collapsed. */
-  chipsAnim: Animated.Value;
-  /** 0 = transparent/gradient (at top), 1 = solid black (scrolled). */
-  bgAnim: Animated.Value;
+  /** 1 = chips fully visible, 0 = fully collapsed. Omit for an always-open header. */
+  chipsAnim?: Animated.Value;
+  /** 0 = transparent/gradient (at top), 1 = solid black (scrolled). Omit → solid. */
+  bgAnim?: Animated.Value;
+  /** Which nav chip renders as selected (gold). Defaults to "TORAH SINGS". */
+  activeChip?: string;
   /** Opens the profile page. */
   onPressProfile?: () => void;
   /** Current language code — drives the flag shown on the language button. */
@@ -45,11 +50,18 @@ interface HomeHeaderProps {
 export const HomeHeader: React.FC<HomeHeaderProps> = ({
   chipsAnim,
   bgAnim,
+  activeChip = 'TORAH SINGS',
   onPressProfile,
   language,
   onPressLanguage,
 }) => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  // Static fallbacks so the header renders fully open + solid outside Home
+  // (screens that don't drive the collapse-on-scroll animation).
+  const openValue = useRef(new Animated.Value(1)).current;
+  const chips = chipsAnim ?? openValue;
+  const bg = bgAnim ?? openValue;
 
   return (
     <View style={styles.container} pointerEvents="box-none">
@@ -58,7 +70,7 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({
       {/* Solid black layer that fades in once scrolled. */}
       <Animated.View
         pointerEvents="none"
-        style={[StyleSheet.absoluteFill, { backgroundColor: '#000', opacity: bgAnim }]}
+        style={[StyleSheet.absoluteFill, { backgroundColor: '#000', opacity: bg }]}
       />
 
       <View style={[styles.inner, { paddingTop: insets.top + 6 }]}>
@@ -90,8 +102,8 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({
           style={[
             styles.chipsWrap,
             {
-              opacity: chipsAnim,
-              height: chipsAnim.interpolate({
+              opacity: chips,
+              height: chips.interpolate({
                 inputRange: [0, 1],
                 outputRange: [0, CHIP_ROW_HEIGHT],
               }),
@@ -103,17 +115,29 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.chipsRow}
           >
-            {NAV_CHIPS.map((label, index) => {
-              const active = index === 0;
+            {NAV_CHIPS.map((label) => {
+              const active = label === activeChip;
+              // Torah Sings ↔ Hebraic Christianity are wired; the rest are visual.
+              const onPress =
+                label === 'HEBRAIC CHRISTIANITY'
+                  ? () => navigation.navigate('HebraicChristianity')
+                  : label === 'TORAH SINGS'
+                    ? () => navigation.navigate('MainTabs', { screen: 'HomeTab' })
+                    : undefined;
               return (
-                <View key={label} style={[styles.chip, active && styles.chipActive]}>
+                <Pressable
+                  key={label}
+                  onPress={onPress}
+                  disabled={!onPress}
+                  style={[styles.chip, active && styles.chipActive]}
+                >
                   <AppText
                     variant="label"
                     style={[styles.chipText, { color: active ? GOLD : '#FFFFFF' }]}
                   >
                     {label}
                   </AppText>
-                </View>
+                </Pressable>
               );
             })}
           </ScrollView>
@@ -168,11 +192,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.35)',
+    borderRadius: 6,
   },
   chipActive: {
     borderWidth: 1.5,
     borderColor: GOLD,
-    borderRadius: 6,
   },
   chipText: { fontWeight: '700', letterSpacing: 0.6 },
 });

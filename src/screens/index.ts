@@ -1,6 +1,9 @@
 export { HomeScreen } from './Home';
 export { BrowseScreen } from './Browse';
 export { AlbumListScreen } from './AlbumList';
+export { CatalogCategoryScreen } from './CatalogCategory';
+export { HebraicChristianityScreen } from './HebraicChristianity';
+export { ArticleScreen } from './Article';
 export { SearchScreen } from './Search';
 export { AlbumDetailsScreen } from './AlbumDetails';
 export { AlbumReviewsScreen } from './AlbumReviews';

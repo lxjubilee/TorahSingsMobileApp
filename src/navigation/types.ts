@@ -24,6 +24,9 @@ export type RootStackParamList = {
    *  captions covers the same way the Home rail does. Albums absent from the map
    *  (the catalog gives them no genre) keep their title. */
   AlbumList: { title: string; artistId?: string; albumIds?: string[]; genreByItem?: Record<string, string> };
+  CatalogCategory: { categoryId: string };
+  HebraicChristianity: undefined;
+  Article: { slug: string };
   PlaylistDetails: { playlistId: string };
   PlaylistAddSongs: { playlistId: string };
   MusicPlayer: undefined;

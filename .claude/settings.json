@@ -4,7 +4,7 @@
   },
   "permissions": {
     "allow": [
-      "Read(//d/Projects Data/JubiLujah.com/app/api/src/routes/**)"
+      "Read(//d/Projects Data/TorahSings.com/src/**)"
     ]
   }
 }

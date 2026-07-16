@@ -10,5 +10,6 @@ export { PasswordInput } from './PasswordInput';
 export { OtpInput } from './OtpInput';
 export { Loader } from './Loader';
 export { SectionHeader } from './SectionHeader';
+export { CelestialArt } from './CelestialArt';
 export { Placeholder } from './Placeholder';
 export { ConfirmDialog } from './ConfirmDialog';

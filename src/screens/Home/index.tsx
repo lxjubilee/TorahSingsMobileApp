@@ -13,15 +13,14 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Screen, Loader, AppText, LanguagePanel } from '@/components/common';
-import { useAppDispatch, useAppSelector, usePlayer, useVisibleAlbums, useVisibleRails } from '@/hooks';
+import { useAppDispatch, useAppSelector, useVisibleAlbums, useVisibleRails } from '@/hooks';
 import { fetchHomeFeed } from '@/redux';
 import { onMobileConfigUpdated, resetMobileConfigCache } from '@/services/mobileConfig';
 import { DEFAULT_LANG, langName } from '@/localization';
-import { AlbumRepository } from '@/repositories';
 import { Album, Artist, ResolvedRail } from '@/types';
-import { logger } from '@/utils';
 import type { RootStackParamList } from '@/navigation/types';
-import { HeroCarousel } from './components/HeroCarousel';
+import { HeroStatic } from './components/HeroStatic';
+import { CatalogRails } from './components/CatalogRail';
 import { Rail } from './components/Rail';
 import { HomeHeader, HomeFilter, HOME_FILTER_ALL, CHIP_ROW_HEIGHT } from './components/HomeHeader';
 
@@ -31,7 +30,6 @@ export const HomeScreen: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<Nav>();
   const { t } = useTranslation();
-  const { playTracks } = usePlayer();
   const { feed, status } = useAppSelector((s) => s.home);
   const language = useAppSelector((s) => s.settings.language);
   const insets = useSafeAreaInsets();
@@ -176,19 +174,6 @@ export const HomeScreen: React.FC = () => {
     [navigation],
   );
 
-  /** Hero "Play" — fetch the album's tracks then start the queue. */
-  const playAlbum = useCallback(
-    async (album: Album) => {
-      try {
-        const full = await AlbumRepository.getById(album.id);
-        if (full?.tracks?.length) await playTracks(full.tracks, 0);
-      } catch (e) {
-        logger.warn('Home.playAlbum failed', e);
-      }
-    },
-    [playTracks],
-  );
-
   const refreshing = status === 'loading' && feed != null;
 
   // A non-English language with nothing in the catalog yet → "coming soon"
@@ -208,7 +193,12 @@ export const HomeScreen: React.FC = () => {
     heroes.length === 0 &&
     visibleRails.length === 0;
 
-  if (status === 'loading' && !feed) {
+  // TEMP DEV BYPASS — when true, skip the loading/error screens so the Torah
+  // Sings hero renders even with no reachable backend (empty rails). Set back to
+  // false (or delete) before shipping. Pairs with BYPASS_AUTH in App.tsx.
+  const BYPASS_HOME_OFFLINE = true;
+
+  if (!BYPASS_HOME_OFFLINE && status === 'loading' && !feed) {
     return (
       <Screen safeArea={false}>
         <Loader message="Loading your music…" />
@@ -216,7 +206,7 @@ export const HomeScreen: React.FC = () => {
     );
   }
 
-  if (status === 'failed' && !feed) {
+  if (!BYPASS_HOME_OFFLINE && status === 'failed' && !feed) {
     return (
       <Screen>
         <View style={styles.center}>
@@ -234,9 +224,12 @@ export const HomeScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           styles.scrollContent,
-          // No hero to sit behind the fixed header → push content below it so the
-          // first rail isn't hidden under the logo + filter chips.
-          heroes.length === 0 && { paddingTop: insets.top + 64 + CHIP_ROW_HEIGHT },
+          // Only the empty/"coming soon" states have no hero — push their text
+          // below the fixed header. The main view leads with HeroStatic, which
+          // carries its own top offset for the logo + nav chips.
+          (emptyForLanguage || emptyCategory) && {
+            paddingTop: insets.top + 64 + CHIP_ROW_HEIGHT,
+          },
         ]}
         onScroll={onScroll}
         scrollEventThrottle={16}
@@ -262,20 +255,12 @@ export const HomeScreen: React.FC = () => {
           </View>
         ) : (
           <>
-            {heroes.length ? (
-              <HeroCarousel albums={heroes} onPlay={playAlbum} onOpen={openAlbum} />
-            ) : null}
+            <HeroStatic />
 
-            {visibleRails.map((rail) => (
-              <View key={rail.id} style={styles.railWrap}>
-                <Rail
-                  rail={rail}
-                  onAlbumPress={openAlbum}
-                  onArtistPress={openArtist}
-                  onSeeAll={openSeeAll}
-                />
-              </View>
-            ))}
+            <CatalogRails />
+
+            {/* Backend/persisted feed rails (legacy JubiLujah albums) are hidden
+                for now — Home shows the ported Torah Sings catalog only. */}
           </>
         )}
       </ScrollView>

@@ -65,6 +65,11 @@ const PlayerSyncGate: React.FC = () => {
  * restored session and the first-launch onboarding flag. Renders nothing while
  * either is still resolving (the splash overlay covers that window).
  */
+// TEMP DEV BYPASS — skip the Sign In flow so Home renders without a reachable
+// backend. Set back to false (or delete) before shipping. See also the offline
+// guard bypass in src/screens/Home/index.tsx.
+const BYPASS_AUTH = true;
+
 const RootGate: React.FC = () => {
   const status = useAppSelector((s) => s.auth.status);
   const isAuthenticated = useAppSelector((s) => s.auth.user != null);
@@ -76,11 +81,11 @@ const RootGate: React.FC = () => {
       .then((done) => setHasOnboarded(Boolean(done)));
   }, []);
 
-  if (status === 'restoring' || hasOnboarded === null) return null;
+  if (!BYPASS_AUTH && (status === 'restoring' || hasOnboarded === null)) return null;
 
   // The "Choose your profile" gate is disabled for now (functionality pending);
   // ChooseProfileScreen is kept but unused. Authenticated users go to Home.
-  if (isAuthenticated) {
+  if (BYPASS_AUTH || isAuthenticated) {
     return <RootNavigator />;
   }
 
