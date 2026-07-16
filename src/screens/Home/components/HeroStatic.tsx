@@ -16,7 +16,6 @@ const IMG_W = Math.round(BANNER_H * ASPECT);
 // Ported verbatim from the web hero (TorahSings.com CatalogHero + globals.css).
 const ACCENT_SOFT = '#ffd877'; // eyebrow (light gold)
 const INK = '#f0ebe3'; // title / emphasis (warm white)
-const INK_MUTED = '#7f86a8'; // italic subtitle
 const INK_BODY = '#b8bcd4'; // lede body
 const SCRIM = '#0a0e14'; // hero backdrop
 
@@ -31,8 +30,9 @@ const MONO = Platform.select({ ios: 'Courier New', android: 'monospace', default
 /**
  * Static "Torah Sings" catalog hero — content ported from the web
  * (TorahSings.com CatalogHero): the Zev banner pinned to the right with the
- * eyebrow → serif title → italic subtitle overlaid on the scrimmed left, and the
- * stats line just below. Replaces the auto-rotating album carousel on Home.
+ * serif title → italic subtitle overlaid on the scrimmed left, the one-line
+ * eyebrow strip pinned to the banner's bottom edge, and the stats line just
+ * below. Replaces the auto-rotating album carousel on Home.
  */
 export const HeroStatic: React.FC = () => {
   const insets = useSafeAreaInsets();
@@ -49,10 +49,10 @@ export const HeroStatic: React.FC = () => {
         {/* Left→right scrim so the copy stays readable while Zev shows on the right. */}
         <LinearGradient
           colors={[
-            'rgba(10,14,20,0.96)',
-            'rgba(10,14,20,0.9)',
-            'rgba(10,14,20,0.55)',
-            'rgba(10,14,20,0.12)',
+            'rgba(10,14,20,0.85)',
+            'rgba(10,14,20,0.75)',
+            'rgba(10,14,20,0.4)',
+            'rgba(10,14,20,0.08)',
             'rgba(10,14,20,0)',
           ]}
           locations={[0, 0.32, 0.6, 0.82, 1]}
@@ -62,11 +62,17 @@ export const HeroStatic: React.FC = () => {
         />
 
         <View style={styles.overlay}>
-          <Text style={styles.eyebrow}>JUBILEE MINISTRIES ·{'\n'}THE ANGELS&rsquo; CATALOG</Text>
           <Text style={styles.title}>Torah Sings</Text>
           <Text style={styles.subtitle}>
             — the hidden songs of Scripture, decoded letter by letter and sung from heaven&rsquo;s own
             perspective.
+          </Text>
+        </View>
+
+        {/* Bottom-left eyebrow strip — single line, pinned to the banner's bottom edge. */}
+        <View style={styles.eyebrowBar}>
+          <Text style={styles.eyebrow} numberOfLines={1}>
+            JUBILEE MINISTRIES · THE ANGELS&rsquo; CATALOG
           </Text>
         </View>
       </View>
@@ -97,27 +103,40 @@ const styles = StyleSheet.create({
     // Keep the copy on the left half so it never runs over Zev on the right.
     maxWidth: '55%',
   },
+  eyebrowBar: {
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    paddingHorizontal: 14,
+    paddingTop: 7,
+    // Small bottom inset so the text sits a touch lower, near the banner edge.
+    paddingBottom: 2,
+  },
   eyebrow: {
     fontFamily: MONO,
     fontSize: 10,
     letterSpacing: 1.6,
     fontWeight: '700',
     color: ACCENT_SOFT,
-    marginBottom: 8,
+    // No background bar — a dark text shadow keeps it readable over the image.
+    textShadowColor: 'rgba(0,0,0,0.9)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
   },
   title: {
     fontFamily: SERIF,
     fontSize: 26,
     fontWeight: '700',
     lineHeight: 30,
-    color: INK,
+    // Same light gold as the eyebrow strip.
+    color: ACCENT_SOFT,
   },
   subtitle: {
     fontFamily: SERIF,
     fontStyle: 'italic',
     fontSize: 13,
     lineHeight: 18,
-    color: INK_MUTED,
+    color: '#FFFFFF',
     marginTop: 6,
   },
   copyBelow: { paddingHorizontal: 20, paddingTop: 14, paddingBottom: 20 },
