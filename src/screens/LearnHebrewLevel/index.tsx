@@ -5,24 +5,9 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Screen, AppText, IconButton } from '@/components/common';
 import { useAppSelector } from '@/hooks';
-import {
-  canOpenLesson,
-  canOpenLessonAlbum,
-  getLessonAlbum,
-  lessonAlbums,
-  toEntitlement,
-} from '@/content/learnHebrew';
+import { canOpenLesson, getLessonAlbum, lessonAlbums, toEntitlement } from '@/content/learnHebrew';
 import type { RootStackParamList, RootStackScreenProps } from '@/navigation/types';
-import {
-  ACCENT,
-  CARD_BG,
-  HAIRLINE,
-  INK,
-  INK_BODY,
-  INK_FAINT,
-  INK_MUTED,
-  ON_ACCENT,
-} from '../LearnHebrew/theme';
+import { INK, INK_BODY, INK_FAINT, INK_MUTED } from '../LearnHebrew/theme';
 import { Eyebrow } from '../LearnHebrew/components/Eyebrow';
 import { GlyphTile } from '../LearnHebrew/components/GlyphTile';
 import { LessonCard } from './LessonCard';
@@ -34,29 +19,9 @@ const H_PADDING = 20;
 const HEADER_HEIGHT = 38;
 
 /**
- * Bottom-of-page membership CTA — only when the whole level is locked (§6.7).
- * The pill is visual-only until the app has a subscription/upgrade flow to
- * wire it to (spec's mobile note: keep the copy, drop the checkout).
- */
-const MembershipGate: React.FC<{ reason: string }> = ({ reason }) => (
-  <View style={styles.gate}>
-    <Eyebrow>THE REST IS IN THE TREASURY</Eyebrow>
-    <AppText style={styles.gateTitle}>{reason}</AppText>
-    <AppText style={styles.gateBody}>
-      Membership opens the whole library — every album, every article read aloud, the full Learn
-      Hebrew curriculum, the book, and the resources kit. As more is uncovered, it comes to you.
-    </AppText>
-    <View style={styles.gateCta}>
-      <AppText style={styles.gateCtaLabel}>Become a partner — $87.95/yr</AppText>
-    </View>
-  </View>
-);
-
-/**
  * Level detail — Screen B of the feature spec (web /learn-hebrew/{slug}):
- * glyph hero, intro, six lesson cards gated by canOpenLesson (lesson 1 is open
- * for everyone), and the MembershipGate when the whole album is locked. Locked
- * levels still render fully — this page is the sales surface. Unknown slug →
+ * glyph hero, intro, and six lesson cards gated by canOpenLesson (lesson 1 is
+ * open for everyone). Locked levels still render fully. Unknown slug →
  * graceful not-found.
  */
 export const LearnHebrewLevelScreen: React.FC = () => {
@@ -88,8 +53,6 @@ export const LearnHebrewLevelScreen: React.FC = () => {
       </Screen>
     );
   }
-
-  const albumAccess = canOpenLessonAlbum(album, entitlement);
 
   return (
     <Screen safeArea={false}>
@@ -127,7 +90,6 @@ export const LearnHebrewLevelScreen: React.FC = () => {
           ))}
         </View>
 
-        {!albumAccess.allowed ? <MembershipGate reason={albumAccess.reason} /> : null}
       </ScrollView>
 
       {backHeader}
@@ -154,24 +116,4 @@ const styles = StyleSheet.create({
   taughtBy: { fontSize: 10, letterSpacing: 1.2, fontWeight: '700', color: INK_FAINT, marginTop: 8 },
   intro: { fontSize: 14, lineHeight: 21, color: INK_BODY, paddingHorizontal: H_PADDING, marginTop: 18 },
   lessons: { paddingHorizontal: H_PADDING, marginTop: 8 },
-  gate: {
-    marginHorizontal: H_PADDING,
-    marginTop: 28,
-    backgroundColor: CARD_BG,
-    borderWidth: 1,
-    borderColor: HAIRLINE,
-    borderRadius: 14,
-    padding: 18,
-  },
-  gateTitle: { fontSize: 20, fontWeight: '800', color: INK, marginBottom: 8 },
-  gateBody: { fontSize: 13, lineHeight: 20, color: INK_BODY },
-  gateCta: {
-    alignSelf: 'flex-start',
-    backgroundColor: ACCENT,
-    borderRadius: 999,
-    paddingVertical: 12,
-    paddingHorizontal: 22,
-    marginTop: 16,
-  },
-  gateCtaLabel: { fontSize: 13, fontWeight: '800', color: ON_ACCENT },
 });
