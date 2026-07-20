@@ -3,7 +3,7 @@ import { Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, View } 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { StarRating } from '@/components/reviews';
+import { AlbumRatingSummary, ReviewComposer, SongRatingControl } from '@/components/reviews';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Screen, AppText, IconButton, SectionHeader } from '@/components/common';
@@ -13,8 +13,9 @@ import { angelsCatalog } from '@/content/angelsCatalog/data';
 import { catalogCover } from '@/content/angelsCatalog/covers';
 import { albumToPlayerTracks, catalogTrackId } from '@/content/angelsCatalog/player';
 import type { CatalogAlbum, CatalogCategory, CatalogTrack } from '@/content/angelsCatalog/types';
-import { usePlayer, useTrackDuration } from '@/hooks';
-import type { Track } from '@/types';
+import { usePlayer, useReviews, useSongSummaries, useTrackDuration } from '@/hooks';
+import { albumUuid, trackSongUuid } from '@/services/playlists';
+import type { MyReview, ReviewTargetType, Track } from '@/types';
 import { formatDuration, shuffle } from '@/utils';
 import { CatalogTile } from '../Home/components/CatalogTile';
 import type { RootStackParamList, RootStackScreenProps } from '@/navigation/types';
@@ -96,6 +97,35 @@ export const CatalogAlbumScreen: React.FC = () => {
     () => (found ? found.category.albums.filter((a) => a.code !== found.album.code) : []),
     [found],
   );
+
+  // Ratings: the reviews API keys by the backend's deterministic uuids, while
+  // the catalog uses codes — so convert album code -> albumUuid and each track ->
+  // its song uuid (the same scheme playlists use). See songId.ts. These hooks sit
+  // above the `!found` return so they always run; `useReviews` no-ops on an
+  // undefined id.
+  const albumTargetId = useMemo(
+    () => (found ? albumUuid(found.album.code) : undefined),
+    [found],
+  );
+  const { summary: albumSummary, applySummary: applyAlbumSummary } = useReviews(
+    'album',
+    albumTargetId,
+  );
+  const songTargets = useMemo(
+    () =>
+      tracks
+        .map((tr) => ({ localId: tr.id, targetId: trackSongUuid(tr) }))
+        .filter((s): s is { localId: string; targetId: string } => s.targetId != null),
+    [tracks],
+  );
+  const { summaries: songSummaries, applyOne: applySongSummary } = useSongSummaries(songTargets);
+  const [composer, setComposer] = useState<{
+    type: ReviewTargetType;
+    targetId: string; // uuid sent to the API
+    localId?: string; // local Track.id, for keying the per-song summary
+    label: string;
+    initial: MyReview | null;
+  } | null>(null);
 
   if (!found) {
     return (
@@ -201,46 +231,66 @@ export const CatalogAlbumScreen: React.FC = () => {
           </View>
         </View>
 
-        {/* Rating summary card (mirrors AlbumDetails' AlbumRatingSummary) —
-            display-only: these albums aren't in the reviews backend yet. */}
-        <View style={styles.ratingCard}>
-          <View style={styles.ratingRow}>
-            <StarRating value={0} size="md" />
-            <AppText variant="bodySm" color="textMuted" style={styles.ratingEmpty} numberOfLines={1}>
-              {t('reviews.noRatingsYet')}
-            </AppText>
-          </View>
-          <View style={styles.ratingActions}>
-            <View style={styles.rateBtn}>
-              <Ionicons name="create-outline" size={16} color="#1a1405" style={styles.playIcon} />
-              <AppText variant="label" style={styles.rateLabel}>
-                {t('reviews.writeReview')}
-              </AppText>
-            </View>
-            <View style={styles.seeAll}>
-              <AppText variant="label" style={styles.seeAllLabel}>
-                {t('reviews.seeAllReviews')}
-              </AppText>
-              <Ionicons name="chevron-forward" size={16} color={ACCENT_SOFT} />
-            </View>
-          </View>
-        </View>
+        {/* Rating summary. Target uuids are derived from the album code and never
+            stored server-side, which is why these catalog albums are rateable
+            even though the catalog table is empty — same as the web. */}
+        <AlbumRatingSummary
+          summary={albumSummary}
+          targetId={albumTargetId}
+          onApplySummary={applyAlbumSummary}
+          onRate={() =>
+            albumTargetId &&
+            setComposer({
+              type: 'album',
+              targetId: albumTargetId,
+              label: album.title,
+              initial: albumSummary?.mine ?? null,
+            })
+          }
+          onSeeAll={() =>
+            navigation.navigate('AlbumReviews', { albumId: album.code, albumTitle: album.title })
+          }
+        />
 
         {/* Track list — the app's standard row pattern (number column, title +
-            artist line). Rows are visual-only until catalog audio is wired; the
-            number column is where the playing indicator will live. */}
+            artist line). The number column carries the playing indicator. */}
         <View style={styles.trackList}>
-          {album.tracks.map((track, i) => (
-            <CatalogTrackRow
-              key={i}
-              track={track}
-              playerTrack={tracks[i]}
-              showDivider={i > 0}
-              isCurrent={currentTrack?.id === catalogTrackId(album.code, i)}
-              onPlay={() => playFrom(tracks, catalogTrackId(album.code, i))}
-              onAddToPlaylist={() => addToPlaylist(tracks[i])}
-            />
-          ))}
+          {album.tracks.map((track, i) => {
+            const playerTrack = tracks[i];
+            // Keyed by the local track id, not `n`: the source data repeats track
+            // numbers (see player.ts), so two rows can share one server target.
+            const localId = playerTrack?.id;
+            const songTargetId = playerTrack ? trackSongUuid(playerTrack) : null;
+            return (
+              <CatalogTrackRow
+                key={i}
+                track={track}
+                playerTrack={playerTrack}
+                showDivider={i > 0}
+                isCurrent={currentTrack?.id === catalogTrackId(album.code, i)}
+                onPlay={() => playFrom(tracks, catalogTrackId(album.code, i))}
+                onAddToPlaylist={() => addToPlaylist(playerTrack)}
+                ratingSlot={
+                  songTargetId && localId ? (
+                    <SongRatingControl
+                      summary={songSummaries[localId]}
+                      targetId={songTargetId}
+                      onApplySummary={(s) => applySongSummary(localId, s)}
+                      onRate={() =>
+                        setComposer({
+                          type: 'song',
+                          targetId: songTargetId,
+                          localId,
+                          label: track.title,
+                          initial: songSummaries[localId]?.mine ?? null,
+                        })
+                      }
+                    />
+                  ) : null
+                }
+              />
+            );
+          })}
         </View>
 
         {/* Division rail (e.g. "Torah") — same design/behavior as the More-from
@@ -312,16 +362,36 @@ export const CatalogAlbumScreen: React.FC = () => {
       {/* Persistent now-playing bar — the tab-bar mini-player is hidden while
           this root-stack screen is open; taps through to the MusicPlayer. */}
       <FloatingMiniPlayer />
+
+      {composer ? (
+        <ReviewComposer
+          type={composer.type}
+          id={composer.targetId}
+          targetLabel={composer.label}
+          initial={composer.initial}
+          onClose={() => setComposer(null)}
+          onSaved={(summary, mine) =>
+            composer.type === 'album'
+              ? applyAlbumSummary({ ...summary, mine })
+              : applySongSummary(composer.localId!, { ...summary, mine })
+          }
+          onDeleted={(summary) =>
+            composer.type === 'album'
+              ? applyAlbumSummary(summary)
+              : applySongSummary(composer.localId!, summary)
+          }
+        />
+      ) : null}
     </Screen>
   );
 };
 
 /**
  * One track row: index / now-playing indicator, title + "Sung by the Angels" +
- * a (display-only) rating, and trailing heart · add-to-playlist · duration. The
- * duration is resolved lazily from the audio header (catalog tracks ship none);
- * the heart is a local visual toggle (these tracks aren't in the likes backend
- * yet), while add-to-playlist opens the app's real playlist picker.
+ * the rating slot, and trailing heart · add-to-playlist · duration. The duration
+ * is resolved lazily from the audio header (catalog tracks ship none); the heart
+ * is a local visual toggle (these tracks aren't in the likes backend yet), while
+ * add-to-playlist opens the app's real playlist picker.
  */
 type CatalogTrackRowProps = {
   track: CatalogTrack;
@@ -330,11 +400,13 @@ type CatalogTrackRowProps = {
   isCurrent: boolean;
   onPlay: () => void;
   onAddToPlaylist: () => void;
+  /** Per-song rating control, injected by the screen (mirrors TrackRow). */
+  ratingSlot?: React.ReactNode;
 };
 
 // Declared as a hoisted function (not a `const` arrow) so it's in scope where
 // the track list references it above — matches the rest of the screens.
-function CatalogTrackRow({ track, playerTrack, showDivider, isCurrent, onPlay, onAddToPlaylist }: CatalogTrackRowProps) {
+function CatalogTrackRow({ track, playerTrack, showDivider, isCurrent, onPlay, onAddToPlaylist, ratingSlot }: CatalogTrackRowProps) {
   const [liked, setLiked] = useState(false);
   const duration = useTrackDuration(playerTrack);
 
@@ -357,10 +429,7 @@ function CatalogTrackRow({ track, playerTrack, showDivider, isCurrent, onPlay, o
         <AppText variant="bodySm" color="textMuted" numberOfLines={1}>
           Sung by the Angels
         </AppText>
-        {/* Display-only rating — these albums aren't in the reviews backend yet. */}
-        <View style={styles.trackRating}>
-          <StarRating value={0} size="sm" />
-        </View>
+        {ratingSlot ? <View style={styles.trackRating}>{ratingSlot}</View> : null}
       </View>
 
       <View style={styles.trackActions}>
@@ -445,32 +514,6 @@ const styles = StyleSheet.create({
   },
   playIcon: { marginRight: 6 },
   playLabel: { color: '#1a1405', fontWeight: '800' },
-  ratingCard: {
-    marginHorizontal: H_PADDING,
-    marginTop: 16,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderRadius: 14,
-    padding: 16,
-  },
-  ratingRow: { flexDirection: 'row', alignItems: 'center' },
-  ratingEmpty: { flex: 1, marginLeft: 12 },
-  ratingActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 16,
-  },
-  rateBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: ACCENT_SOFT,
-    borderRadius: 999,
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-  },
-  rateLabel: { color: '#1a1405', fontWeight: '800' },
-  seeAll: { flexDirection: 'row', alignItems: 'center' },
-  seeAllLabel: { color: ACCENT_SOFT },
   trackList: { paddingHorizontal: H_PADDING, paddingTop: 16 },
   // Mirrors the app's TrackRow layout (36pt index column, meta block).
   trackRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },

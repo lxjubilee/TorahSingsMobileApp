@@ -10,7 +10,7 @@ export const CONFIG = {
   USE_MOCK: ENV.USE_MOCK,
   /** 'mock' | 'manifest' | 'api' — which data source repositories read from. */
   DATA_SOURCE: ENV.DATA_SOURCE,
-  /** Unified jubilujah-api base URL — every /api/auth/* call (Bearer auth). */
+  /** Identity API base URL — every /api/auth/* call (Bearer auth). */
   API_AUTH_BASE: ENV.API_AUTH_BASE,
   /** Cloudflare Turnstile site key for the sign-in CAPTCHA (empty = disabled). */
   TURNSTILE_SITE_KEY: ENV.TURNSTILE_SITE_KEY,

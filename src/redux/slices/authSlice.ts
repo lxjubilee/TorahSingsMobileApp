@@ -190,8 +190,18 @@ const authSlice = createSlice({
         state.status = 'error';
         state.error = (action.payload as string) ?? 'Verification failed';
       })
-      // signOut
+      // signOut. Both outcomes clear the session: signing out is a local act, and
+      // leaving the user stuck signed-in because a network call failed is worse
+      // than dropping a session the server may still hold. Without the rejected
+      // case the button silently does nothing, which reads as "not clickable".
       .addCase(signOut.fulfilled, (state) => {
+        state.user = null;
+        state.status = 'idle';
+        state.error = null;
+        state.pending2FA = null;
+        state.pendingSignup = null;
+      })
+      .addCase(signOut.rejected, (state) => {
         state.user = null;
         state.status = 'idle';
         state.error = null;

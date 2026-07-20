@@ -30,7 +30,6 @@ export const ProfileScreen: React.FC = () => {
   // the active catalog language (a personal collection).
   const { albums: savedAlbums } = useLikedAlbums();
   const likedCount = useLikedSongCount();
-  const followCount = useAppSelector((s) => s.library.followedArtistIds.length);
   const initial = (user?.firstName || user?.displayName || user?.email || '')
     .trim()
     .charAt(0)
@@ -87,9 +86,8 @@ export const ProfileScreen: React.FC = () => {
           </AppText>
         </View>
 
-        {/* Liked Songs / Followed Artists. These moved here from the old Library
-            screen, which the playlists-only tab replaced — Profile is now their
-            only entry point. */}
+        {/* Liked Songs. Moved here from the old Library screen, which the
+            playlists-only tab replaced — Profile is now its only entry point. */}
         <View style={styles.shortcuts}>
           <Shortcut
             icon="heart"
@@ -97,12 +95,6 @@ export const ProfileScreen: React.FC = () => {
             meta={`${likedCount}`}
             color={theme.colors.accent}
             onPress={() => navigation.navigate('LikedSongs')}
-          />
-          <Shortcut
-            icon="people"
-            label={t('library.artists')}
-            meta={`${followCount}`}
-            onPress={() => navigation.navigate('FollowedArtists')}
           />
         </View>
 

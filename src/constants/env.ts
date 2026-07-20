@@ -15,15 +15,21 @@ type AppExtra = {
   /** Explicit source selector; takes precedence over `useMock` when set. */
   dataSource: DataSourceKind;
   /**
-   * Unified jubilujah-api host (Bearer-token auth). Owns ALL auth/account flows
-   * under `/api/auth/*`; in prod it delegates credential checks to JubileeInspire
+   * Identity API host (Bearer-token auth). Owns ALL auth/account flows under
+   * `/api/auth/*`; in prod it delegates credential checks to JubileeInspire
    * server-side, so the client never talks to JI directly. See `API docs/API.md`.
+   *
+   * `torahsings-api` is a replica of the Jubilujah identity API backed by the
+   * `torahsings` database, and serves the same `/api/auth/*` contract. Both hosts
+   * are live; the app follows the web (`TorahSings.com/next.config.mjs`).
    */
   authBaseUrl: string;
   /**
-   * Dev override for the dynamic-content config endpoint (`/api/mobile/config`)
-   * ONLY. When set, the mobile CMS config is fetched from here while auth/social
-   * stay on `authBaseUrl` and the catalog on `cdnBaseUrl`. Unset in prod.
+   * Host for the dynamic-content config endpoint (`/api/mobile/config`) ONLY.
+   *
+   * This is NOT on `authBaseUrl`: `/api/mobile/config` is 404 on
+   * api.torahsings.com and only served by api.jubilujah.com, so the mobile CMS
+   * host is tracked separately from the identity host.
    */
   mobileConfigBaseUrl?: string;
   /**
@@ -49,11 +55,12 @@ export const ENV = {
   USE_MOCK: useMock,
   // Backward-compatible: fall back to the old boolean when `dataSource` is unset.
   DATA_SOURCE: (extra.dataSource ?? (useMock ? 'mock' : 'api')) as DataSourceKind,
-  // Unified jubilujah-api — single host for every /api/auth/* call (Bearer).
-  API_AUTH_BASE: extra.authBaseUrl ?? 'https://api.jubilujah.com',
-  // Host for the dynamic-content config ONLY. Defaults to the auth host so prod
-  // is unchanged; override via extra.mobileConfigBaseUrl to test a local API.
-  MOBILE_CONFIG_BASE: extra.mobileConfigBaseUrl ?? extra.authBaseUrl ?? 'https://api.jubilujah.com',
+  // Identity API — single host for every /api/auth/* call (Bearer).
+  API_AUTH_BASE: extra.authBaseUrl ?? 'https://api.torahsings.com',
+  // Host for the dynamic-content config ONLY. Deliberately NOT chained to
+  // `authBaseUrl`: /api/mobile/config is 404 on api.torahsings.com and lives
+  // only on api.jubilujah.com.
+  MOBILE_CONFIG_BASE: extra.mobileConfigBaseUrl ?? 'https://api.jubilujah.com',
   // Host for the catalog MANIFEST ONLY (albums/artists/categories). Defaults to
   // the CDN so prod is unchanged; override via extra.catalogBaseUrl to browse a
   // locally-built catalog. Media still resolves against CDN_BASE_URL.

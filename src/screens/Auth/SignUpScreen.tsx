@@ -140,6 +140,8 @@ export const SignUpScreen: React.FC = () => {
               {field(t('auth.signup.lastName'), lastName, setLastName, { style: styles.nameField })}
             </View>
 
+            {field(t('auth.signup.email'), email, setEmail, { email: true })}
+
             <DateField
               value={dob}
               onChange={(d) => {
@@ -153,8 +155,6 @@ export const SignUpScreen: React.FC = () => {
                 {t('auth.signup.ageError', { age: MIN_AGE })}
               </AppText>
             ) : null}
-
-            {field(t('auth.signup.email'), email, setEmail, { email: true })}
             <PasswordInput
               value={password}
               onChangeText={(v) => {

@@ -110,6 +110,8 @@ export const RatingStars: React.FC<Props> = ({
   const [phase, setPhase] = useState<Phase>('idle');
   const [preview, setPreview] = useState(0);
   const [committedStars, setCommittedStars] = useState(0);
+  /** A save that failed and rolled back — surfaced so it isn't a silent no-op. */
+  const [failed, setFailed] = useState(false);
   const committingRef = useRef(false);
 
   const confirmAnim = useRef(new Animated.Value(0)).current;
@@ -156,6 +158,7 @@ export const RatingStars: React.FC<Props> = ({
     if (!interactive || !targetId || committingRef.current) return;
     committingRef.current = true;
     const prev = summary;
+    setFailed(false);
     setCommittedStars(stars);
     setPhase('committing');
     flashConfirm();
@@ -168,7 +171,11 @@ export const RatingStars: React.FC<Props> = ({
       // not populate it, and a null `mine` would open the composer with 0 stars.
       .then((res) => onApplySummary({ ...res.summary, mine: res.review }))
       .catch(() => {
+        // Roll the optimistic update back AND say so — a silent revert reads as
+        // an unresponsive control (offline, or a session that expired while the
+        // app was backgrounded).
         if (prev) onApplySummary(prev);
+        setFailed(true);
       })
       .finally(() => {
         committingRef.current = false;
@@ -256,6 +263,12 @@ export const RatingStars: React.FC<Props> = ({
               {t('reviews.ratedConfirm', { stars: '★'.repeat(committedStars) })}
             </AppText>
           </Animated.View>
+        ) : failed && phase === 'idle' ? (
+          <View style={styles.readout}>
+            <AppText variant="bodySm" color="danger" numberOfLines={2}>
+              {t('reviews.saveError')}
+            </AppText>
+          </View>
         ) : !rated && phase === 'idle' ? (
           <View style={styles.readout}>
             {average != null ? (

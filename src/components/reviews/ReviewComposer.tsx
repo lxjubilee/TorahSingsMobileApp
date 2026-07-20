@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  KeyboardAvoidingView,
+  Keyboard,
+  KeyboardEvent,
   Modal,
   Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   TextInput,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -54,11 +56,34 @@ export const ReviewComposer: React.FC<Props> = ({
   const theme = useTheme();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const { height: screenH } = useWindowDimensions();
   const [stars, setStars] = useState(initial?.stars ?? 0);
   const [title, setTitle] = useState(initial?.title ?? '');
   const [body, setBody] = useState(initial?.body ?? '');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  // Track the keyboard so the sheet can sit above it. We deliberately DON'T use
+  // KeyboardAvoidingView — it's unreliable inside an Android Modal (same reason
+  // ConfirmDialog avoids it), and with `behavior` unset on Android it was a
+  // no-op, which is why the sheet ended up behind the keyboard.
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  useEffect(() => {
+    const onShow = (e: KeyboardEvent) => setKeyboardHeight(e.endCoordinates?.height ?? 0);
+    const onHide = () => setKeyboardHeight(0);
+    const show = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      onShow,
+    );
+    const hide = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      onHide,
+    );
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
 
   const save = async () => {
     if (stars < 1) {
@@ -97,13 +122,27 @@ export const ReviewComposer: React.FC<Props> = ({
   };
 
   return (
-    <Modal visible transparent animationType="slide" onRequestClose={onClose}>
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
+    // The app runs edge-to-edge, but a native <Modal> window stops ABOVE the
+    // system navigation bar by default — so that strip showed the screen behind
+    // the sheet, not the sheet. These two make the modal window span the system
+    // bars, letting the sheet's own background fill it. (RN requires
+    // statusBarTranslucent alongside navigationBarTranslucent.) `insets.bottom`
+    // then reports the real inset, so paddingBottom keeps content off the
+    // gesture bar.
+    <Modal
+      visible
+      transparent
+      animationType="slide"
+      statusBarTranslucent
+      navigationBarTranslucent
+      onRequestClose={onClose}
+    >
+      <View style={styles.flex}>
         <Pressable
-          style={[styles.backdrop, { backgroundColor: theme.colors.overlay }]}
+          style={[
+            styles.backdrop,
+            { backgroundColor: theme.colors.overlay, paddingBottom: keyboardHeight },
+          ]}
           onPress={busy ? undefined : onClose}
         >
           <Pressable
@@ -113,7 +152,14 @@ export const ReviewComposer: React.FC<Props> = ({
                 backgroundColor: theme.colors.backgroundElevated,
                 borderTopLeftRadius: theme.radius.xl,
                 borderTopRightRadius: theme.radius.xl,
-                paddingBottom: 28 + insets.bottom,
+                // The keyboard covers the gesture bar, so the inset is only
+                // needed while it's down — otherwise it's dead space above it.
+                paddingBottom: 28 + (keyboardHeight > 0 ? 0 : insets.bottom),
+                // Measured, not `maxHeight: '88%'`: a percentage resolves against
+                // the parent's full height, so with the keyboard up the sheet
+                // could still size past the space actually left for it and run
+                // its last row (Submit) under the keyboard.
+                maxHeight: (screenH - keyboardHeight) * 0.88,
               },
             ]}
           >
@@ -132,6 +178,7 @@ export const ReviewComposer: React.FC<Props> = ({
             <ScrollView
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContent}
             >
               <AppText variant="label" color="textSecondary" style={styles.fieldLabel}>
                 {t('reviews.yourRating')}
@@ -209,7 +256,7 @@ export const ReviewComposer: React.FC<Props> = ({
             </ScrollView>
           </Pressable>
         </Pressable>
-      </KeyboardAvoidingView>
+      </View>
     </Modal>
   );
 };
@@ -217,7 +264,10 @@ export const ReviewComposer: React.FC<Props> = ({
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   backdrop: { flex: 1, justifyContent: 'flex-end' },
-  sheet: { paddingHorizontal: 20, paddingTop: 16, maxHeight: '88%' },
+  sheet: { paddingHorizontal: 20, paddingTop: 16 },
+  // Clearance below the Submit row so it can always scroll clear of the sheet's
+  // bottom edge rather than sitting flush against it.
+  scrollContent: { paddingBottom: 12 },
   header: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 },
   headerText: { flex: 1, marginRight: 12 },
   fieldLabel: { marginTop: 18, marginBottom: 8 },

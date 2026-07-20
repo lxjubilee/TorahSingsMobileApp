@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "TorahSings",
+    "name": "Torah Sings",
     "slug": "torahsings",
     "scheme": "torahsings",
     "version": "1.0.0",
@@ -66,7 +66,7 @@
       "apiBaseUrl": "https://api.jubileeverse.com/v1",
       "useMock": false,
       "dataSource": "manifest",
-      "authBaseUrl": "https://api.jubilujah.com",
+      "authBaseUrl": "https://api.torahsings.com",
       "mobileConfigBaseUrl": "https://api.jubilujah.com",
       "turnstileSiteKey": "0x4AAAAAADJah9FpwSaEzlLP",
       "turnstileBaseUrl": "https://jubileeinspire.com"

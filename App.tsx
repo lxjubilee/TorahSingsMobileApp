@@ -12,7 +12,6 @@ import {
   fetchHomeFeed,
   restoreSession,
   clearSession,
-  fetchEntitlement,
 } from '@/redux';
 import { ThemeProvider } from '@/context';
 import { RootNavigator, AuthNavigator } from '@/navigation';
@@ -20,7 +19,6 @@ import {
   usePlayerSync,
   useListeningAnalytics,
   usePlaybackGate,
-  useAppDispatch,
   useAppSelector,
 } from '@/hooks';
 import { setupPlayer } from '@/services/music';
@@ -43,20 +41,18 @@ const applyPersistedLanguage = () => {
 
 /**
  * Mounts the engine->Redux bridge, the listening-analytics emitter, and the
- * Free-plan playback gate exactly once, near the root. Also refreshes the user's
- * plan entitlement whenever the session becomes authenticated (cold-start
- * restore, sign-in, 2FA, or sign-up) so the app is plan-aware right after login.
+ * Free-plan playback gate exactly once, near the root.
+ *
+ * TEMP: the plan-entitlement refresh on auth is disabled. `/api/subscriptions/me`
+ * is not served by the identity host the app now targets (api.torahsings.com),
+ * so the call errored immediately after login. The slice keeps its fail-safe
+ * defaults (isPaid: false), which is the same state a rejected fetch produced.
+ * Restore the dispatch below once that endpoint exists on the auth host.
  */
 const PlayerSyncGate: React.FC = () => {
   usePlayerSync();
   useListeningAnalytics();
   usePlaybackGate();
-
-  const dispatch = useAppDispatch();
-  const authed = useAppSelector((s) => s.auth.user != null);
-  useEffect(() => {
-    if (authed) void dispatch(fetchEntitlement());
-  }, [authed, dispatch]);
 
   return null;
 };
@@ -69,7 +65,7 @@ const PlayerSyncGate: React.FC = () => {
 // TEMP DEV BYPASS — skip the Sign In flow so Home renders without a reachable
 // backend. Set back to false (or delete) before shipping. See also the offline
 // guard bypass in src/screens/Home/index.tsx.
-const BYPASS_AUTH = true;
+const BYPASS_AUTH = false;
 
 const RootGate: React.FC = () => {
   const status = useAppSelector((s) => s.auth.status);
