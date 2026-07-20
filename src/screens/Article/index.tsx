@@ -7,6 +7,7 @@ import { Screen, AppText, IconButton, CelestialArt } from '@/components/common';
 import { articles } from '@/content/articles/data';
 import type { Block } from '@/content/articles/types';
 import type { RootStackParamList, RootStackScreenProps } from '@/navigation/types';
+import { ReadAloudButton } from './ReadAloudButton';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 const { width: W } = Dimensions.get('window');
@@ -65,14 +66,24 @@ export const ArticleScreen: React.FC = () => {
 
         <View style={styles.wrap}>
           <CelestialArt
+            seed={article.slug}
             hue={article.art.hue}
+            topic={article.category}
             glyph={article.art.glyph}
-            glyphSize={92}
+            ring
             style={styles.art}
           />
         </View>
 
         <View style={styles.wrap}>
+          <ReadAloudButton
+            id={`article:${article.slug}`}
+            blocks={article.blocks}
+            presenter={article.presenter}
+            audioUrl={article.audioUrl}
+            minutes={article.readingTime}
+          />
+
           {article.blocks.map((b, i) => (
             <BlockView key={i} block={b} />
           ))}

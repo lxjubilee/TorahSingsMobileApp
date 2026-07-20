@@ -32,6 +32,12 @@ interface HomeHeaderProps {
   bgAnim?: Animated.Value;
   /** Which nav chip renders as selected (gold). Defaults to "TORAH SINGS". */
   activeChip?: string;
+  /**
+   * When provided, tapping a nav chip calls this with the chip label instead of
+   * navigating — lets a container switch sections in place (header stays fixed).
+   * When omitted, chips fall back to route navigation (deep-link / standalone use).
+   */
+  onSelectChip?: (chip: string) => void;
   /** Opens the profile page. */
   onPressProfile?: () => void;
   /** Current language code — drives the flag shown on the language button. */
@@ -47,10 +53,11 @@ interface HomeHeaderProps {
  *    cross-fades to solid black; scrolling back up restores the chips.
  * The collapse/solid state is driven by `chipsAnim` / `bgAnim` from the screen.
  */
-export const HomeHeader: React.FC<HomeHeaderProps> = ({
+const HomeHeaderBase: React.FC<HomeHeaderProps> = ({
   chipsAnim,
   bgAnim,
   activeChip = 'TORAH SINGS',
+  onSelectChip,
   onPressProfile,
   language,
   onPressLanguage,
@@ -117,8 +124,11 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({
           >
             {NAV_CHIPS.map((label) => {
               const active = label === activeChip;
-              const onPress =
-                label === 'HEBRAIC CHRISTIANITY'
+              // In-place mode: let the container switch sections. Fallback mode:
+              // navigate to the section's route (deep-link / standalone screens).
+              const onPress = onSelectChip
+                ? () => onSelectChip(label)
+                : label === 'HEBRAIC CHRISTIANITY'
                   ? () => navigation.navigate('HebraicChristianity')
                   : label === 'LEARN HEBREW'
                     ? () => navigation.navigate('LearnHebrew')
@@ -147,6 +157,13 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({
     </View>
   );
 };
+
+/**
+ * Memoized so a container state change that leaves its props identical (e.g.
+ * switching the selected section) does NOT re-render the header or chip row —
+ * only the body below updates.
+ */
+export const HomeHeader = React.memo(HomeHeaderBase);
 
 const styles = StyleSheet.create({
   container: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 20 },

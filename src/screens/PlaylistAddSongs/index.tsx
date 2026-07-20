@@ -5,18 +5,21 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { Screen, AppText, Artwork, IconButton } from '@/components/common';
 import { useTheme } from '@/context';
-import { useAppDispatch, useAppSelector, useDebounce, useVisibleTracks } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { addTrackToPlaylist, fetchPlaylistDetail, removeItemFromPlaylist } from '@/redux';
 import { trackSongUuid } from '@/services/playlists';
-import { SearchRepository } from '@/repositories';
+import { allCatalogTracks } from '@/content/angelsCatalog/player';
 import { Track } from '@/types';
 import type { RootStackScreenProps } from '@/navigation/types';
 
+// Cap results so a broad term doesn't render the whole catalog at once.
+const MAX_RESULTS = 40;
+
 /**
- * Search-driven picker for adding songs to a playlist. Tapping a result toggles
- * its membership (add / remove), so multiple songs can be added in one session.
- * Uses a local SearchRepository query so it doesn't disturb the Search tab's
- * shared Redux state.
+ * Search-driven picker for adding Torah Sings songs to a playlist. Tapping a
+ * result toggles its membership (add / remove), so multiple songs can be added
+ * in one session. Filters the bundled catalog locally; add/remove still resolve
+ * to the backend song_id via trackSongUuid (albumCode + track number).
  */
 export const PlaylistAddSongsScreen: React.FC = () => {
   const { params } = useRoute<RootStackScreenProps<'PlaylistAddSongs'>['route']>();
@@ -34,30 +37,18 @@ export const PlaylistAddSongsScreen: React.FC = () => {
   }, [detail]);
 
   const [input, setInput] = useState('');
-  const debounced = useDebounce(input, 350);
-  const [results, setResults] = useState<Track[]>([]);
 
   // Ensure the playlist's items are loaded so the add/remove state is accurate.
   useEffect(() => {
     void dispatch(fetchPlaylistDetail(params.playlistId));
   }, [dispatch, params.playlistId]);
 
-  useEffect(() => {
-    const q = debounced.trim();
-    if (!q) {
-      setResults([]);
-      return;
-    }
-    let active = true;
-    SearchRepository.search(q)
-      .then((r) => active && setResults(r.tracks))
-      .catch(() => active && setResults([]));
-    return () => {
-      active = false;
-    };
-  }, [debounced]);
-
-  const tracks = useVisibleTracks(results);
+  // Local, offline filter over the bundled Torah Sings catalog by song title.
+  const term = input.trim().toLowerCase();
+  const tracks = useMemo(() => {
+    if (!term) return [] as Track[];
+    return allCatalogTracks.filter((tk) => tk.title.toLowerCase().includes(term)).slice(0, MAX_RESULTS);
+  }, [term]);
 
   const toggle = (track: Track) => {
     const songId = trackSongUuid(track);

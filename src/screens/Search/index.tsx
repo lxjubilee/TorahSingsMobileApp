@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -6,21 +6,23 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context';
 import { Screen, AppText, IconButton } from '@/components/common';
-import { AlbumCard, ArtistCard, TrackRow } from '@/components/cards';
-import {
-  useAppDispatch,
-  useAppSelector,
-  useDebounce,
-  usePlayer,
-  useVisibleAlbums,
-  useVisibleArtists,
-  useVisibleTracks,
-} from '@/hooks';
-import { runSearch, setQuery, addRecentSearch, clearRecentSearches } from '@/redux';
+import { TrackRow } from '@/components/cards';
+import { useAppDispatch, useAppSelector, usePlayer } from '@/hooks';
+import { addRecentSearch, clearRecentSearches } from '@/redux';
 import { usePlaylistMenu } from '@/components/playlists';
+import { allCatalogAlbums, allCatalogTracks } from '@/content/angelsCatalog/player';
+import type { CatalogAlbum } from '@/content/angelsCatalog/types';
+import type { Track } from '@/types';
+import { CatalogTile } from '../Home/components/CatalogTile';
 import type { RootStackParamList } from '@/navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
+
+const ALBUM_TILE_W = 150;
+
+// Cap search sections so a broad term (e.g. "the") doesn't render hundreds of rows.
+const MAX_ALBUMS = 20;
+const MAX_TRACKS = 30;
 
 export const SearchScreen: React.FC = () => {
   const theme = useTheme();
@@ -30,22 +32,27 @@ export const SearchScreen: React.FC = () => {
   const { playTracks } = usePlayer();
   const { openTrackOptions } = usePlaylistMenu();
 
-  const { query, results, recent, status } = useAppSelector((s) => s.search);
-  const [input, setInput] = useState(query);
-  const debounced = useDebounce(input, 350);
+  const recent = useAppSelector((s) => s.search.recent);
+  const [input, setInput] = useState('');
 
-  useEffect(() => {
-    dispatch(setQuery(debounced));
-    if (debounced.trim()) dispatch(runSearch(debounced.trim()));
-  }, [debounced, dispatch]);
+  const term = input.trim().toLowerCase();
+  const hasQuery = term.length > 0;
 
-  // Hide results whose artwork is missing (same rule as everywhere else).
-  const albums = useVisibleAlbums(results.albums);
-  const artists = useVisibleArtists(results.artists);
-  const tracks = useVisibleTracks(results.tracks);
+  // Local, offline search over the bundled catalog: albums by title/book, songs
+  // by track title. Recomputed only when the term changes.
+  const { albums, tracks } = useMemo(() => {
+    if (!term) return { albums: [] as CatalogAlbum[], tracks: [] as Track[] };
+    return {
+      albums: allCatalogAlbums
+        .filter((a) => a.title.toLowerCase().includes(term) || a.book.toLowerCase().includes(term))
+        .slice(0, MAX_ALBUMS),
+      tracks: allCatalogTracks
+        .filter((tk) => tk.title.toLowerCase().includes(term))
+        .slice(0, MAX_TRACKS),
+    };
+  }, [term]);
 
-  const hasQuery = input.trim().length > 0;
-  const hasResults = albums.length || artists.length || tracks.length;
+  const hasResults = albums.length || tracks.length;
 
   return (
     <Screen>
@@ -84,39 +91,31 @@ export const SearchScreen: React.FC = () => {
                 </Pressable>
               ) : null}
             </View>
-            {recent.map((term) => (
-              <Pressable key={term} style={styles.recentRow} onPress={() => setInput(term)}>
+            {recent.map((rterm) => (
+              <Pressable key={rterm} style={styles.recentRow} onPress={() => setInput(rterm)}>
                 <Ionicons name="time-outline" size={20} color={theme.colors.iconMuted} />
                 <AppText variant="body" style={styles.recentText}>
-                  {term}
+                  {rterm}
                 </AppText>
               </Pressable>
             ))}
           </View>
-        ) : status === 'succeeded' && !hasResults ? (
+        ) : !hasResults ? (
           <AppText variant="body" color="textMuted" style={styles.noResults}>
             {t('search.noResults', { query: input })}
           </AppText>
         ) : (
           <>
-            {artists.length ? (
-              <Section title={t('search.sectionArtists')}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
-                  {artists.map((a) => (
-                    <View key={a.id} style={styles.hItem}>
-                      <ArtistCard artist={a} onPress={(ar) => navigation.navigate('ArtistDetails', { artistId: ar.id })} />
-                    </View>
-                  ))}
-                </ScrollView>
-              </Section>
-            ) : null}
-
             {albums.length ? (
               <Section title={t('search.sectionAlbums')}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
                   {albums.map((al) => (
-                    <View key={al.id} style={styles.hItem}>
-                      <AlbumCard album={al} onPress={(x) => navigation.navigate('AlbumDetails', { albumId: x.id })} />
+                    <View key={al.code} style={styles.hItem}>
+                      <CatalogTile
+                        album={al}
+                        width={ALBUM_TILE_W}
+                        onPress={() => navigation.navigate('CatalogAlbum', { code: al.code })}
+                      />
                     </View>
                   ))}
                 </ScrollView>

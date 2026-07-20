@@ -1,6 +1,7 @@
 export { cdnUrl } from './cdn';
 export { formatDuration, formatCount, truncateTitle } from './format';
 export { logger } from './logger';
+export { hashString, seededRandom, starsFor, type Star } from './seed';
 
 /** Resolve helper: keep entities by an ordered list of ids. */
 export function pickByIds<T extends { id: string }>(items: T[], ids: string[]): T[] {

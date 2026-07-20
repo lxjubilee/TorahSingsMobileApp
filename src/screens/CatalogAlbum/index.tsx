@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Dimensions, FlatList, Image, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -7,9 +7,15 @@ import { StarRating } from '@/components/reviews';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Screen, AppText, IconButton, SectionHeader } from '@/components/common';
+import { FloatingMiniPlayer } from '@/components/player';
+import { usePlaylistMenu } from '@/components/playlists';
 import { angelsCatalog } from '@/content/angelsCatalog/data';
 import { catalogCover } from '@/content/angelsCatalog/covers';
-import type { CatalogAlbum, CatalogCategory } from '@/content/angelsCatalog/types';
+import { albumToPlayerTracks, catalogTrackId } from '@/content/angelsCatalog/player';
+import type { CatalogAlbum, CatalogCategory, CatalogTrack } from '@/content/angelsCatalog/types';
+import { usePlayer, useTrackDuration } from '@/hooks';
+import type { Track } from '@/types';
+import { formatDuration, shuffle } from '@/utils';
 import { CatalogTile } from '../Home/components/CatalogTile';
 import type { RootStackParamList, RootStackScreenProps } from '@/navigation/types';
 
@@ -47,16 +53,24 @@ function findAlbum(code: string): { album: CatalogAlbum; category: CatalogCatego
  * Angels' Catalog album detail (ported from the web album page, laid out like
  * the app's AlbumDetails): cover, book eyebrow, title, "Sung by the Angels"
  * meta, PLAY ALBUM, the numbered track list, and a "More from <book>" rail.
- * Playback is visual-only for now — the catalog's audio isn't wired to the
- * mobile player yet, so the play controls render but don't stream.
+ * Play / shuffle / a tapped track stream the CDN audio through the shared
+ * playback engine (usePlayer -> trackAdapter -> cdnUrl).
  */
 export const CatalogAlbumScreen: React.FC = () => {
   const { params } = useRoute<RootStackScreenProps<'CatalogAlbum'>['route']>();
   const navigation = useNavigation<Nav>();
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
+  const { playTracks, playFrom, toggle, currentTrack, isPlaying } = usePlayer();
+  const { addToPlaylist } = usePlaylistMenu();
 
   const found = useMemo(() => findAlbum(params.code), [params.code]);
+
+  // Player-ready tracks for this album (CDN-relative urls; empty when missing).
+  const tracks = useMemo(
+    () => (found ? albumToPlayerTracks(found.album) : []),
+    [found],
+  );
 
   // Sibling albums for the bottom rail: same book first, else same division.
   // `moreBook` carries the book filter into the "View All" grid (undefined when
@@ -100,6 +114,11 @@ export const CatalogAlbumScreen: React.FC = () => {
 
   const { album, category } = found;
   const cover = catalogCover(album.code);
+
+  // Whether a track from THIS album is loaded in the player, and whether it's
+  // currently playing — drives the Play/Pause toggle on the album pill.
+  const albumIsActive = currentTrack?.albumId === album.code;
+  const albumIsPlaying = albumIsActive && isPlaying;
 
   return (
     <Screen safeArea={false}>
@@ -154,13 +173,31 @@ export const CatalogAlbumScreen: React.FC = () => {
             />
           </View>
           <View style={styles.actionsSide}>
-            <IconButton name="shuffle" size={26} />
-            <View style={[styles.playPill, styles.actionGap]}>
-              <Ionicons name="play" size={18} color="#1a1405" style={styles.playIcon} />
+            <IconButton
+              name="shuffle"
+              size={26}
+              onPress={tracks.length ? () => playTracks(shuffle(tracks), 0) : undefined}
+            />
+            <Pressable
+              style={[styles.playPill, styles.actionGap]}
+              onPress={
+                tracks.length
+                  ? albumIsActive
+                    ? () => toggle()
+                    : () => playTracks(tracks, 0)
+                  : undefined
+              }
+            >
+              <Ionicons
+                name={albumIsPlaying ? 'pause' : 'play'}
+                size={18}
+                color="#1a1405"
+                style={styles.playIcon}
+              />
               <AppText variant="label" style={styles.playLabel}>
-                {t('common.play')}
+                {t(albumIsPlaying ? 'common.pause' : 'common.play')}
               </AppText>
-            </View>
+            </Pressable>
           </View>
         </View>
 
@@ -194,21 +231,15 @@ export const CatalogAlbumScreen: React.FC = () => {
             number column is where the playing indicator will live. */}
         <View style={styles.trackList}>
           {album.tracks.map((track, i) => (
-            <View key={track.n} style={[styles.trackRow, i > 0 && styles.trackRowDivider]}>
-              <View style={styles.trackIndex}>
-                <AppText variant="body" color="textMuted">
-                  {track.n}
-                </AppText>
-              </View>
-              <View style={styles.trackMeta}>
-                <AppText variant="h3" numberOfLines={1}>
-                  {track.title}
-                </AppText>
-                <AppText variant="bodySm" color="textMuted" numberOfLines={1}>
-                  Sung by the Angels
-                </AppText>
-              </View>
-            </View>
+            <CatalogTrackRow
+              key={i}
+              track={track}
+              playerTrack={tracks[i]}
+              showDivider={i > 0}
+              isCurrent={currentTrack?.id === catalogTrackId(album.code, i)}
+              onPlay={() => playFrom(tracks, catalogTrackId(album.code, i))}
+              onAddToPlaylist={() => addToPlaylist(tracks[i])}
+            />
           ))}
         </View>
 
@@ -277,9 +308,87 @@ export const CatalogAlbumScreen: React.FC = () => {
       <View style={[styles.fixedHeader, { paddingTop: insets.top, height: insets.top + HEADER_HEIGHT }]}>
         <IconButton name="chevron-back" onPress={() => navigation.goBack()} />
       </View>
+
+      {/* Persistent now-playing bar — the tab-bar mini-player is hidden while
+          this root-stack screen is open; taps through to the MusicPlayer. */}
+      <FloatingMiniPlayer />
     </Screen>
   );
 };
+
+/**
+ * One track row: index / now-playing indicator, title + "Sung by the Angels" +
+ * a (display-only) rating, and trailing heart · add-to-playlist · duration. The
+ * duration is resolved lazily from the audio header (catalog tracks ship none);
+ * the heart is a local visual toggle (these tracks aren't in the likes backend
+ * yet), while add-to-playlist opens the app's real playlist picker.
+ */
+type CatalogTrackRowProps = {
+  track: CatalogTrack;
+  playerTrack: Track;
+  showDivider: boolean;
+  isCurrent: boolean;
+  onPlay: () => void;
+  onAddToPlaylist: () => void;
+};
+
+// Declared as a hoisted function (not a `const` arrow) so it's in scope where
+// the track list references it above — matches the rest of the screens.
+function CatalogTrackRow({ track, playerTrack, showDivider, isCurrent, onPlay, onAddToPlaylist }: CatalogTrackRowProps) {
+  const [liked, setLiked] = useState(false);
+  const duration = useTrackDuration(playerTrack);
+
+  return (
+    <Pressable style={[styles.trackRow, showDivider && styles.trackRowDivider]} onPress={onPlay}>
+      <View style={styles.trackIndex}>
+        {isCurrent ? (
+          <Ionicons name="volume-medium" size={18} color={ACCENT_SOFT} />
+        ) : (
+          <AppText variant="body" color="textMuted">
+            {track.n}
+          </AppText>
+        )}
+      </View>
+
+      <View style={styles.trackMeta}>
+        <AppText variant="h3" numberOfLines={1} style={isCurrent ? styles.trackTitleActive : undefined}>
+          {track.title}
+        </AppText>
+        <AppText variant="bodySm" color="textMuted" numberOfLines={1}>
+          Sung by the Angels
+        </AppText>
+        {/* Display-only rating — these albums aren't in the reviews backend yet. */}
+        <View style={styles.trackRating}>
+          <StarRating value={0} size="sm" />
+        </View>
+      </View>
+
+      <View style={styles.trackActions}>
+        <IconButton
+          name={liked ? 'heart' : 'heart-outline'}
+          size={20}
+          color={liked ? ACCENT_SOFT : INK_MUTED}
+          onPress={() => setLiked((v) => !v)}
+          style={styles.trackAction}
+        />
+        <IconButton
+          name="add-circle-outline"
+          size={22}
+          color={INK_MUTED}
+          onPress={onAddToPlaylist}
+          style={styles.trackAction}
+        />
+        {duration > 0 ? (
+          <AppText variant="caption" color="textMuted" style={styles.trackDuration}>
+            {formatDuration(duration)}
+          </AppText>
+        ) : (
+          <View style={styles.trackDurationSkeleton} />
+        )}
+      </View>
+    </Pressable>
+  );
+}
 
 const styles = StyleSheet.create({
   fixedHeader: {
@@ -370,7 +479,19 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(255,255,255,0.1)',
   },
   trackIndex: { width: 36, alignItems: 'center', justifyContent: 'center' },
+  trackTitleActive: { color: ACCENT_SOFT },
   trackMeta: { flex: 1, marginLeft: 12, marginRight: 8 },
+  trackRating: { marginTop: 6 },
+  trackActions: { flexDirection: 'row', alignItems: 'center' },
+  trackAction: { marginHorizontal: 2 },
+  trackDuration: { minWidth: 34, marginLeft: 4, textAlign: 'right' },
+  trackDurationSkeleton: {
+    width: 30,
+    height: 10,
+    borderRadius: 4,
+    marginLeft: 4,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+  },
   railSection: { paddingTop: 28 },
   railContent: { paddingHorizontal: H_PADDING },
   railSep: { width: 14 },
