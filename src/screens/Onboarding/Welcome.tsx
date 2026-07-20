@@ -81,7 +81,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
           <View style={styles.navLinks}>
             <Pressable
               hitSlop={8}
-              onPress={() => Linking.openURL('https://jubilujah.com/privacy').catch(() => undefined)}
+              onPress={() => Linking.openURL('https://torahsings.com/privacy').catch(() => undefined)}
             >
               <AppText variant="label" color="textSecondary" style={styles.navLink}>
                 PRIVACY

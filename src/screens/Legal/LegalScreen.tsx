@@ -27,6 +27,20 @@ const Block: React.FC<{ block: LegalBlock }> = ({ block }) => {
       </View>
     );
   }
+  if (block.type === 'card') {
+    return (
+      <View style={[styles.card, { borderColor: theme.colors.border, backgroundColor: theme.colors.surface }]}>
+        <AppText variant="body" color="text" weight="bold" style={styles.cardTitle}>
+          {block.title}
+        </AppText>
+        {block.lines.map((line, i) => (
+          <AppText key={i} variant="body" color="textSecondary" style={[styles.cardLine, { lineHeight: 22 }]}>
+            {line}
+          </AppText>
+        ))}
+      </View>
+    );
+  }
   if (block.type === 'subheading') {
     return (
       <AppText variant="label" color="text" style={styles.subheading}>
@@ -48,6 +62,7 @@ const Block: React.FC<{ block: LegalBlock }> = ({ block }) => {
  */
 export const LegalScreen: React.FC<{ document: LegalDocument }> = ({ document }) => {
   const navigation = useNavigation<Nav>();
+  const theme = useTheme();
 
   return (
     <Screen>
@@ -62,8 +77,15 @@ export const LegalScreen: React.FC<{ document: LegalDocument }> = ({ document })
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
+        <AppText variant="body" color="textSecondary" style={[styles.lead, { lineHeight: 23 }]}>
+          {document.lead}
+        </AppText>
+
+        {/* The rule the web draws between the hero and the document body. */}
+        <View style={[styles.rule, { backgroundColor: theme.colors.border }]} />
+
         <AppText variant="bodySm" color="textMuted" style={styles.effectiveDate}>
-          Effective {document.effectiveDate}
+          EFFECTIVE {document.effectiveDate.toUpperCase()}
         </AppText>
 
         {document.intro.map((text, i) => (
@@ -96,7 +118,9 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingTop: 8 },
   title: { marginLeft: 8, flexShrink: 1 },
   content: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 48 },
-  effectiveDate: { marginBottom: 16 },
+  lead: { marginTop: 4 },
+  rule: { height: StyleSheet.hairlineWidth, marginTop: 20, marginBottom: 20 },
+  effectiveDate: { letterSpacing: 1.2, marginBottom: 16 },
   section: { marginTop: 24 },
   sectionHeading: { marginBottom: 8 },
   subheading: { marginTop: 14, marginBottom: 2 },
@@ -105,6 +129,9 @@ const styles = StyleSheet.create({
   bulletRow: { flexDirection: 'row', marginTop: 6 },
   bulletDot: { width: 18, lineHeight: 22 },
   bulletText: { flex: 1 },
+  card: { marginTop: 10, paddingVertical: 18, paddingHorizontal: 22, borderWidth: 1, borderRadius: 12 },
+  cardTitle: { marginBottom: 4 },
+  cardLine: { marginBottom: 4 },
 });
 
 export default LegalScreen;
