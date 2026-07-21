@@ -37,7 +37,17 @@ export const TrackOptionsModal: React.FC<TrackOptionsModalProps> = ({
   if (!track) return null;
 
   return (
-    <Modal visible transparent animationType="slide" onRequestClose={onClose}>
+    // Edge-to-edge: without these the modal window stops above the system
+    // navigation bar and that strip shows the screen behind the sheet. See the
+    // fuller note in ReviewComposer.
+    <Modal
+      visible
+      transparent
+      animationType="slide"
+      statusBarTranslucent
+      navigationBarTranslucent
+      onRequestClose={onClose}
+    >
       <Pressable style={[styles.backdrop, { backgroundColor: theme.colors.overlay }]} onPress={onClose}>
         <Pressable
           style={[

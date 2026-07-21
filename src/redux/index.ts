@@ -17,6 +17,7 @@ export {
   addAlbumToPlaylist,
   removeItemFromPlaylist,
   reorderPlaylistItems,
+  clearPlaylistError,
 } from './slices/playlistsSlice';
 export {
   fetchLikes,

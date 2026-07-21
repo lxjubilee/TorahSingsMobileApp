@@ -12,6 +12,8 @@ export interface ColorPalette {
   primary: string;
   primaryMuted: string;
   accent: string;
+  /** Foreground for content sitting ON `accent` (which is light — white fails). */
+  onAccent: string;
   text: string;
   textSecondary: string;
   textMuted: string;
@@ -33,7 +35,13 @@ export const darkColors: ColorPalette = {
   border: '#2A2A36',
   primary: '#7C4DFF', // Jubilujah purple accent
   primaryMuted: '#4A2FA0',
-  accent: '#007FFF', // Jubilujah Azure blue — play CTAs & now-playing highlight
+  // Light gold — play CTAs & now-playing highlight. Matches the ACCENT_SOFT
+  // constant already used for eyebrows, the liked heart and the now-playing
+  // indicator across the catalog/article screens.
+  accent: '#ffd877',
+  // Near-black on gold reads ~13:1; white on gold is ~1.4:1 and unreadable, so
+  // filled accent buttons must use this rather than '#FFFFFF'.
+  onAccent: '#0B0B0F',
   text: '#FFFFFF',
   textSecondary: '#C7C7D1',
   textMuted: '#8A8A99',

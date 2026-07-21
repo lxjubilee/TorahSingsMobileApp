@@ -55,8 +55,8 @@ export const AlbumRatingSummary: React.FC<Props> = ({
           onPress={onRate}
           style={[styles.rateBtn, { backgroundColor: theme.colors.accent, borderRadius: theme.radius.pill }]}
         >
-          <Ionicons name="create-outline" size={16} color="#FFFFFF" style={styles.rateIcon} />
-          <AppText variant="label" style={{ color: '#FFFFFF' }}>
+          <Ionicons name="create-outline" size={16} color={theme.colors.onAccent} style={styles.rateIcon} />
+          <AppText variant="label" style={{ color: theme.colors.onAccent }}>
             {rated ? t('reviews.editReview') : t('reviews.writeReview')}
           </AppText>
         </Pressable>

@@ -38,7 +38,21 @@ export const PlaylistPickerSheet: React.FC<PlaylistPickerSheetProps> = ({
   if (!visible) return null;
 
   return (
-    <Modal visible transparent animationType="slide" onRequestClose={onClose}>
+    // The app runs edge-to-edge, but a native <Modal> window stops ABOVE the
+    // system navigation bar by default — so that strip showed the screen behind
+    // the sheet, not the sheet. These two make the modal window span the system
+    // bars, letting the sheet's own background fill it. (RN requires
+    // statusBarTranslucent alongside navigationBarTranslucent.) `insets.bottom`
+    // then reports the real inset, so paddingBottom keeps content off the
+    // gesture bar. Same fix as ReviewComposer.
+    <Modal
+      visible
+      transparent
+      animationType="slide"
+      statusBarTranslucent
+      navigationBarTranslucent
+      onRequestClose={onClose}
+    >
       <Pressable style={[styles.backdrop, { backgroundColor: theme.colors.overlay }]} onPress={onClose}>
         <Pressable
           style={[

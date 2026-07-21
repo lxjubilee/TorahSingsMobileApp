@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isRejected } from '@reduxjs/toolkit';
 import { Track, RequestStatus } from '@/types';
 import {
   playlistApi,
@@ -20,7 +20,15 @@ interface PlaylistsState {
   byId: Record<string, PlaylistDetail>;
   membership: Record<string, number>;
   status: RequestStatus;
+  /** Load-state error for the list fetch (rendered inline, never as a popup). */
   error: string | null;
+  /**
+   * A failed WRITE (add/remove/rename/reorder/delete). Kept separate from
+   * `error` so a flaky background refresh never pops a dialog — only an action
+   * the user actually took does. Drives PlaylistErrorGate; carries the server's
+   * own message, so e.g. a foreign-key rejection names itself.
+   */
+  mutationError: string | null;
 }
 
 const initialState: PlaylistsState = {
@@ -29,6 +37,7 @@ const initialState: PlaylistsState = {
   membership: {},
   status: 'idle',
   error: null,
+  mutationError: null,
 };
 
 const errMsg = (e: unknown): string =>
@@ -69,7 +78,8 @@ export const addTrackToPlaylist = createAsyncThunk(
   'playlists/addTrack',
   async (arg: { playlistId: string; track: Track }) => {
     const songId = trackSongUuid(arg.track);
-    if (!songId) throw new Error('Track has no track number');
+    // No track number means no deterministic server song_id — nothing to send.
+    if (!songId) throw new Error(`"${arg.track.title}" can't be added to a playlist.`);
     const res = await playlistApi.addItem(arg.playlistId, songId);
     return {
       playlistId: arg.playlistId,
@@ -114,7 +124,11 @@ const bumpCount = (summary: PlaylistSummary | undefined, delta: number) => {
 const playlistsSlice = createSlice({
   name: 'playlists',
   initialState,
-  reducers: {},
+  reducers: {
+    clearPlaylistError(state) {
+      state.mutationError = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPlaylists.pending, (s) => {
@@ -215,8 +229,27 @@ const playlistsSlice = createSlice({
             return it ? { ...it, position: idx } : null;
           })
           .filter((x): x is NonNullable<typeof x> => x !== null);
-      });
+      })
+
+      // Any failed write surfaces to the user. Without this every rejection is
+      // an unhandled promise — indistinguishable from a dead button. Registered
+      // after all addCase()s, as RTK requires.
+      .addMatcher(
+        isRejected(
+          createPlaylist,
+          renamePlaylist,
+          deletePlaylist,
+          addTrackToPlaylist,
+          addAlbumToPlaylist,
+          removeItemFromPlaylist,
+          reorderPlaylistItems,
+        ),
+        (s, a) => {
+          s.mutationError = errMsg(a.error);
+        },
+      );
   },
 });
 
+export const { clearPlaylistError } = playlistsSlice.actions;
 export default playlistsSlice.reducer;

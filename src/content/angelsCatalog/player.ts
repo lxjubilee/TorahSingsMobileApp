@@ -56,3 +56,14 @@ export const allCatalogAlbums: CatalogAlbum[] = Array.from(
 
 /** Every catalog track as a player-ready domain Track (built once at import). */
 export const allCatalogTracks: Track[] = allCatalogAlbums.flatMap(albumToPlayerTracks);
+
+// Code -> album, for callers holding only a `Track.albumId` (the catalog code)
+// that need the album's art metadata — e.g. the playlist cover, which falls back
+// to the album's hue/glyph when no bundled cover exists.
+let byCode: Map<string, CatalogAlbum> | null = null;
+
+/** Look up a catalog album by its code (memoized). */
+export function catalogAlbumByCode(code: string): CatalogAlbum | undefined {
+  if (!byCode) byCode = new Map(allCatalogAlbums.map((a) => [a.code, a]));
+  return byCode.get(code);
+}

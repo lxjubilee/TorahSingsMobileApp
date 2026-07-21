@@ -5,8 +5,8 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context';
-import { Screen, AppText, Artwork, IconButton, ProfileButton, ConfirmDialog } from '@/components/common';
-import { PlaylistNameDialog } from '@/components/playlists';
+import { Screen, AppText, IconButton, ProfileButton, ConfirmDialog } from '@/components/common';
+import { PlaylistCover, PlaylistNameDialog } from '@/components/playlists';
 import { useAppDispatch, useAppSelector, usePlayer } from '@/hooks';
 import { createPlaylist, deletePlaylist, fetchPlaylistDetail, fetchPlaylists } from '@/redux';
 import type { PlaylistSummary } from '@/services/playlists';
@@ -55,11 +55,11 @@ export const PlaylistsScreen: React.FC = () => {
     });
   }, [playlists, playlistDetails, dispatch]);
 
-  // Cover for a playlist card: the first item's artwork from the (warmed) detail,
-  // falling back to the server cover (already absolutized) until it loads. byId
-  // persists across list refetches, so the cover stays stable once resolved.
-  const coverFor = useCallback(
-    (pl: PlaylistSummary) => playlistDetails[pl.id]?.items?.[0]?.track.artwork || pl.cover || '',
+  // Cover for a playlist card: its first item, resolved by PlaylistCover (bundled
+  // art -> celestial art -> CDN). byId persists across list refetches, so the
+  // cover stays stable once the detail is warm.
+  const firstTrackFor = useCallback(
+    (pl: PlaylistSummary) => playlistDetails[pl.id]?.items?.[0]?.track,
     [playlistDetails],
   );
 
@@ -138,7 +138,12 @@ export const PlaylistsScreen: React.FC = () => {
         renderItem={({ item: pl }) => (
           <View style={[styles.card, { backgroundColor: theme.colors.surface, borderRadius: theme.radius.md }]}>
             <Pressable onPress={() => openPlaylist(pl)}>
-              <Artwork uri={coverFor(pl)} style={styles.cover} iconSize={28} />
+              <PlaylistCover
+                track={firstTrackFor(pl)}
+                fallbackUri={pl.cover}
+                style={styles.cover}
+                iconSize={28}
+              />
               <View style={styles.countBadge}>
                 <AppText variant="caption" style={styles.countText}>
                   {t('playlist.songCount', { count: pl.itemCount })}
@@ -163,8 +168,8 @@ export const PlaylistsScreen: React.FC = () => {
                   },
                 ]}
               >
-                <Ionicons name="play" size={16} color="#FFFFFF" />
-                <AppText variant="label" style={styles.playLabel}>
+                <Ionicons name="play" size={16} color={theme.colors.onAccent} />
+                <AppText variant="label" style={[styles.playLabel, { color: theme.colors.onAccent }]}>
                   {t('common.play')}
                 </AppText>
               </Pressable>
@@ -256,7 +261,8 @@ const styles = StyleSheet.create({
   countText: { color: '#FFFFFF' },
   cardBody: { padding: 10, gap: 8 },
   playBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, height: 38 },
-  playLabel: { color: '#FFFFFF', fontWeight: '700' },
+  // Color comes from theme.colors.onAccent at the call site (accent is light gold).
+  playLabel: { fontWeight: '700' },
   secondaryRow: { flexDirection: 'row', gap: 8 },
   // Bordered so Delete reads as a real button on the card surface rather than
   // bare red text; height matches the Play button above it.

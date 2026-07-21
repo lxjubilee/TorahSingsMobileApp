@@ -36,7 +36,9 @@ export const Button: React.FC<ButtonProps> = ({
       : variant === 'secondary'
         ? theme.colors.surface
         : 'transparent';
-  const fg = variant === 'primary' ? '#FFFFFF' : theme.colors.text;
+  // Primary sits on `accent` (light gold), so it needs the dark on-accent
+  // foreground — white would be ~1.4:1 and unreadable.
+  const fg = variant === 'primary' ? theme.colors.onAccent : theme.colors.text;
   const borderStyle =
     variant === 'ghost' ? { borderWidth: 1, borderColor: theme.colors.border } : null;
 

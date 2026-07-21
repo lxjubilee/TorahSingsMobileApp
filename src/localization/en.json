@@ -230,7 +230,8 @@
     "songCount": "{{count}} songs",
     "empty": "There is no music yet",
     "emptyHint": "Tap â€œAdd songsâ€ to add music to this playlist.",
-    "notFound": "Playlist not found."
+    "notFound": "Playlist not found.",
+    "errorTitle": "Couldn't update playlist"
   },
   "contributions": {
     "title": "My Contributions",

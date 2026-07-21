@@ -245,9 +245,9 @@ export const ReviewComposer: React.FC<Props> = ({
                   ]}
                 >
                   {busy ? (
-                    <ActivityIndicator color="#FFFFFF" size="small" />
+                    <ActivityIndicator color={theme.colors.onAccent} size="small" />
                   ) : (
-                    <AppText variant="label" style={{ color: '#FFFFFF' }}>
+                    <AppText variant="label" style={{ color: theme.colors.onAccent }}>
                       {initial ? t('common.save') : t('reviews.submit')}
                     </AppText>
                   )}

@@ -8,14 +8,13 @@ import { useTranslation } from 'react-i18next';
 import {
   Screen,
   AppText,
-  Artwork,
   Button,
   IconButton,
   Placeholder,
   ConfirmDialog,
 } from '@/components/common';
 import { TrackRow } from '@/components/cards';
-import { PlaylistNameDialog } from '@/components/playlists';
+import { PlaylistCover, PlaylistNameDialog } from '@/components/playlists';
 import { FloatingMiniPlayer } from '@/components/player';
 import { useTheme } from '@/context';
 import { useAppDispatch, useAppSelector, usePlayer } from '@/hooks';
@@ -142,21 +141,21 @@ export const PlaylistDetailsScreen: React.FC = () => {
         ]}
       >
         <View style={styles.header}>
-          <View style={[styles.artFrame, { width: POSTER_W, height: posterH }]}>
-            <Artwork
-              uri={cover}
-              style={styles.artImage}
-              contentFit="cover"
-              iconSize={Math.round(POSTER_W * 0.3)}
-              onLoad={(e) => {
-                const w = e.source?.width;
-                const h = e.source?.height;
-                if (!w || !h) return;
-                const aspect = Math.min(MAX_ASPECT, Math.max(MIN_ASPECT, w / h));
-                setPosterH(Math.round(POSTER_W / aspect));
-              }}
-            />
-          </View>
+          {/* Celestial art reports no natural size, so posterH simply stays at
+              POSTER_H_DEFAULT for those playlists. */}
+          <PlaylistCover
+            track={tracks[0]}
+            fallbackUri={summary?.cover}
+            style={[styles.artFrame, { width: POSTER_W, height: posterH }]}
+            iconSize={Math.round(POSTER_W * 0.3)}
+            onLoad={(e) => {
+              const w = e.source?.width;
+              const h = e.source?.height;
+              if (!w || !h) return;
+              const aspect = Math.min(MAX_ASPECT, Math.max(MIN_ASPECT, w / h));
+              setPosterH(Math.round(POSTER_W / aspect));
+            }}
+          />
           <AppText variant="display" style={styles.title} numberOfLines={2}>
             {name}
           </AppText>

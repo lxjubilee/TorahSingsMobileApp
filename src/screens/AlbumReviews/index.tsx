@@ -120,7 +120,10 @@ export const AlbumReviewsScreen: React.FC = () => {
                 },
               ]}
             >
-              <AppText variant="caption" style={{ color: active ? '#FFFFFF' : theme.colors.textSecondary }}>
+              <AppText
+                variant="caption"
+                style={{ color: active ? theme.colors.onAccent : theme.colors.textSecondary }}
+              >
                 {t(`reviews.sort_${s}`)}
               </AppText>
             </Pressable>

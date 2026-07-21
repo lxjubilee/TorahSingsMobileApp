@@ -15,6 +15,7 @@ import { albumToPlayerTracks, catalogTrackId } from '@/content/angelsCatalog/pla
 import type { CatalogAlbum, CatalogCategory, CatalogTrack } from '@/content/angelsCatalog/types';
 import {
   useAppDispatch,
+  useAppSelector,
   useIsAlbumLiked,
   useIsSongLiked,
   usePlayer,
@@ -72,7 +73,7 @@ export const CatalogAlbumScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const { playTracks, playFrom, toggle, currentTrack, isPlaying } = usePlayer();
-  const { addToPlaylist } = usePlaylistMenu();
+  const { addToPlaylist, addAlbumToPlaylist } = usePlaylistMenu();
   const dispatch = useAppDispatch();
 
   const found = useMemo(() => findAlbum(params.code), [params.code]);
@@ -124,6 +125,15 @@ export const CatalogAlbumScreen: React.FC = () => {
   // Above the `!found` return so the hook order stays stable; an empty code just
   // yields a key nothing is stored under.
   const albumLiked = useIsAlbumLiked({ id: found?.album.code ?? '' });
+
+  // Flips the add-to-playlist glyph to "check" once every track is in some
+  // playlist (mirrors AlbumDetails). `membership` is kept fresh by the
+  // playlists slice, so this survives leaving and returning to the screen.
+  const membership = useAppSelector((s) => s.playlists.membership);
+  const albumInPlaylist = useMemo(() => {
+    const ids = tracks.map((tr) => trackSongUuid(tr)).filter((x): x is string => !!x);
+    return ids.length > 0 && ids.every((id) => (membership[id] ?? 0) > 0);
+  }, [tracks, membership]);
   const songTargets = useMemo(
     () =>
       tracks
@@ -215,12 +225,22 @@ export const CatalogAlbumScreen: React.FC = () => {
               onPress={() => dispatch(toggleAlbumLike({ id: album.code }))}
             />
             <IconButton name="share-outline" size={26} style={styles.actionGap} />
-            <MaterialCommunityIcons
-              name="playlist-plus"
-              size={28}
-              color="#FFFFFF"
-              style={styles.actionGap}
-            />
+            <Pressable
+              onPress={() => addAlbumToPlaylist(tracks)}
+              hitSlop={10}
+              disabled={!tracks.length}
+              style={[styles.actionGap, { opacity: tracks.length ? 1 : 0.4 }]}
+              accessibilityRole="button"
+              accessibilityLabel={
+                albumInPlaylist ? t('playlist.inPlaylist') : t('playlist.addToPlaylist')
+              }
+            >
+              <MaterialCommunityIcons
+                name={albumInPlaylist ? 'playlist-check' : 'playlist-plus'}
+                size={28}
+                color={albumInPlaylist ? ACCENT_SOFT : '#FFFFFF'}
+              />
+            </Pressable>
           </View>
           <View style={styles.actionsSide}>
             <IconButton
