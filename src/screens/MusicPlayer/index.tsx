@@ -22,7 +22,9 @@ import { TrackOptionsModal, TrackOption } from '@/components/modals';
 import { usePlaylistMenu } from '@/components/playlists';
 import { useAppDispatch, useIsSongLiked, usePlayer, useSafeProgress } from '@/hooks';
 import { shareAlbum } from '@/services/share';
+import { catalogAlbumByCode } from '@/content/angelsCatalog/player';
 import { toggleSongLike } from '@/redux';
+import type { Track } from '@/types';
 import type { RootStackParamList } from '@/navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
@@ -81,6 +83,16 @@ export const MusicPlayerScreen: React.FC = () => {
     });
   };
 
+  // Angels' Catalog tracks live in bundled data, not the manifest — so their
+  // album opens CatalogAlbum, and they have no artist page at all (the whole
+  // catalog is one synthetic artist, 'angels', which the manifest doesn't know).
+  // Routing them to AlbumDetails/ArtistDetails lands on "not found".
+  const catalogAlbum = catalogAlbumByCode(currentTrack.albumId);
+  const openAlbum = () => {
+    if (catalogAlbum) navigation.navigate('CatalogAlbum', { code: catalogAlbum.code });
+    else navigation.navigate('AlbumDetails', { albumId: currentTrack.albumId });
+  };
+
   // Overflow ("•••") menu actions for the current track.
   const trackOptions: TrackOption[] = [
     {
@@ -93,14 +105,20 @@ export const MusicPlayerScreen: React.FC = () => {
       key: 'album',
       label: t('player.goToAlbum'),
       icon: 'albums-outline',
-      onPress: (track) => navigation.navigate('AlbumDetails', { albumId: track.albumId }),
+      onPress: openAlbum,
     },
-    {
-      key: 'artist',
-      label: t('player.goToArtist'),
-      icon: 'person-outline',
-      onPress: (track) => navigation.navigate('ArtistDetails', { artistId: track.artistId }),
-    },
+    // Omitted for catalog tracks: there is no artist page to open.
+    ...(catalogAlbum
+      ? []
+      : [
+          {
+            key: 'artist',
+            label: t('player.goToArtist'),
+            icon: 'person-outline' as const,
+            onPress: (track: Track) =>
+              navigation.navigate('ArtistDetails', { artistId: track.artistId }),
+          },
+        ]),
     {
       key: 'share',
       label: t('player.share'),
@@ -136,7 +154,9 @@ export const MusicPlayerScreen: React.FC = () => {
             <AppText variant="display" numberOfLines={1}>
               {currentTrack.title}
             </AppText>
+            {/* Not pressable for catalog tracks — 'angels' has no artist page. */}
             <Pressable
+              disabled={!!catalogAlbum}
               onPress={() =>
                 navigation.navigate('ArtistDetails', { artistId: currentTrack.artistId })
               }
@@ -209,10 +229,15 @@ export const MusicPlayerScreen: React.FC = () => {
       </View>
 
       {/* Up-next queue sheet. */}
+      {/* statusBar/navigationBarTranslucent: edge-to-edge, so without these the
+          modal window stops above the system nav bar and that strip shows the
+          screen behind the sheet. Same fix as ReviewComposer. */}
       <Modal
         visible={queueOpen}
         transparent
         animationType="slide"
+        statusBarTranslucent
+        navigationBarTranslucent
         onRequestClose={() => setQueueOpen(false)}
       >
         <Pressable style={styles.queueBackdrop} onPress={() => setQueueOpen(false)}>

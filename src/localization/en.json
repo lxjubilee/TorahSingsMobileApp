@@ -101,6 +101,8 @@
     "favorites": "Liked Songs",
     "albums": "Albums",
     "artists": "Artists",
+    "following": "Following",
+    "emptyFollowing": "Albums and artists you follow will appear here. Tap Follow on any album to add it.",
     "downloads": "Downloads",
     "playlists": "Playlists",
     "empty": "Songs and albums you save will appear here.",

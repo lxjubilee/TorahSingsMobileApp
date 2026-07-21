@@ -52,13 +52,13 @@ export type AuthStackParamList = {
 
 /**
  * Per-tab inner stack for the Playlists tab. Profile nests here, and it now owns
- * the entry points to LikedSongs / FollowedArtists (previously on the Library
+ * the entry points to LikedSongs / Following (previously on the Library
  * screen, which the playlists-only tab replaced).
  */
 export type PlaylistsStackParamList = {
   Playlists: undefined;
   LikedSongs: undefined;
-  FollowedArtists: undefined;
+  Following: undefined;
   Profile: undefined;
   ChangePassword: undefined;
   PrivacyPolicy: undefined;

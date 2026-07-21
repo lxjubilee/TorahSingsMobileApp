@@ -5,7 +5,7 @@ export { useAppDispatch, useAppSelector } from './store/hooks';
 // Slice actions/thunks
 export { fetchHomeFeed } from './slices/homeSlice';
 export { runSearch, setQuery, addRecentSearch, clearRecentSearches } from './slices/searchSlice';
-export { toggleFollowArtist } from './slices/librarySlice';
+export { toggleFollowArtist, toggleFollowAlbum } from './slices/librarySlice';
 export {
   fetchPlaylists,
   fetchMembership,

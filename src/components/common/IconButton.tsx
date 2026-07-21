@@ -13,6 +13,8 @@ interface IconButtonProps {
   iconStyle?: StyleProp<TextStyle>;
   hitSlop?: number;
   disabled?: boolean;
+  /** Spoken name for the control — required when the glyph alone carries meaning. */
+  accessibilityLabel?: string;
 }
 
 /** Pressable icon with a subtle press-opacity, used across headers and the player. */
@@ -25,6 +27,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   iconStyle,
   hitSlop = 10,
   disabled,
+  accessibilityLabel,
 }) => {
   const theme = useTheme();
   return (
@@ -32,6 +35,8 @@ export const IconButton: React.FC<IconButtonProps> = ({
       onPress={onPress}
       disabled={disabled}
       hitSlop={hitSlop}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
       style={({ pressed }) => [
         styles.base,
         style,

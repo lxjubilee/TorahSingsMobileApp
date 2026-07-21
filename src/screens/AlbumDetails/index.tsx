@@ -23,7 +23,7 @@ import { usePlaylistMenu } from '@/components/playlists';
 import { shareAlbum } from '@/services/share';
 import { albumUuid, trackSongUuid } from '@/services/playlists';
 import { songLikeKey } from '@/services/likes';
-import { toggleAlbumLike, toggleSongLike } from '@/redux';
+import { toggleAlbumLike, toggleFollowAlbum, toggleSongLike } from '@/redux';
 import { AlbumRepository, ArtistRepository } from '@/repositories';
 import { Album, MyReview, ReviewTargetType, Track } from '@/types';
 import type { RootStackParamList, RootStackScreenProps } from '@/navigation/types';
@@ -99,6 +99,7 @@ export const AlbumDetailsScreen: React.FC = () => {
   const [posterH, setPosterH] = useState(POSTER_H_DEFAULT);
 
   const albumLiked = useIsAlbumLiked({ id: params.albumId });
+  const following = useAppSelector((s) => s.library.followedAlbumIds.includes(params.albumId));
   const likeKeys = useAppSelector((s) => s.likes.keys);
 
   useEffect(() => {
@@ -335,6 +336,16 @@ export const AlbumDetailsScreen: React.FC = () => {
                 color={albumInPlaylist ? theme.colors.accent : '#FFFFFF'}
               />
             </Pressable>
+            {/* Device-local follow (no backend endpoint), but persisted. Icon-only
+                to match the rest of the row. */}
+            <IconButton
+              name={following ? 'checkmark-circle' : 'add-circle-outline'}
+              size={28}
+              color={following ? theme.colors.accent : undefined}
+              onPress={() => dispatch(toggleFollowAlbum(params.albumId))}
+              style={styles.share}
+              accessibilityLabel={following ? t('common.following') : t('common.follow')}
+            />
           </View>
           <View style={styles.actionsRight}>
             <IconButton name="shuffle" size={26} onPress={onShuffle} style={styles.dl} />

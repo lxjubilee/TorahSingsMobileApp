@@ -42,6 +42,10 @@ export const ProfileScreen: React.FC = () => {
   // Songs only — this shortcut opens LikedSongs, so the number must match the
   // list it leads to. Liked albums are represented by the tiles further down.
   const likedCount = useLikedSongCount();
+  // Albums + artists, since the Following screen lists both.
+  const followingCount = useAppSelector(
+    (s) => s.library.followedAlbumIds.length + s.library.followedArtistIds.length,
+  );
   const initial = (user?.firstName || user?.displayName || user?.email || '')
     .trim()
     .charAt(0)
@@ -98,8 +102,9 @@ export const ProfileScreen: React.FC = () => {
           </AppText>
         </View>
 
-        {/* Liked Songs. Moved here from the old Library screen, which the
-            playlists-only tab replaced — Profile is now its only entry point. */}
+        {/* Liked Songs and Following. Moved here from the old Library screen,
+            which the playlists-only tab replaced — Profile is now the only entry
+            point to either. (Following had no entry point at all before this.) */}
         <View style={styles.shortcuts}>
           <Shortcut
             icon="heart"
@@ -107,6 +112,13 @@ export const ProfileScreen: React.FC = () => {
             meta={`${likedCount}`}
             color={theme.colors.accent}
             onPress={() => navigation.navigate('LikedSongs')}
+          />
+          <Shortcut
+            icon="add-circle"
+            label={t('library.following')}
+            meta={`${followingCount}`}
+            color={theme.colors.accent}
+            onPress={() => navigation.navigate('Following')}
           />
         </View>
 

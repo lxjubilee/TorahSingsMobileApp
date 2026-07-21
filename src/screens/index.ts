@@ -14,7 +14,7 @@ export { ArtistDetailsScreen } from './ArtistDetails';
 export { MusicPlayerScreen } from './MusicPlayer';
 export { PlaylistsScreen } from './Playlists';
 export { LikedSongsScreen } from './LikedSongs';
-export { FollowedArtistsScreen } from './FollowedArtists';
+export { FollowingScreen } from './Following';
 export { PlaylistDetailsScreen } from './PlaylistDetails';
 export { PlaylistAddSongsScreen } from './PlaylistAddSongs';
 // DownloadsScreen is intentionally not exported — feature hidden for v1.

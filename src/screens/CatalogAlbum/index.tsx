@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -23,8 +23,9 @@ import {
   useSongSummaries,
   useTrackDuration,
 } from '@/hooks';
-import { toggleAlbumLike, toggleSongLike } from '@/redux';
+import { toggleAlbumLike, toggleFollowAlbum, toggleSongLike } from '@/redux';
 import { albumUuid, trackSongUuid } from '@/services/playlists';
+import { shareAlbum } from '@/services/share';
 import type { MyReview, ReviewTargetType, Track } from '@/types';
 import { formatDuration, shuffle } from '@/utils';
 import { CatalogTile } from '../Home/components/CatalogTile';
@@ -126,6 +127,20 @@ export const CatalogAlbumScreen: React.FC = () => {
   // yields a key nothing is stored under.
   const albumLiked = useIsAlbumLiked({ id: found?.album.code ?? '' });
 
+  // Device-local follow (no backend endpoint exists), persisted via the library
+  // slice — so unlike the web button it survives a restart.
+  const following = useAppSelector((s) =>
+    s.library.followedAlbumIds.includes(found?.album.code ?? ''),
+  );
+
+  // Shares the torahsings.com album page. Artist is the catalog-wide "The
+  // Angels" (matching Track.artistName from albumToPlayerTracks).
+  const onShare = useCallback(() => {
+    if (found) {
+      void shareAlbum({ code: found.album.code, title: found.album.title, artistName: 'The Angels' });
+    }
+  }, [found]);
+
   // Flips the add-to-playlist glyph to "check" once every track is in some
   // playlist (mirrors AlbumDetails). `membership` is kept fresh by the
   // playlists slice, so this survives leaving and returning to the screen.
@@ -224,7 +239,13 @@ export const CatalogAlbumScreen: React.FC = () => {
               color={albumLiked ? ACCENT_SOFT : undefined}
               onPress={() => dispatch(toggleAlbumLike({ id: album.code }))}
             />
-            <IconButton name="share-outline" size={26} style={styles.actionGap} />
+            <IconButton
+              name="share-outline"
+              size={26}
+              onPress={onShare}
+              style={styles.actionGap}
+              accessibilityLabel={t('player.share')}
+            />
             <Pressable
               onPress={() => addAlbumToPlaylist(tracks)}
               hitSlop={10}
@@ -241,6 +262,18 @@ export const CatalogAlbumScreen: React.FC = () => {
                 color={albumInPlaylist ? ACCENT_SOFT : '#FFFFFF'}
               />
             </Pressable>
+            {/* Follow is device-local (no backend follow endpoint exists) but
+                persisted, unlike the web button which resets on reload. Icon-only
+                to match the rest of the row; outline -> filled + accent follows
+                the same convention as the heart and add-to-playlist glyphs. */}
+            <IconButton
+              name={following ? 'checkmark-circle' : 'add-circle-outline'}
+              size={28}
+              color={following ? ACCENT_SOFT : undefined}
+              onPress={() => dispatch(toggleFollowAlbum(album.code))}
+              style={styles.actionGap}
+              accessibilityLabel={following ? t('common.following') : t('common.follow')}
+            />
           </View>
           <View style={styles.actionsSide}>
             <IconButton

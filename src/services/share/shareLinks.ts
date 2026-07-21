@@ -5,21 +5,26 @@ import { logger } from '@/utils';
 /**
  * Album sharing + share-link parsing.
  *
- * The canonical share URL is an https link to the JubiLujah.com album page,
- * carrying the album code (`c`):
+ * The canonical share URL is an https link to the Torah Sings album page, which
+ * takes the album code as a PATH segment:
  *
- *   https://jubilujah.com/album?c=<ALBUM_CODE>
+ *   https://torahsings.com/album/<ALBUM_CODE>
  *
  * That one URL renders a rich preview (the web page's Open Graph tags), opens
- * the app to the album when installed (universal / App Links on jubilujah.com),
- * and falls back to the store otherwise (the web page redirects). `album.id` /
- * `track.albumId` IS the album code.
+ * the app to the album when installed, and falls back to the site otherwise.
+ * `album.id` / `track.albumId` IS the album code.
+ *
+ * This used to point at `jubilujah.com/album?c=<CODE>`, which 404s: wrong brand
+ * AND wrong shape. TorahSings.com routes albums as `/album/[id]`
+ * (app/album/[id]/page.tsx pre-renders every catalog code), so the query form
+ * fails even on the right host. `parseShareLink` below still accepts the old
+ * form so links already out in the wild keep resolving.
  *
  * Sharing is album-level: there is no per-track web page, so a shared link
  * always resolves to an album.
  */
 
-const WEB_HOST = 'jubilujah.com';
+const WEB_HOST = 'torahsings.com';
 
 /** Minimal album shape needed to build a share. */
 export interface AlbumShareInput {
@@ -30,7 +35,7 @@ export interface AlbumShareInput {
 }
 
 export function buildAlbumShareUrl(code: string): string {
-  return `https://${WEB_HOST}/album?c=${encodeURIComponent(code)}`;
+  return `https://${WEB_HOST}/album/${encodeURIComponent(code)}`;
 }
 
 /** Open the native share sheet (WhatsApp, Messenger, Email, SMS, …) for an album. */
