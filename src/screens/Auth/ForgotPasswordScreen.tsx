@@ -16,7 +16,11 @@ import { AppText, BrandLogo, IconButton } from '@/components/common';
 import { useAppDispatch } from '@/hooks';
 import { forgotPassword } from '@/redux';
 
-const ACCENT = '#007FFF'; // Azure blue accent
+// Gold, matching theme.colors.accent (see theme/colors).
+const ACCENT = '#ffd877';
+// Gold is light — white on it is ~1.4:1 and unreadable, so filled
+// accent surfaces use this instead.
+const ON_ACCENT = '#0B0B0F';
 
 /**
  * Request a password-reset email. The API is anti-enumeration (identical
@@ -169,7 +173,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  ctaLabel: { color: '#FFFFFF', fontWeight: '700' },
+  ctaLabel: { color: ON_ACCENT, fontWeight: '700' },
 });
 
 export default ForgotPasswordScreen;

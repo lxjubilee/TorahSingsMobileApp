@@ -13,7 +13,11 @@ const HERO_H = Math.round(SCREEN_H * 0.58);
 const TILE = Math.min((SCREEN_W - 48 - 20) / 2, 88);
 const GRID_GAP = 18;
 const GRID_W = TILE * 2 + GRID_GAP; // exactly two columns → 2×2
-const ACCENT = '#007FFF'; // Azure blue accent
+// Gold, matching theme.colors.accent (see theme/colors).
+const ACCENT = '#ffd877';
+// Gold is light — white on it is ~1.4:1 and unreadable, so filled
+// accent surfaces use this instead.
+const ON_ACCENT = '#0B0B0F';
 
 interface Profile {
   key: string;
@@ -151,7 +155,7 @@ const styles = StyleSheet.create({
   hero: { width: '100%' },
   badge: { flexDirection: 'row', alignItems: 'center', gap: 8, alignSelf: 'center', marginBottom: 16 },
   topBox: { backgroundColor: ACCENT, borderRadius: 3, paddingHorizontal: 4, paddingVertical: 1 },
-  topBoxText: { color: '#fff', fontSize: 9, fontWeight: '800', letterSpacing: 0.5 },
+  topBoxText: { color: ON_ACCENT, fontSize: 9, fontWeight: '800', letterSpacing: 0.5 },
   badgeText: { color: '#fff' },
   body: { flex: 1 },
   scroll: { flexGrow: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 40 },

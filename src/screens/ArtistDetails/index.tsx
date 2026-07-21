@@ -24,6 +24,8 @@ const HERO = width * 0.95;
 // down to 40% of that (~14px) so even the longest persona name fits one line on
 // a narrow phone. Never 0 — a fontSize of 0 hard-crashes Text on Fabric.
 const MIN_NAME_SCALE = 0.4;
+// Gold, matching theme.colors.accent (this screen has no theme in scope).
+const ACCENT = '#ffd877';
 
 export const ArtistDetailsScreen: React.FC = () => {
   const { params } = useRoute<RootStackScreenProps<'ArtistDetails'>['route']>();
@@ -211,7 +213,7 @@ export const ArtistDetailsScreen: React.FC = () => {
           <IconButton
             name={isThisArtistPlaying ? 'pause-circle' : 'play-circle'}
             size={52}
-            color="#007FFF"
+            color={ACCENT}
             onPress={onPlayPause}
           />
         </View>

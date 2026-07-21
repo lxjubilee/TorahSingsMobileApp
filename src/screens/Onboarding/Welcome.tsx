@@ -59,7 +59,11 @@ const SLIDES: Slide[] = [
   },
 ];
 
-const ACCENT = '#007FFF'; // Azure blue accent
+// Gold, matching theme.colors.accent. (This screen predates the theme and keeps
+// its own consts; the token is `accent` / `onAccent` in theme/colors.)
+const ACCENT = '#ffd877';
+// Gold is light — white on it is ~1.4:1 and unreadable, so filled buttons use this.
+const ON_ACCENT = '#0B0B0F';
 
 /**
  * First-launch welcome: a horizontal pager of slides, each with its own visual
@@ -211,7 +215,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  ctaLabel: { color: '#FFFFFF', fontWeight: '700' },
+  ctaLabel: { color: ON_ACCENT, fontWeight: '700' },
 });
 
 export default Welcome;

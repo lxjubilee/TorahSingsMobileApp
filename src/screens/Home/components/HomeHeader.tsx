@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   solidBg: { backgroundColor: '#000' },
-  brand: { color: '#007FFF' },
+  // Gold, matching theme.colors.accent and the GOLD wordmark above.
+  brand: { color: '#ffd877' },
   // Bold mixed-case wordmark ("TorahSings").
   brandText: { fontSize: 26, lineHeight: 30, fontWeight: '900', letterSpacing: 0.5 },
   actions: { flexDirection: 'row', alignItems: 'center', gap: 14 },

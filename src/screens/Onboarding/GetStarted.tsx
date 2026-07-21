@@ -19,7 +19,10 @@ interface GetStartedProps {
   onContinue: () => void;
 }
 
-const ACCENT = '#007FFF'; // Azure blue accent
+// Gold, matching theme.colors.accent (see theme/colors).
+const ACCENT = '#ffd877';
+// Gold is light — white on it is unreadable, so filled buttons use this.
+const ON_ACCENT = '#0B0B0F';
 
 /**
  * "Ready to listen?" sign-in / get-started screen (Netflix style): back arrow +
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  ctaLabel: { color: '#FFFFFF', fontWeight: '700' },
+  ctaLabel: { color: ON_ACCENT, fontWeight: '700' },
   help: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 28 },
   helpText: { color: '#FFFFFF' },
   recaptcha: { marginTop: 26, lineHeight: 18 },

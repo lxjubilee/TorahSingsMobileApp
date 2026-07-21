@@ -23,7 +23,11 @@ import { CONFIG } from '@/constants';
 import type { AuthStackParamList } from '@/navigation/types';
 
 type Nav = NativeStackNavigationProp<AuthStackParamList, 'SignIn'>;
-const ACCENT = '#007FFF'; // Azure blue accent
+// Gold, matching theme.colors.accent (see theme/colors).
+const ACCENT = '#ffd877';
+// Gold is light — white on it is ~1.4:1 and unreadable, so filled
+// accent surfaces use this instead.
+const ON_ACCENT = '#0B0B0F';
 
 /**
  * "Ready to listen?" — real email + password sign-in against the SSO backend.
@@ -239,7 +243,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  ctaLabel: { color: '#FFFFFF', fontWeight: '700' },
+  ctaLabel: { color: ON_ACCENT, fontWeight: '700' },
   help: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 26 },
   helpText: { color: '#FFFFFF' },
   signupRow: { flexDirection: 'row', alignItems: 'center', marginTop: 26 },
