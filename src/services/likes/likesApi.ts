@@ -1,7 +1,7 @@
 import { authClient } from '@/services/auth/authClient';
 
 /**
- * Thin client for the likes API (`/api/me/likes*` on api.jubilujah.com). Uses
+ * Thin client for the likes API (`/api/me/likes*` on api.torahsings.com). Uses
  * the shared `authClient` (Bearer + transparent 401-refresh). Likes are a single
  * like/unlike toggle (no dislike): POST to add, DELETE to remove. `target_id`
  * must be the deterministic uuid (see likeIds.ts), not the catalog code.

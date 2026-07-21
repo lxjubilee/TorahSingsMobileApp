@@ -6,4 +6,5 @@ export {
   getAlbumUuidMap,
   peekAlbumUuidMap,
   invalidateAlbumUuidMap,
+  catalogAlbumUuidMap,
 } from './likeIds';

@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from '@/redux';
 import { Album, Track } from '@/types';
-import { songLikeKey, albumLikeKey, getAlbumUuidMap } from '@/services/likes';
+import { songLikeKey, albumLikeKey, getAlbumUuidMap, catalogAlbumUuidMap } from '@/services/likes';
+import type { CatalogAlbum } from '@/content/angelsCatalog/types';
 import { getSongUuidMap } from '@/services/playlists';
 import { useVisibleTracks, useVisibleAlbums } from './useVisibleCatalog';
 
@@ -17,11 +18,31 @@ export function useIsAlbumLiked(album: Pick<Album, 'id'>): boolean {
   return useAppSelector((s) => !!s.likes.keys[key]);
 }
 
-/** Count of liked songs (drives the Library "Favorites" shortcut). */
+/** Count of liked songs. */
 export function useLikedSongCount(): number {
   return useAppSelector(
     (s) => Object.keys(s.likes.keys).filter((k) => k.startsWith('song:')).length,
   );
+}
+
+/**
+ * Liked albums from the bundled Angels' Catalog. Kept separate from
+ * useLikedAlbums() because the catalog isn't in the manifest and its albums are
+ * `CatalogAlbum`s (rendered by CatalogTile, opened via the CatalogAlbum route),
+ * not domain `Album`s. Synchronous — the catalog ships with the app.
+ */
+export function useLikedCatalogAlbums(): CatalogAlbum[] {
+  const keys = useAppSelector((s) => s.likes.keys);
+  return useMemo(() => {
+    const byUuid = catalogAlbumUuidMap();
+    const out: CatalogAlbum[] = [];
+    for (const k of Object.keys(keys)) {
+      if (!k.startsWith('album:')) continue;
+      const a = byUuid.get(k.slice('album:'.length));
+      if (a) out.push(a);
+    }
+    return out;
+  }, [keys]);
 }
 
 /**

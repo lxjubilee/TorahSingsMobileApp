@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Album, RequestStatus, Track } from '@/types';
 import { likesApi, songLikeKey, type LikeType } from '@/services/likes';
 import { albumUuid, trackSongUuid } from '@/services/playlists';
+import { logger } from '@/utils';
 import type { AppDispatch } from '../store/store';
 import type { RootState } from '../store/rootReducer';
 import { clearSession, signOut } from './authSlice';
@@ -77,7 +78,14 @@ const toggleLike =
     try {
       if (was) await likesApi.unlike(type, uuid);
       else await likesApi.like(type, uuid);
-    } catch {
+    } catch (e) {
+      // Log before reverting: a silent revert is indistinguishable from "the
+      // heart never responded", which makes a 401/network failure impossible to
+      // diagnose from the device.
+      const err = e as { status?: number; message?: string };
+      logger.error(
+        `like ${was ? 'unlike' : 'like'} failed (${type} ${uuid}) status=${err?.status} — ${err?.message}`,
+      );
       dispatch(setLikedLocal({ key, liked: was })); // revert
     }
   };
@@ -90,8 +98,12 @@ export const toggleSongLike = (track: Track) => (dispatch: AppDispatch) => {
   return dispatch(toggleLike('song', uuid, key));
 };
 
-/** Like / unlike an album. */
-export const toggleAlbumLike = (album: Album) => (dispatch: AppDispatch) => {
+/**
+ * Like / unlike an album. Takes only the id so the Angels' Catalog screen can
+ * pass its catalog code directly (`{ id: album.code }`) — the code IS the
+ * `Album.id` space that `albumUuid()` hashes.
+ */
+export const toggleAlbumLike = (album: Pick<Album, 'id'>) => (dispatch: AppDispatch) => {
   const uuid = albumUuid(album.id);
   return dispatch(toggleLike('album', uuid, `album:${uuid}`));
 };

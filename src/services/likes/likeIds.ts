@@ -2,6 +2,8 @@ import { Album, Track } from '@/types';
 import { getCatalogIndex, peekCatalogIndex } from '@/services/catalog';
 import type { CatalogIndex } from '@/services/catalog';
 import { albumUuid, trackSongUuid } from '@/services/playlists';
+import { allCatalogAlbums } from '@/content/angelsCatalog/player';
+import type { CatalogAlbum } from '@/content/angelsCatalog/types';
 
 /**
  * Membership keys for the likes API. The backend's `GET /api/me/likes/ids`
@@ -54,4 +56,19 @@ export function peekAlbumUuidMap(): Map<string, Album> | null {
 /** Drop the reverse map so it rebuilds after a manifest/catalog refresh. */
 export function invalidateAlbumUuidMap(): void {
   albumMap = null;
+}
+
+// --- Reverse map: server album uuid -> bundled Angels' Catalog album ----------
+// The catalog is NOT in the manifest (it ships no ANSMX* codes), so liked
+// catalog albums can't resolve through getAlbumUuidMap() above. They're bundled
+// and synchronous, so this map needs no catalog fetch.
+
+let catalogMap: Map<string, CatalogAlbum> | null = null;
+
+/** Resolve album uuids -> bundled catalog albums (sync; built once on demand). */
+export function catalogAlbumUuidMap(): Map<string, CatalogAlbum> {
+  if (!catalogMap) {
+    catalogMap = new Map(allCatalogAlbums.map((a) => [albumUuid(a.code), a]));
+  }
+  return catalogMap;
 }

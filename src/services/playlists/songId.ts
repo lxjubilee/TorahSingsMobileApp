@@ -1,6 +1,7 @@
 import { Track } from '@/types';
 import { getCatalogIndex, peekCatalogIndex } from '@/services/catalog';
 import type { CatalogIndex } from '@/services/catalog';
+import { allCatalogTracks } from '@/content/angelsCatalog/player';
 import { uuidv5 } from './uuidv5';
 
 /**
@@ -41,6 +42,13 @@ let reverseMap: Map<string, Track> | null = null;
 
 function build(index: CatalogIndex): Map<string, Track> {
   const map = new Map<string, Track>();
+  // The bundled Angels' Catalog is NOT in the manifest (no ANSMX* codes there),
+  // so its tracks must be seeded separately — otherwise a liked/playlisted
+  // catalog song resolves to nothing and silently vanishes from the list.
+  for (const t of allCatalogTracks) {
+    if (t.trackNumber == null) continue;
+    map.set(songUuid(t.albumId, t.trackNumber), t);
+  }
   for (const album of index.albumsById.values()) {
     for (const t of album.tracks ?? []) {
       if (t.trackNumber == null) continue;

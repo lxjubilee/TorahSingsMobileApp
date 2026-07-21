@@ -8,7 +8,14 @@ import { useTheme } from '@/context';
 import { Screen, AppText, Button, IconButton, ConfirmDialog } from '@/components/common';
 import { AlbumCard } from '@/components/cards';
 import { MyContributions } from '@/components/reviews';
-import { useAppDispatch, useAppSelector, useLikedAlbums, useLikedSongCount } from '@/hooks';
+import { CatalogTile } from '../Home/components/CatalogTile';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useLikedAlbums,
+  useLikedCatalogAlbums,
+  useLikedSongCount,
+} from '@/hooks';
 import { signOut, deleteAccount, clearSession } from '@/redux';
 import type { PlaylistsStackParamList, RootStackParamList } from '@/navigation/types';
 
@@ -29,6 +36,11 @@ export const ProfileScreen: React.FC = () => {
   // Liked albums (server-backed), resolved to catalog Albums; never hidden by
   // the active catalog language (a personal collection).
   const { albums: savedAlbums } = useLikedAlbums();
+  // Angels' Catalog albums resolve separately — they aren't in the manifest the
+  // useLikedAlbums() reverse map is built from. See useLikes.ts.
+  const savedCatalogAlbums = useLikedCatalogAlbums();
+  // Songs only — this shortcut opens LikedSongs, so the number must match the
+  // list it leads to. Liked albums are represented by the tiles further down.
   const likedCount = useLikedSongCount();
   const initial = (user?.firstName || user?.displayName || user?.email || '')
     .trim()
@@ -108,8 +120,16 @@ export const ProfileScreen: React.FC = () => {
           <AppText variant="h2" style={styles.albumsTitle}>
             {t('library.albums')}
           </AppText>
-          {savedAlbums.length ? (
+          {savedAlbums.length || savedCatalogAlbums.length ? (
             <View style={styles.albumGrid}>
+              {savedCatalogAlbums.map((album) => (
+                <CatalogTile
+                  key={album.code}
+                  album={album}
+                  width={CARD_W}
+                  onPress={() => navigation.navigate('CatalogAlbum', { code: album.code })}
+                />
+              ))}
               {savedAlbums.map((album) => (
                 <AlbumCard
                   key={album.id}

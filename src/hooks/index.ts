@@ -21,6 +21,7 @@ export {
   useLikedSongCount,
   useLikedTracks,
   useLikedAlbums,
+  useLikedCatalogAlbums,
 } from './useLikes';
 export { useTheme } from '@/context/ThemeProvider';
 export { useAppDispatch, useAppSelector } from '@/redux';

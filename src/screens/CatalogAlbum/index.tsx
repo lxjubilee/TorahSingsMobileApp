@@ -13,7 +13,16 @@ import { angelsCatalog } from '@/content/angelsCatalog/data';
 import { catalogCover } from '@/content/angelsCatalog/covers';
 import { albumToPlayerTracks, catalogTrackId } from '@/content/angelsCatalog/player';
 import type { CatalogAlbum, CatalogCategory, CatalogTrack } from '@/content/angelsCatalog/types';
-import { usePlayer, useReviews, useSongSummaries, useTrackDuration } from '@/hooks';
+import {
+  useAppDispatch,
+  useIsAlbumLiked,
+  useIsSongLiked,
+  usePlayer,
+  useReviews,
+  useSongSummaries,
+  useTrackDuration,
+} from '@/hooks';
+import { toggleAlbumLike, toggleSongLike } from '@/redux';
 import { albumUuid, trackSongUuid } from '@/services/playlists';
 import type { MyReview, ReviewTargetType, Track } from '@/types';
 import { formatDuration, shuffle } from '@/utils';
@@ -64,6 +73,7 @@ export const CatalogAlbumScreen: React.FC = () => {
   const { t } = useTranslation();
   const { playTracks, playFrom, toggle, currentTrack, isPlaying } = usePlayer();
   const { addToPlaylist } = usePlaylistMenu();
+  const dispatch = useAppDispatch();
 
   const found = useMemo(() => findAlbum(params.code), [params.code]);
 
@@ -111,6 +121,9 @@ export const CatalogAlbumScreen: React.FC = () => {
     'album',
     albumTargetId,
   );
+  // Above the `!found` return so the hook order stays stable; an empty code just
+  // yields a key nothing is stored under.
+  const albumLiked = useIsAlbumLiked({ id: found?.album.code ?? '' });
   const songTargets = useMemo(
     () =>
       tracks
@@ -190,10 +203,17 @@ export const CatalogAlbumScreen: React.FC = () => {
         </View>
 
         {/* Action row (mirrors AlbumDetails: like / share / add-to-playlist ·
-            shuffle / Play) — visual-only until the catalog is backend-wired. */}
+            shuffle / Play). The heart is server-backed like AlbumDetails': the
+            catalog code IS the Album.id space albumUuid() hashes, so the same
+            deterministic uuid reaches /api/me/likes. Share is still visual-only. */}
         <View style={styles.actions}>
           <View style={styles.actionsSide}>
-            <IconButton name="heart-outline" size={28} />
+            <IconButton
+              name={albumLiked ? 'heart' : 'heart-outline'}
+              size={28}
+              color={albumLiked ? ACCENT_SOFT : undefined}
+              onPress={() => dispatch(toggleAlbumLike({ id: album.code }))}
+            />
             <IconButton name="share-outline" size={26} style={styles.actionGap} />
             <MaterialCommunityIcons
               name="playlist-plus"
@@ -390,8 +410,9 @@ export const CatalogAlbumScreen: React.FC = () => {
  * One track row: index / now-playing indicator, title + "Sung by the Angels" +
  * the rating slot, and trailing heart · add-to-playlist · duration. The duration
  * is resolved lazily from the audio header (catalog tracks ship none); the heart
- * is a local visual toggle (these tracks aren't in the likes backend yet), while
- * add-to-playlist opens the app's real playlist picker.
+ * is server-backed via /api/me/likes (the catalog track's albumId + trackNumber
+ * hash to the same song uuid playlists use), while add-to-playlist opens the
+ * app's real playlist picker.
  */
 type CatalogTrackRowProps = {
   track: CatalogTrack;
@@ -407,7 +428,8 @@ type CatalogTrackRowProps = {
 // Declared as a hoisted function (not a `const` arrow) so it's in scope where
 // the track list references it above — matches the rest of the screens.
 function CatalogTrackRow({ track, playerTrack, showDivider, isCurrent, onPlay, onAddToPlaylist, ratingSlot }: CatalogTrackRowProps) {
-  const [liked, setLiked] = useState(false);
+  const dispatch = useAppDispatch();
+  const liked = useIsSongLiked(playerTrack);
   const duration = useTrackDuration(playerTrack);
 
   return (
@@ -437,7 +459,7 @@ function CatalogTrackRow({ track, playerTrack, showDivider, isCurrent, onPlay, o
           name={liked ? 'heart' : 'heart-outline'}
           size={20}
           color={liked ? ACCENT_SOFT : INK_MUTED}
-          onPress={() => setLiked((v) => !v)}
+          onPress={() => dispatch(toggleSongLike(playerTrack))}
           style={styles.trackAction}
         />
         <IconButton
