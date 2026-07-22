@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { clearSession, signOut } from './authSlice';
 
 /**
  * Follows — artists and albums (local-only: there is no backend follow endpoint
@@ -37,6 +38,14 @@ const librarySlice = createSlice({
         ? state.followedAlbumIds.filter((a) => a !== id)
         : [id, ...state.followedAlbumIds];
     },
+  },
+  extraReducers: (builder) => {
+    // Follows are persisted to AsyncStorage, so without this they outlive the
+    // account that made them — the next person to sign in on this device would
+    // inherit the previous user's follows. Mirrors likesSlice.
+    builder
+      .addCase(clearSession, () => initialState)
+      .addCase(signOut.fulfilled, () => initialState);
   },
 });
 

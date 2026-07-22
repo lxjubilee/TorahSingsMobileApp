@@ -12,9 +12,10 @@ import {
   IconButton,
   Placeholder,
   ConfirmDialog,
+  TrackArtwork,
 } from '@/components/common';
 import { TrackRow } from '@/components/cards';
-import { PlaylistCover, PlaylistNameDialog } from '@/components/playlists';
+import { PlaylistNameDialog } from '@/components/playlists';
 import { FloatingMiniPlayer } from '@/components/player';
 import { useTheme } from '@/context';
 import { useAppDispatch, useAppSelector, usePlayer } from '@/hooks';
@@ -143,7 +144,7 @@ export const PlaylistDetailsScreen: React.FC = () => {
         <View style={styles.header}>
           {/* Celestial art reports no natural size, so posterH simply stays at
               POSTER_H_DEFAULT for those playlists. */}
-          <PlaylistCover
+          <TrackArtwork
             track={tracks[0]}
             fallbackUri={summary?.cover}
             style={[styles.artFrame, { width: POSTER_W, height: posterH }]}

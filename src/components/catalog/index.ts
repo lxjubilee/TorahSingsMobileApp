@@ -1,0 +1,1 @@
+export { CatalogCover } from './CatalogCover';

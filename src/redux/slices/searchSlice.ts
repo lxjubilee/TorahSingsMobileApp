@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SearchRepository } from '@/repositories';
 import { CONFIG } from '@/constants';
 import { RequestStatus, SearchResults } from '@/types';
+import { clearSession, signOut } from './authSlice';
 
 interface SearchState {
   query: string;
@@ -60,7 +61,11 @@ const searchSlice = createSlice({
       .addCase(runSearch.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message ?? 'Search failed';
-      });
+      })
+      // `recent` is persisted search history — personal to the account that
+      // typed it, so it must not survive into the next session. Mirrors likesSlice.
+      .addCase(clearSession, () => initialState)
+      .addCase(signOut.fulfilled, () => initialState);
   },
 });
 

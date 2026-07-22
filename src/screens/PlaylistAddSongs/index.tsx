@@ -3,8 +3,7 @@ import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { Screen, AppText, IconButton } from '@/components/common';
-import { PlaylistCover } from '@/components/playlists';
+import { Screen, AppText, IconButton, TrackArtwork } from '@/components/common';
 import { useTheme } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { addTrackToPlaylist, fetchPlaylistDetail, removeItemFromPlaylist } from '@/redux';
@@ -106,7 +105,7 @@ export const PlaylistAddSongsScreen: React.FC = () => {
                 style={({ pressed }) => [styles.row, { opacity: pressed ? 0.7 : 1 }]}
                 onPress={() => toggle(track)}
               >
-                <PlaylistCover
+                <TrackArtwork
                   track={track}
                   style={[styles.art, { borderRadius: theme.radius.sm }]}
                   iconSize={20}

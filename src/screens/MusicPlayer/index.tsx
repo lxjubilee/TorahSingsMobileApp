@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context';
-import { AppText, Artwork, IconButton } from '@/components/common';
+import { AppText, IconButton, TrackArtwork } from '@/components/common';
 import { ProgressBar } from '@/components/player';
 import { TrackRow } from '@/components/cards';
 import { TrackOptionsModal, TrackOption } from '@/components/modals';
@@ -129,7 +129,12 @@ export const MusicPlayerScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background, paddingTop: insets.top + 8 }]}>
-      <Artwork uri={currentTrack.artwork} style={StyleSheet.absoluteFill} blurRadius={60} iconSize={0} />
+      <TrackArtwork
+        track={currentTrack}
+        style={StyleSheet.absoluteFill}
+        blurRadius={60}
+        iconSize={0}
+      />
       <LinearGradient colors={['rgba(11,11,15,0.4)', '#0B0B0F']} style={StyleSheet.absoluteFill} />
 
       <View style={styles.header}>
@@ -141,8 +146,8 @@ export const MusicPlayerScreen: React.FC = () => {
       </View>
 
       <View style={styles.artWrap}>
-        <Artwork
-          uri={currentTrack.artwork}
+        <TrackArtwork
+          track={currentTrack}
           style={[styles.art, { width: ART, height: ART, borderRadius: theme.radius.lg }]}
           iconSize={Math.round(ART * 0.3)}
         />

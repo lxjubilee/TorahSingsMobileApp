@@ -78,7 +78,10 @@
     "tracks": "{{count}} songs",
     "addToLibrary": "Add to Library",
     "moreFrom": "More from {{name}}",
-    "similarMusic": "Similar Music"
+    "similarMusic": "Similar Music",
+    "sungByAngels": "Sung by the Angels",
+    "catalogMeta_one": "Sung by the Angels · {{count}} song · {{category}}",
+    "catalogMeta_other": "Sung by the Angels · {{count}} songs · {{category}}"
   },
   "playbackLimit": {
     "title": "Daily Limit Reached",
@@ -126,7 +129,7 @@
     "guest": "Guest",
     "notSignedIn": "Not signed in",
     "deleteTitle": "Delete account?",
-    "deleteMessage": "This permanently deletes your account and all your data. This action cannot be undone.",
+    "deleteMessage": "This permanently deletes your TorahSings account ({{email}}) and everything on it. This cannot be undone.\n\nYour Jubilee Account and other Jubilee sites are not affected — this removes you from TorahSings only.",
     "deletedTitle": "Account deleted",
     "deletedMessage": "Your account has been permanently deleted.",
     "deleteFailedTitle": "Couldn't delete account"

@@ -6,7 +6,7 @@ import { useTrackDuration } from '@/hooks';
 import { Track } from '@/types';
 import { formatDuration } from '@/utils';
 import { AppText } from '../common/AppText';
-import { Artwork } from '../common/Artwork';
+import { TrackArtwork } from '../common/TrackArtwork';
 import { IconButton } from '../common/IconButton';
 
 interface TrackRowProps {
@@ -66,8 +66,8 @@ export const TrackRow: React.FC<TrackRowProps> = ({
           )}
         </View>
       ) : (
-        <Artwork
-          uri={track.artwork}
+        <TrackArtwork
+          track={track}
           style={[styles.art, { borderRadius: theme.radius.sm }]}
           transition={150}
           iconSize={20}

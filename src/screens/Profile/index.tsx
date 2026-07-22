@@ -190,7 +190,9 @@ export const ProfileScreen: React.FC = () => {
       <ConfirmDialog
         visible={mode === 'confirm'}
         title={t('profile.deleteTitle')}
-        message={t('profile.deleteMessage')}
+        // Names the account and states the scope, as the web's modal does: this
+        // teardown is TorahSings-only and never touches the shared Jubilee Account.
+        message={t('profile.deleteMessage', { email: user?.email ?? '' })}
         confirmLabel={t('common.delete')}
         cancelLabel={t('common.cancel')}
         destructive

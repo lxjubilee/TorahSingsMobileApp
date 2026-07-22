@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -9,8 +9,8 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Screen, AppText, IconButton, SectionHeader } from '@/components/common';
 import { FloatingMiniPlayer } from '@/components/player';
 import { usePlaylistMenu } from '@/components/playlists';
+import { CatalogCover } from '@/components/catalog';
 import { angelsCatalog } from '@/content/angelsCatalog/data';
-import { catalogCover } from '@/content/angelsCatalog/covers';
 import { albumToPlayerTracks, catalogTrackId } from '@/content/angelsCatalog/player';
 import type { CatalogAlbum, CatalogCategory, CatalogTrack } from '@/content/angelsCatalog/types';
 import {
@@ -95,14 +95,15 @@ export const CatalogAlbumScreen: React.FC = () => {
     const { album, category } = found;
     const sameBook = category.albums.filter((a) => a.book === album.book && a.code !== album.code);
     if (sameBook.length) {
-      return { moreTitle: `More from ${album.book}`, moreAlbums: sameBook, moreBook: album.book };
+      return { moreTitle: t('album.moreFrom', { name: album.book }), moreAlbums: sameBook, moreBook: album.book };
     }
     return {
-      moreTitle: `More from ${category.title}`,
+      moreTitle: t('album.moreFrom', { name: category.title }),
       moreAlbums: category.albums.filter((a) => a.code !== album.code),
       moreBook: undefined,
     };
-  }, [found]);
+    // `t` in deps so the rail title re-resolves when the language changes.
+  }, [found, t]);
 
   // Division rail (shown before "More from"): this division's other albums.
   const divisionAlbums = useMemo(
@@ -170,7 +171,7 @@ export const CatalogAlbumScreen: React.FC = () => {
       <Screen safeArea={false}>
         <View style={styles.missing}>
           <AppText variant="body" color="textMuted">
-            Album not found.
+            {t('errors.albumNotFound')}
           </AppText>
         </View>
         <View style={[styles.fixedHeader, { paddingTop: insets.top, height: insets.top + HEADER_HEIGHT }]}>
@@ -181,7 +182,6 @@ export const CatalogAlbumScreen: React.FC = () => {
   }
 
   const { album, category } = found;
-  const cover = catalogCover(album.code);
 
   // Whether a track from THIS album is loaded in the player, and whether it's
   // currently playing — drives the Play/Pause toggle on the album pill.
@@ -197,16 +197,8 @@ export const CatalogAlbumScreen: React.FC = () => {
           paddingBottom: 40 + insets.bottom,
         }}
       >
-        {/* Cover — bundled art, or the celestial placeholder (hue + glyph). */}
-        {cover ? (
-          <Image source={cover} style={styles.cover} resizeMode="cover" />
-        ) : (
-          <View style={[styles.cover, styles.celestial, { backgroundColor: `hsl(${album.hue}, 45%, 18%)` }]}>
-            <AppText style={[styles.glyph, { color: `hsla(${album.hue}, 70%, 78%, 0.55)` }]}>
-              {album.glyph ?? '✧'}
-            </AppText>
-          </View>
-        )}
+        {/* Cover — the CDN artwork over the bundled webp, else celestial art. */}
+        <CatalogCover album={album} style={styles.cover} glyphSize={120} />
 
         {/* Book eyebrow → title → meta line (web album header, centered like
             the app's AlbumDetails). */}
@@ -221,8 +213,7 @@ export const CatalogAlbumScreen: React.FC = () => {
             {album.title}
           </AppText>
           <AppText variant="bodySm" style={styles.metaLine}>
-            Sung by the Angels · {album.tracks.length} {album.tracks.length === 1 ? 'song' : 'songs'} ·{' '}
-            {category.title}
+            {t('album.catalogMeta', { count: album.tracks.length, category: category.title })}
           </AppText>
 
         </View>
@@ -481,6 +472,7 @@ type CatalogTrackRowProps = {
 // Declared as a hoisted function (not a `const` arrow) so it's in scope where
 // the track list references it above — matches the rest of the screens.
 function CatalogTrackRow({ track, playerTrack, showDivider, isCurrent, onPlay, onAddToPlaylist, ratingSlot }: CatalogTrackRowProps) {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const liked = useIsSongLiked(playerTrack);
   const duration = useTrackDuration(playerTrack);
@@ -502,7 +494,7 @@ function CatalogTrackRow({ track, playerTrack, showDivider, isCurrent, onPlay, o
           {track.title}
         </AppText>
         <AppText variant="bodySm" color="textMuted" numberOfLines={1}>
-          Sung by the Angels
+          {t('album.sungByAngels')}
         </AppText>
         {ratingSlot ? <View style={styles.trackRating}>{ratingSlot}</View> : null}
       </View>
@@ -553,8 +545,6 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     backgroundColor: '#222',
   },
-  celestial: { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
-  glyph: { fontSize: 120, lineHeight: 132 },
   headerBlock: { alignItems: 'center', paddingHorizontal: 24, paddingTop: 18 },
   // Green genre pill matching the web album header: green border + text over
   // a subtle green-tinted fill.

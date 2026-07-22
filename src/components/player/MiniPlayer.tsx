@@ -3,7 +3,7 @@ import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTheme } from '@/context';
 import { usePlayer, useSafeProgress } from '@/hooks';
 import { AppText } from '../common/AppText';
-import { Artwork } from '../common/Artwork';
+import { TrackArtwork } from '../common/TrackArtwork';
 import { IconButton } from '../common/IconButton';
 
 interface MiniPlayerProps {
@@ -33,8 +33,8 @@ export const MiniPlayer: React.FC<MiniPlayerProps> = ({ onPress }) => {
       ]}
     >
       <View style={styles.content}>
-        <Artwork
-          uri={currentTrack.artwork}
+        <TrackArtwork
+          track={currentTrack}
           style={[styles.art, { borderRadius: theme.radius.sm }]}
           iconSize={20}
         />

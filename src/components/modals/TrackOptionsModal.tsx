@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/context';
 import { Track } from '@/types';
 import { AppText } from '../common/AppText';
-import { Artwork } from '../common/Artwork';
+import { TrackArtwork } from '../common/TrackArtwork';
 
 export interface TrackOption {
   key: string;
@@ -62,8 +62,8 @@ export const TrackOptionsModal: React.FC<TrackOptionsModalProps> = ({
         >
           {track ? (
             <View style={styles.header}>
-              <Artwork
-                uri={track.artwork}
+              <TrackArtwork
+                track={track}
                 style={[styles.art, { borderRadius: theme.radius.sm }]}
                 iconSize={22}
               />

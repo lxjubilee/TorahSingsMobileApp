@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, isRejected } from '@reduxjs/toolkit';
 import { Track, RequestStatus } from '@/types';
+import { clearSession, signOut } from './authSlice';
 import {
   playlistApi,
   mapSummary,
@@ -230,6 +231,12 @@ const playlistsSlice = createSlice({
           })
           .filter((x): x is NonNullable<typeof x> => x !== null);
       })
+
+      // Playlists aren't persisted, but they DO survive in memory across a
+      // sign-out — so without this the next account to sign in on this device
+      // sees the previous user's playlists until the app is killed.
+      .addCase(clearSession, () => initialState)
+      .addCase(signOut.fulfilled, () => initialState)
 
       // Any failed write surfaces to the user. Without this every rejection is
       // an unhandled promise — indistinguishable from a dead button. Registered

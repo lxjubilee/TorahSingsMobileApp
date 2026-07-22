@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Track } from '@/types';
+import { clearSession, signOut } from './authSlice';
 
 export type DownloadStatus = 'queued' | 'downloading' | 'completed' | 'failed';
 
@@ -45,6 +46,13 @@ const downloadsSlice = createSlice({
     removeDownload(state, action: PayloadAction<string>) {
       delete state.items[action.payload];
     },
+  },
+  extraReducers: (builder) => {
+    // Download records are persisted and name what this user saved — clear them
+    // with the session rather than handing them to whoever signs in next.
+    builder
+      .addCase(clearSession, () => initialState)
+      .addCase(signOut.fulfilled, () => initialState);
   },
 });
 

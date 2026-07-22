@@ -5,8 +5,15 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context';
-import { Screen, AppText, IconButton, ProfileButton, ConfirmDialog } from '@/components/common';
-import { PlaylistCover, PlaylistNameDialog } from '@/components/playlists';
+import {
+  Screen,
+  AppText,
+  IconButton,
+  ProfileButton,
+  ConfirmDialog,
+  TrackArtwork,
+} from '@/components/common';
+import { PlaylistNameDialog } from '@/components/playlists';
 import { useAppDispatch, useAppSelector, usePlayer } from '@/hooks';
 import { createPlaylist, deletePlaylist, fetchPlaylistDetail, fetchPlaylists } from '@/redux';
 import type { PlaylistSummary } from '@/services/playlists';
@@ -55,8 +62,8 @@ export const PlaylistsScreen: React.FC = () => {
     });
   }, [playlists, playlistDetails, dispatch]);
 
-  // Cover for a playlist card: its first item, resolved by PlaylistCover (bundled
-  // art -> celestial art -> CDN). byId persists across list refetches, so the
+  // Cover for a playlist card: its first item, resolved by TrackArtwork (CDN
+  // art -> bundled art -> celestial art). byId persists across list refetches, so the
   // cover stays stable once the detail is warm.
   const firstTrackFor = useCallback(
     (pl: PlaylistSummary) => playlistDetails[pl.id]?.items?.[0]?.track,
@@ -138,7 +145,7 @@ export const PlaylistsScreen: React.FC = () => {
         renderItem={({ item: pl }) => (
           <View style={[styles.card, { backgroundColor: theme.colors.surface, borderRadius: theme.radius.md }]}>
             <Pressable onPress={() => openPlaylist(pl)}>
-              <PlaylistCover
+              <TrackArtwork
                 track={firstTrackFor(pl)}
                 fallbackUri={pl.cover}
                 style={styles.cover}

@@ -1,9 +1,11 @@
 // Bridges the ported Angels' Catalog data to the app's playback engine. Each
 // CatalogTrack.rel is the CDN path minus the `torahsings/` prefix, so we build
-// a CDN-relative `Track.url` and let the existing trackAdapter -> cdnUrl()
-// pipeline encode + prefix the host. No new CDN/player infrastructure needed.
+// a CDN-relative `Track.url` (and cover, via catalogCoverPath) and let the
+// existing trackAdapter -> cdnUrl() pipeline encode + prefix the host. No new
+// CDN/player infrastructure needed.
 
 import type { Track } from '@/types';
+import { catalogCoverPath } from './covers';
 import { angelsCatalog } from './data';
 import type { CatalogAlbum } from './types';
 
@@ -29,9 +31,9 @@ export function albumToPlayerTracks(album: CatalogAlbum): Track[] {
     // CDN-relative; trackAdapter runs this through cdnUrl(), which prefixes the
     // host and URL-encodes each segment (spaces -> %20).
     url: `torahsings/${tk.rel}`,
-    // Placeholder for now — the mini-player / now-playing screen fall back to
-    // their own placeholder art. (CDN cover path TBD.)
-    artwork: '',
+    // CDN-relative, same treatment as `url` — this is what gives the mini-player,
+    // the now-playing screen and the lock-screen/notification metadata their art.
+    artwork: catalogCoverPath(album),
     // Unknown up front; the app resolves real duration on demand via
     // useTrackDuration / getAudioDuration, exactly like manifest tracks.
     duration: 0,
