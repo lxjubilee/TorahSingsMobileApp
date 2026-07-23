@@ -12,6 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { AppText, BrandLogo, IconButton } from '@/components/common';
+import { useTranslation } from 'react-i18next';
 
 interface GetStartedProps {
   onBack: () => void;
@@ -30,6 +31,7 @@ const ON_ACCENT = '#0B0B0F';
  * Continue button, a Get Help disclosure, and the reCAPTCHA footnote.
  */
 export const GetStarted: React.FC<GetStartedProps> = ({ onBack, onContinue }) => {
+  const { t } = useTranslation();
   const [value, setValue] = useState('');
   const [focused, setFocused] = useState(false);
 
@@ -52,7 +54,7 @@ export const GetStarted: React.FC<GetStartedProps> = ({ onBack, onContinue }) =>
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-            <AppText style={styles.title}>Ready to listen?</AppText>
+            <AppText style={styles.title}>{t('auth.signin.title')}</AppText>
             <AppText variant="body" color="textSecondary" style={styles.subtitle}>
               Enter your information to sign in or get started with a new account.
             </AppText>
@@ -62,7 +64,7 @@ export const GetStarted: React.FC<GetStartedProps> = ({ onBack, onContinue }) =>
               onChangeText={setValue}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
-              placeholder="Email or mobile number"
+              placeholder={t('onboarding.emailOrMobile')}
               placeholderTextColor="#8A8A99"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -75,13 +77,13 @@ export const GetStarted: React.FC<GetStartedProps> = ({ onBack, onContinue }) =>
               style={({ pressed }) => [styles.cta, { opacity: pressed ? 0.85 : 1 }]}
             >
               <AppText variant="h3" style={styles.ctaLabel}>
-                Continue
+                {t('onboarding.continue')}
               </AppText>
             </Pressable>
 
             <Pressable style={styles.help} hitSlop={6}>
               <AppText variant="h3" style={styles.helpText}>
-                Get Help
+                {t('onboarding.getHelp')}
               </AppText>
               <Ionicons name="chevron-down" size={16} color="#FFFFFF" />
             </Pressable>

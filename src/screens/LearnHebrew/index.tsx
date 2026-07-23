@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Screen, LanguagePanel } from '@/components/common';
-import { useAppSelector } from '@/hooks';
+import { Screen } from '@/components/common';
 import { HomeHeader } from '../Home/components/HomeHeader';
 import { LearnHebrewSection } from '../Home/sections/LearnHebrewSection';
 import type { RootStackParamList } from '@/navigation/types';
@@ -16,8 +15,6 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
  */
 export const LearnHebrewScreen: React.FC = () => {
   const navigation = useNavigation<Nav>();
-  const language = useAppSelector((s) => s.settings.language);
-  const [langPanelOpen, setLangPanelOpen] = useState(false);
 
   const openProfile = useCallback(
     () => navigation.navigate('MainTabs', { screen: 'PlaylistsTab', params: { screen: 'Profile' } }),
@@ -28,16 +25,7 @@ export const LearnHebrewScreen: React.FC = () => {
     <Screen safeArea={false}>
       <LearnHebrewSection />
 
-      <HomeHeader
-        activeChip="LEARN HEBREW"
-        onPressProfile={openProfile}
-        language={language}
-        onPressLanguage={() => setLangPanelOpen(true)}
-      />
-
-      {langPanelOpen ? (
-        <LanguagePanel selected={language} onClose={() => setLangPanelOpen(false)} />
-      ) : null}
+      <HomeHeader activeChip="learn" onPressProfile={openProfile} />
     </Screen>
   );
 };

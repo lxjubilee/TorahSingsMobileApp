@@ -34,7 +34,6 @@ export {
 } from './slices/downloadsSlice';
 export { markArtworkMissing } from './slices/artworkSlice';
 export { fetchEntitlement, setLimitReached } from './slices/entitlementSlice';
-export { setLanguage, setAppLanguage } from './slices/settingsSlice';
 export {
   setQueue,
   setPlayOrder,

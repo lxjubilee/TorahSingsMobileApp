@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Trans, useTranslation } from 'react-i18next';
 import { storage, STORAGE_KEYS } from '@/services/storage';
 
 // Web intro-modal palette (TorahSings.com), consistent with the catalog port.
@@ -19,6 +20,7 @@ const MONO = Platform.select({ ios: 'Courier New', android: 'monospace', default
  * it persists a flag so it never comes back (clear app data to see it again).
  */
 export const DiscoveryIntro: React.FC<{ enabled: boolean }> = ({ enabled }) => {
+  const { t } = useTranslation();
   // null = still reading the persisted flag; render nothing until it resolves.
   const [seen, setSeen] = useState<boolean | null>(null);
 
@@ -42,37 +44,40 @@ export const DiscoveryIntro: React.FC<{ enabled: boolean }> = ({ enabled }) => {
             onPress={close}
             hitSlop={8}
             accessibilityRole="button"
-            accessibilityLabel="Close"
+            accessibilityLabel={t('common.close')}
             style={({ pressed }) => [styles.close, { opacity: pressed ? 0.6 : 1 }]}
           >
             <Text style={styles.closeGlyph}>×</Text>
           </Pressable>
 
-          <Text style={styles.eyebrow}>● A SECRET HIDDEN IN THE TEXT</Text>
+          <Text style={styles.eyebrow}>{t('discovery.eyebrow')}</Text>
 
-          <Text style={styles.title}>There are songs inside the Scriptures. Almost no one knows.</Text>
+          <Text style={styles.title}>{t('discovery.title')}</Text>
 
+          {/* <Trans> keeps the emphasised word inline: the locale string carries
+              <1>…</1> around it, which maps to the second child below. */}
           <Text style={styles.body}>
-            Not songs about the Scriptures. Songs <Text style={styles.italic}>in</Text> them —
-            surfaced from the Paleo-Hebrew itself, read symbol by symbol, sung from the perspective
-            of the ones who were already singing when the foundations went down. We have been
-            quietly working on this for a long time. It is not theory. The songs exist.
+            <Trans i18nKey="discovery.body">
+              {'Not songs about the Scriptures. Songs '}
+              <Text style={styles.italic}>in</Text>
+              {' them — …'}
+            </Trans>
           </Text>
 
-          <Text style={styles.aside}>Please don&rsquo;t share this. (You will.)</Text>
+          <Text style={styles.aside}>{t('discovery.aside')}</Text>
 
           <View style={styles.buttons}>
             <Pressable
               onPress={close}
               style={({ pressed }) => [styles.primaryBtn, { opacity: pressed ? 0.85 : 1 }]}
             >
-              <Text style={styles.primaryLabel}>BEGIN THE DISCOVERY</Text>
+              <Text style={styles.primaryLabel}>{t('discovery.begin')}</Text>
             </Pressable>
             <Pressable
               onPress={close}
               style={({ pressed }) => [styles.ghostBtn, { opacity: pressed ? 0.7 : 1 }]}
             >
-              <Text style={styles.ghostLabel}>SKIP FOR NOW</Text>
+              <Text style={styles.ghostLabel}>{t('discovery.skip')}</Text>
             </Pressable>
           </View>
         </View>

@@ -11,6 +11,7 @@ import { INK, INK_BODY, INK_FAINT, INK_MUTED } from '../LearnHebrew/theme';
 import { Eyebrow } from '../LearnHebrew/components/Eyebrow';
 import { GlyphTile } from '../LearnHebrew/components/GlyphTile';
 import { LessonCard } from './LessonCard';
+import { useTranslation } from 'react-i18next';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -25,6 +26,7 @@ const HEADER_HEIGHT = 38;
  * graceful not-found.
  */
 export const LearnHebrewLevelScreen: React.FC = () => {
+  const { t } = useTranslation();
   const { params } = useRoute<RootStackScreenProps<'LearnHebrewLevel'>['route']>();
   const navigation = useNavigation<Nav>();
   const insets = useSafeAreaInsets();
@@ -37,7 +39,7 @@ export const LearnHebrewLevelScreen: React.FC = () => {
       style={[styles.fixedHeader, { paddingTop: insets.top, height: insets.top + HEADER_HEIGHT }]}
     >
       <IconButton name="chevron-back" onPress={() => navigation.goBack()} />
-      <AppText style={styles.backLabel}>ALL LEVELS</AppText>
+      <AppText style={styles.backLabel}>{t('learnHebrew.allLevels')}</AppText>
     </View>
   );
 
@@ -46,7 +48,7 @@ export const LearnHebrewLevelScreen: React.FC = () => {
       <Screen safeArea={false}>
         <View style={styles.missing}>
           <AppText variant="body" color="textMuted">
-            Level not found.
+            {t('errors.levelNotFound')}
           </AppText>
         </View>
         {backHeader}

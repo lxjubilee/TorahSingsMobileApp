@@ -113,23 +113,24 @@ scroll; header background cross-fades from transparent to solid as content scrol
 
 ---
 
-### JLM-HOME-012 — "Coming soon" for a non-English language with no catalog
+### JLM-HOME-012 — "Coming soon" empty state when the catalog is empty
 **Category:** Functional, Boundary · **Priority:** P1 · **Platform:** Both
-**Preconditions:** Switch UI/catalog to a language with no catalog content.
+**Preconditions:** A catalog/feed with no browsable (English/legacy) content.
 **Steps:**
-1. Open Home in that language.
-**Expected Result:** A "coming soon" empty state is shown for that language rather than an
-error or a blank feed. Switching back to English restores content.
+1. Open Home with an empty feed.
+**Expected Result:** A "coming soon" empty state is shown rather than an error or a blank
+feed; once catalog content is available, Home populates.
 
 ---
 
-### JLM-HOME-013 — Profile button opens Profile; language button opens LanguagePanel
+### JLM-HOME-013 — Profile button opens Profile
 **Category:** Functional · **Priority:** P2 · **Platform:** Both
 **Preconditions:** On Home.
 **Steps:**
-1. Tap the profile avatar; go back. Tap the language flag.
-**Expected Result:** Profile button navigates to Profile; language flag opens the
-LanguagePanel slide-up.
+1. Tap the profile avatar.
+**Expected Result:** The profile button navigates to Profile. (There is no language button —
+language selection was removed; the header shows only the brand wordmark and the profile
+avatar.)
 
 ---
 

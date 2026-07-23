@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { AppText } from '@/components/common';
 import { MUSIC_PROFILE_HERO } from '@/screens/Onboarding/musicImages';
+import { useTranslation } from 'react-i18next';
 
 const { width: SCREEN_W, height: SCREEN_H } = Dimensions.get('window');
 const HERO_H = Math.round(SCREEN_H * 0.58);
@@ -43,6 +44,7 @@ interface ChooseProfileScreenProps {
  * app; Edit toggles a manage mode.
  */
 export const ChooseProfileScreen: React.FC<ChooseProfileScreenProps> = ({ onSelect }) => {
+  const { t } = useTranslation();
   const [editing, setEditing] = useState(false);
 
   const goSignIn = onSelect;
@@ -100,7 +102,7 @@ export const ChooseProfileScreen: React.FC<ChooseProfileScreenProps> = ({ onSele
           </View>
 
           <AppText variant="h1" style={styles.heading}>
-            Choose your profile
+            {t('onboarding.chooseProfile')}
           </AppText>
 
           <View style={styles.grid}>

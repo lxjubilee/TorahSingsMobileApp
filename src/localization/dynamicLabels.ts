@@ -14,21 +14,6 @@ import type { TFunction } from 'i18next';
  */
 
 /**
- * Localize a category chip by its STABLE config key (`home`, `inspire_family`,
- * `family_friendly`, `children`, `music_type`, …). Keying on the config key —
- * not the display label — keeps translations working even if an admin renames a
- * category. Falls back to `rawLabel` when the key is unknown/empty.
- */
-export function localizeCategory(t: TFunction, key: string | undefined, rawLabel: string): string {
-  if (!key) return rawLabel;
-  // Backend keys drift between `_` and `-` separators (e.g. it sends `music-type`
-  // while the locale files key it as `music_type`). Normalize to underscore so the
-  // separator style can't silently break a translation and fall back to English.
-  const normalized = key.replace(/-/g, '_');
-  return t(`categories.${normalized}`, { defaultValue: rawLabel });
-}
-
-/**
  * Turn a free-text title ("Praise & Worship", "Featured Artists") into a stable
  * i18n slug ("praise-worship", "featured-artists"): lowercase, drop `&`, collapse
  * any run of non-alphanumerics to a single hyphen, and trim leading/trailing ones.

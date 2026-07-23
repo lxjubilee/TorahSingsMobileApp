@@ -16,6 +16,7 @@ import {
   WRONG_BORDER,
   WRONG_INK,
 } from '../LearnHebrew/theme';
+import { useTranslation } from 'react-i18next';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
@@ -26,6 +27,7 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E'];
  * never persisted — the card resets when the screen unmounts (web parity).
  */
 export const ExerciseCard: React.FC<{ exercise: Exercise }> = ({ exercise }) => {
+  const { t } = useTranslation();
   const [chosen, setChosen] = useState<number | null>(null);
   const answered = chosen !== null;
 
@@ -90,7 +92,7 @@ export const ExerciseCard: React.FC<{ exercise: Exercise }> = ({ exercise }) => 
           <Pressable onPress={() => setChosen(null)} hitSlop={10} style={styles.again}>
             {({ pressed }) => (
               <AppText style={[styles.againText, pressed && styles.againPressed]}>
-                TRY AGAIN
+                {t('learnHebrew.tryAgain')}
               </AppText>
             )}
           </Pressable>

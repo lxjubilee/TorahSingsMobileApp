@@ -19,6 +19,7 @@ import { Eyebrow } from '../../LearnHebrew/components/Eyebrow';
 import { GlyphTile } from '../../LearnHebrew/components/GlyphTile';
 import { PlayDisc } from '../../LearnHebrew/components/PlayDisc';
 import { CHIP_ROW_HEIGHT } from '../components/HomeHeader';
+import { useTranslation } from 'react-i18next';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -37,6 +38,7 @@ const TILE_W = Math.floor((W - H_PADDING * 2 - TILE_GAP * TEASER_COUNT) / (TEASE
  * from app state. Memoized so switching sections never re-renders it.
  */
 export const LearnHebrewSection: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const navigation = useNavigation<Nav>();
   const insets = useSafeAreaInsets();
   const entitlement = toEntitlement(useAppSelector((s) => s.entitlement.isPaid));
@@ -59,7 +61,7 @@ export const LearnHebrewSection: React.FC = React.memo(() => {
       {/* Page hero. */}
       <View style={styles.hero}>
         <Eyebrow>PRONG III · THE EMPOWERMENT</Eyebrow>
-        <AppText style={styles.heroTitle}>Learn Hebrew</AppText>
+        <AppText style={styles.heroTitle}>{t('learnHebrew.title')}</AppText>
         <AppText style={styles.heroLede}>
           You do not need fluency. You need enough to open the text yourself and see what is
           standing in it — the picture inside the letter, the root under the word. Start where
@@ -72,7 +74,7 @@ export const LearnHebrewSection: React.FC = React.memo(() => {
 
       {/* Aleph-bet teaser. */}
       <View style={styles.section}>
-        <Eyebrow>TWENTY-TWO LETTERS</Eyebrow>
+        <Eyebrow>{t('learnHebrew.twentyTwoLetters')}</Eyebrow>
         <View style={styles.tileRow}>
           {teaser.map((entry) => {
             const picked = pickedLetter?.letter === entry.letter;
@@ -106,7 +108,7 @@ export const LearnHebrewSection: React.FC = React.memo(() => {
 
       {/* Three levels — every row navigates, locked or not. */}
       <View style={styles.section}>
-        <Eyebrow>THREE LEVELS</Eyebrow>
+        <Eyebrow>{t('learnHebrew.threeLevels')}</Eyebrow>
         {albums.map((album) => {
           const locked = !canOpenLessonAlbum(album, entitlement).allowed;
           return (

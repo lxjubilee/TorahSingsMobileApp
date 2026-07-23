@@ -2,29 +2,18 @@ import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Screen, LanguagePanel } from '@/components/common';
-import { useAppSelector } from '@/hooks';
+import { Screen } from '@/components/common';
 import type { RootStackParamList } from '@/navigation/types';
-import { HomeHeader } from './components/HomeHeader';
+import { HomeHeader, type NavChip } from './components/HomeHeader';
 import { TorahSingsSection } from './sections/TorahSingsSection';
 import { HebraicChristianitySection } from './sections/HebraicChristianitySection';
 import { LearnHebrewSection } from './sections/LearnHebrewSection';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
-type Section = 'torah' | 'hebraic' | 'learn';
-
-// Maps the header chip labels to sections (both directions).
-const CHIP_TO_SECTION: Record<string, Section> = {
-  'TORAH SINGS': 'torah',
-  'HEBRAIC CHRISTIANITY': 'hebraic',
-  'LEARN HEBREW': 'learn',
-};
-const SECTION_TO_CHIP: Record<Section, string> = {
-  torah: 'TORAH SINGS',
-  hebraic: 'HEBRAIC CHRISTIANITY',
-  learn: 'LEARN HEBREW',
-};
+// A section IS a nav chip — the header hands back the chip's stable key, so no
+// label→section mapping is needed (and chip labels stay free to be translated).
+type Section = NavChip;
 
 /**
  * Home is the container for the three top-level sections (Torah Sings · Hebraic
@@ -37,15 +26,11 @@ const SECTION_TO_CHIP: Record<Section, string> = {
  */
 export const HomeScreen: React.FC = () => {
   const navigation = useNavigation<Nav>();
-  const language = useAppSelector((s) => s.settings.language);
 
   const [section, setSection] = useState<Section>('torah');
   const [visited, setVisited] = useState<Set<Section>>(() => new Set<Section>(['torah']));
-  const [langPanelOpen, setLangPanelOpen] = useState(false);
 
-  const onSelectChip = useCallback((chip: string) => {
-    const next = CHIP_TO_SECTION[chip];
-    if (!next) return;
+  const onSelectChip = useCallback((next: NavChip) => {
     setSection(next);
     setVisited((prev) => (prev.has(next) ? prev : new Set(prev).add(next)));
   }, []);
@@ -54,7 +39,6 @@ export const HomeScreen: React.FC = () => {
     () => navigation.navigate('MainTabs', { screen: 'PlaylistsTab', params: { screen: 'Profile' } }),
     [navigation],
   );
-  const openLanguage = useCallback(() => setLangPanelOpen(true), []);
 
   return (
     <Screen safeArea={false}>
@@ -77,16 +61,10 @@ export const HomeScreen: React.FC = () => {
 
       {/* Fixed header + chip row — rendered once, never re-renders on section change. */}
       <HomeHeader
-        activeChip={SECTION_TO_CHIP[section]}
+        activeChip={section}
         onSelectChip={onSelectChip}
         onPressProfile={openProfile}
-        language={language}
-        onPressLanguage={openLanguage}
       />
-
-      {langPanelOpen ? (
-        <LanguagePanel selected={language} onClose={() => setLangPanelOpen(false)} />
-      ) : null}
     </Screen>
   );
 };

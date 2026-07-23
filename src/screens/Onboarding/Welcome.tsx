@@ -12,6 +12,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import { useTranslation } from 'react-i18next';
 import { AppText, BrandLogo } from '@/components/common';
 import { PosterCollage } from './components/PosterCollage';
 import { MUSIC_HERO } from './musicImages';
@@ -26,37 +27,16 @@ interface WelcomeProps {
 type SlideVisual = { type: 'collage' } | { type: 'poster'; image: string };
 
 interface Slide {
+  /** Also the i18n key: onboarding.slides.<key>.headline / .subtitle */
   key: string;
   visual: SlideVisual;
-  headline: string;
-  subtitle: string;
 }
 
 const SLIDES: Slide[] = [
-  {
-    key: 'only',
-    visual: { type: 'collage' },
-    headline: 'Only on TorahSings',
-    subtitle: 'Thousands of songs, albums and artists — all in one place.',
-  },
-  {
-    key: 'new',
-    visual: { type: 'poster', image: MUSIC_HERO.new },
-    headline: 'New arrivals weekly',
-    subtitle: 'Fresh albums, singles and playlists added every week.',
-  },
-  {
-    key: 'watchlist',
-    visual: { type: 'poster', image: MUSIC_HERO.library },
-    headline: 'A library you’ll actually love',
-    subtitle: 'Smart recommendations tuned to your taste.',
-  },
-  {
-    key: 'playback',
-    visual: { type: 'poster', image: MUSIC_HERO.playback },
-    headline: 'Play it your way',
-    subtitle: 'Shuffle, repeat and seamless playback — full control of every track.',
-  },
+  { key: 'only', visual: { type: 'collage' } },
+  { key: 'new', visual: { type: 'poster', image: MUSIC_HERO.new } },
+  { key: 'watchlist', visual: { type: 'poster', image: MUSIC_HERO.library } },
+  { key: 'playback', visual: { type: 'poster', image: MUSIC_HERO.playback } },
 ];
 
 // Gold, matching theme.colors.accent. (This screen predates the theme and keeps
@@ -71,6 +51,7 @@ const ON_ACCENT = '#0B0B0F';
  * Top nav, animated pagination dots, and the Get Started button stay fixed.
  */
 export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
+  const { t } = useTranslation();
   const scrollX = useRef(new Animated.Value(0)).current;
   const [pagerH, setPagerH] = useState(0);
   const onPagerLayout = (e: LayoutChangeEvent) => setPagerH(e.nativeEvent.layout.height);
@@ -88,12 +69,12 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
               onPress={() => Linking.openURL('https://torahsings.com/privacy').catch(() => undefined)}
             >
               <AppText variant="label" color="textSecondary" style={styles.navLink}>
-                PRIVACY
+                {t('onboarding.privacy')}
               </AppText>
             </Pressable>
             <Pressable hitSlop={8} onPress={onGetStarted}>
               <AppText variant="label" style={styles.navLink}>
-                SIGN IN
+                {t('onboarding.signIn')}
               </AppText>
             </Pressable>
           </View>
@@ -136,10 +117,10 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
               </View>
 
               <AppText variant="displayLg" style={styles.headline}>
-                {slide.headline}
+                {t(`onboarding.slides.${slide.key}.headline`)}
               </AppText>
               <AppText variant="body" color="textSecondary" style={styles.subtitle}>
-                {slide.subtitle}
+                {t(`onboarding.slides.${slide.key}.subtitle`)}
               </AppText>
             </View>
           ))}
@@ -166,7 +147,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
           style={({ pressed }) => [styles.cta, { opacity: pressed ? 0.85 : 1 }]}
         >
           <AppText variant="h3" style={styles.ctaLabel}>
-            Get Started
+            {t('onboarding.getStarted')}
           </AppText>
         </Pressable>
       </SafeAreaView>

@@ -117,7 +117,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ album, onPlay, onOpen })
         >
           <Ionicons name={saved ? 'checkmark' : 'add'} size={20} color={theme.colors.text} />
           <AppText variant="label" style={styles.listLabel}>
-            My List
+            {t('home.myList')}
           </AppText>
         </Pressable>
       </View>

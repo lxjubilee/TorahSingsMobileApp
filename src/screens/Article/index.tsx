@@ -8,6 +8,7 @@ import { articles } from '@/content/articles/data';
 import type { Block } from '@/content/articles/types';
 import type { RootStackParamList, RootStackScreenProps } from '@/navigation/types';
 import { ReadAloudButton } from './ReadAloudButton';
+import { useTranslation } from 'react-i18next';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 const { width: W } = Dimensions.get('window');
@@ -36,6 +37,7 @@ const BlockView: React.FC<{ block: Block }> = ({ block }) => {
 
 /** Article reader — category, title, dek, celestial masthead, then the body. */
 export const ArticleScreen: React.FC = () => {
+  const { t } = useTranslation();
   const { params } = useRoute<RootStackScreenProps<'Article'>['route']>();
   const navigation = useNavigation<Nav>();
   const insets = useSafeAreaInsets();
@@ -45,7 +47,7 @@ export const ArticleScreen: React.FC = () => {
     return (
       <Screen>
         <View style={styles.center}>
-          <AppText style={styles.p}>Article not found.</AppText>
+          <AppText style={styles.p}>{t('errors.articleNotFound')}</AppText>
         </View>
       </Screen>
     );

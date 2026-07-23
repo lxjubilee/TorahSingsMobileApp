@@ -1,26 +1,29 @@
 import React, { useRef } from 'react';
-import { Animated, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Animated, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppText, BrandLogo, ProfileButton } from '@/components/common';
-import { langFlagUrl } from '@/localization';
 import type { RootStackParamList } from '@/navigation/types';
-
-/** The "show everything" chip, always first in the filter row. */
-export const HOME_FILTER_ALL = 'Home';
-
-/** A Home filter is the "Home" sentinel or a catalog category label. */
-export type HomeFilter = string;
 
 /** Height the chips row collapses from / expands to. */
 export const CHIP_ROW_HEIGHT = 48;
 
+/** Stable identity of a top-level nav chip — never the display label. */
+export type NavChip = 'torah' | 'hebraic' | 'learn';
+
 /**
- * Hardcoded nav chips (visual only for now — no press action). The first one
- * renders as the active tab: gold text in a gold-bordered rounded rectangle.
+ * The three top-level nav chips. `key` is the identity used for selection and
+ * routing; the label is looked up per render so it follows the app language.
+ * "Torah Sings" is the brand wordmark and stays untranslated, same as "Inspire"
+ * inside the localized category names.
  */
-const NAV_CHIPS = ['TORAH SINGS', 'HEBRAIC CHRISTIANITY', 'LEARN HEBREW'];
+const NAV_CHIPS: { key: NavChip; labelKey?: string; brand?: string }[] = [
+  { key: 'torah', brand: 'Torah Sings' },
+  { key: 'hebraic', labelKey: 'hebraic.title' },
+  { key: 'learn', labelKey: 'learnHebrew.title' },
+];
 
 /** Active-chip gold — matches the "Sings" span of the brand wordmark. */
 const GOLD = '#ffbd59';
@@ -30,20 +33,16 @@ interface HomeHeaderProps {
   chipsAnim?: Animated.Value;
   /** 0 = transparent/gradient (at top), 1 = solid black (scrolled). Omit → solid. */
   bgAnim?: Animated.Value;
-  /** Which nav chip renders as selected (gold). Defaults to "TORAH SINGS". */
-  activeChip?: string;
+  /** Which nav chip renders as selected (gold). Defaults to Torah Sings. */
+  activeChip?: NavChip;
   /**
-   * When provided, tapping a nav chip calls this with the chip label instead of
+   * When provided, tapping a nav chip calls this with the chip key instead of
    * navigating — lets a container switch sections in place (header stays fixed).
    * When omitted, chips fall back to route navigation (deep-link / standalone use).
    */
-  onSelectChip?: (chip: string) => void;
+  onSelectChip?: (chip: NavChip) => void;
   /** Opens the profile page. */
   onPressProfile?: () => void;
-  /** Current language code — drives the flag shown on the language button. */
-  language?: string;
-  /** Opens the language picker. */
-  onPressLanguage?: () => void;
 }
 
 /**
@@ -56,12 +55,11 @@ interface HomeHeaderProps {
 const HomeHeaderBase: React.FC<HomeHeaderProps> = ({
   chipsAnim,
   bgAnim,
-  activeChip = 'TORAH SINGS',
+  activeChip = 'torah',
   onSelectChip,
   onPressProfile,
-  language,
-  onPressLanguage,
 }) => {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   // Static fallbacks so the header renders fully open + solid outside Home
@@ -85,21 +83,6 @@ const HomeHeaderBase: React.FC<HomeHeaderProps> = ({
           <BrandLogo size={34} textStyle={[styles.brand, styles.brandText]} />
 
           <View style={styles.actions}>
-            {onPressLanguage ? (
-              <Pressable
-                onPress={onPressLanguage}
-                hitSlop={8}
-                style={styles.langButton}
-                accessibilityRole="button"
-                accessibilityLabel="Change language"
-              >
-                <Image
-                  source={{ uri: langFlagUrl(language ?? 'en', 80) }}
-                  style={styles.langFlag}
-                  resizeMode="cover"
-                />
-              </Pressable>
-            ) : null}
             <ProfileButton onPress={onPressProfile} />
           </View>
         </View>
@@ -122,31 +105,28 @@ const HomeHeaderBase: React.FC<HomeHeaderProps> = ({
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.chipsRow}
           >
-            {NAV_CHIPS.map((label) => {
-              const active = label === activeChip;
+            {NAV_CHIPS.map(({ key, labelKey, brand }) => {
+              const active = key === activeChip;
               // In-place mode: let the container switch sections. Fallback mode:
               // navigate to the section's route (deep-link / standalone screens).
               const onPress = onSelectChip
-                ? () => onSelectChip(label)
-                : label === 'HEBRAIC CHRISTIANITY'
+                ? () => onSelectChip(key)
+                : key === 'hebraic'
                   ? () => navigation.navigate('HebraicChristianity')
-                  : label === 'LEARN HEBREW'
+                  : key === 'learn'
                     ? () => navigation.navigate('LearnHebrew')
-                    : label === 'TORAH SINGS'
-                      ? () => navigation.navigate('MainTabs', { screen: 'HomeTab' })
-                      : undefined;
+                    : () => navigation.navigate('MainTabs', { screen: 'HomeTab' });
               return (
                 <Pressable
-                  key={label}
+                  key={key}
                   onPress={onPress}
-                  disabled={!onPress}
                   style={[styles.chip, active && styles.chipActive]}
                 >
                   <AppText
                     variant="label"
                     style={[styles.chipText, { color: active ? GOLD : '#FFFFFF' }]}
                   >
-                    {label}
+                    {brand ?? t(labelKey!)}
                   </AppText>
                 </Pressable>
               );
@@ -180,17 +160,6 @@ const styles = StyleSheet.create({
   // Bold mixed-case wordmark ("TorahSings").
   brandText: { fontSize: 26, lineHeight: 30, fontWeight: '900', letterSpacing: 0.5 },
   actions: { flexDirection: 'row', alignItems: 'center', gap: 14 },
-  langButton: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.5)',
-    backgroundColor: '#222',
-  },
-  // Square + cover so the rectangular flag is cropped into the round button.
-  langFlag: { width: '100%', height: '100%' },
   iconWrap: { position: 'relative' },
   countBadge: {
     position: 'absolute',
@@ -219,5 +188,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: GOLD,
   },
-  chipText: { fontWeight: '700', letterSpacing: 0.6 },
+  // Uppercased in CSS rather than in the strings, so translated labels keep the
+  // all-caps look (a no-op for scripts without case, e.g. Hebrew/Arabic).
+  chipText: { fontWeight: '700', letterSpacing: 0.6, textTransform: 'uppercase' },
 });

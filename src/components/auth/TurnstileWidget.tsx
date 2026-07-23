@@ -4,6 +4,7 @@ import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { AppText } from '@/components/common';
 import { CONFIG } from '@/constants';
 import { logger } from '@/utils';
+import { useTranslation } from 'react-i18next';
 
 interface TurnstileWidgetProps {
   /** Called with a fresh CAPTCHA token once the challenge is solved. */
@@ -25,6 +26,7 @@ type Status = 'loading' | 'ready' | 'error';
  * logged, and a visible "couldn't load — tap to retry" state replaces the blank.
  */
 export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({ onToken, onError }) => {
+  const { t } = useTranslation();
   const siteKey = CONFIG.TURNSTILE_SITE_KEY;
   const [status, setStatus] = useState<Status>('loading');
   // Bump to force-remount the WebView for a clean retry.
@@ -129,7 +131,7 @@ export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({ onToken, onErr
           ) : (
             <Pressable hitSlop={8} onPress={retry}>
               <AppText variant="bodySm" color="textMuted">
-                Couldn’t load verification. Tap to retry.
+                {t('errors.verificationLoad')}
               </AppText>
             </Pressable>
           )}

@@ -31,13 +31,7 @@ import { PlaybackLimitGate } from '@/components/PlaybackLimitGate';
 import { DiscoveryIntro } from '@/components/DiscoveryIntro';
 import { PlaylistErrorGate, PlaylistMenuProvider } from '@/components/playlists';
 import { storage, STORAGE_KEYS } from '@/services/storage';
-import { i18n } from '@/localization'; // initialize i18next
-
-/** Apply the persisted language to i18next once redux-persist has rehydrated. */
-const applyPersistedLanguage = () => {
-  const lang = store.getState().settings.language;
-  if (lang) void i18n.changeLanguage(lang);
-};
+import '@/localization'; // initialize i18next (English-only)
 
 /**
  * Mounts the engine->Redux bridge, the listening-analytics emitter, and the
@@ -143,7 +137,7 @@ export default function App() {
   return (
     <GestureHandlerRootView style={styles.flex}>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor} onBeforeLift={applyPersistedLanguage}>
+        <PersistGate loading={null} persistor={persistor}>
           <SafeAreaProvider>
             <ThemeProvider>
               <PlayerSyncGate />

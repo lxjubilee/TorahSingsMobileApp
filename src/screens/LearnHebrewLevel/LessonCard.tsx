@@ -20,6 +20,7 @@ import {
   INK_MUTED,
 } from '../LearnHebrew/theme';
 import { ExerciseCard } from './ExerciseCard';
+import { useTranslation } from 'react-i18next';
 
 // Enable LayoutAnimation on Android's old architecture (no-op elsewhere).
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -34,6 +35,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
  *   independent per lesson).
  */
 export const LessonCard: React.FC<{ lesson: Lesson; locked: boolean }> = ({ lesson, locked }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const caret = useRef(new Animated.Value(0)).current;
 
@@ -61,7 +63,7 @@ export const LessonCard: React.FC<{ lesson: Lesson; locked: boolean }> = ({ less
         <AppText style={styles.summary}>{lesson.summary}</AppText>
 
         {locked ? (
-          <AppText style={styles.lockedNote}>UNLOCKS WITH MEMBERSHIP</AppText>
+          <AppText style={styles.lockedNote}>{t('learnHebrew.unlocksWithMembership')}</AppText>
         ) : lesson.mediaUrl == null ? (
           <View style={styles.pending}>
             <AppText style={styles.pendingText}>

@@ -15,7 +15,8 @@
     "ok": "OK",
     "delete": "Delete",
     "done": "Done",
-    "open": "Open"
+    "open": "Open",
+    "close": "Close"
   },
   "tabs": {
     "home": "Home",
@@ -28,8 +29,9 @@
     "greetingAfternoon": "Good afternoon",
     "greetingEvening": "Good evening",
     "loadError": "We couldn't load your music. Pull to refresh or try again.",
-    "comingSoon": "No music in {{language}} yet â€” we're adding more languages soon.",
-    "emptyCategory": "Nothing here yet â€” new music for this category is on the way."
+    "comingSoon": "No music in {{language}} yet — we're adding more languages soon.",
+    "emptyCategory": "Nothing here yet — new music for this category is on the way.",
+    "myList": "My List"
   },
   "categories": {
     "home": "Home",
@@ -45,12 +47,6 @@
     "country": "Country",
     "pentecostal-shout": "Pentecostal Shout",
     "gospel": "Gospel"
-  },
-  "language": {
-    "title": "Languages",
-    "search": "Search languagesâ€¦",
-    "recentlyUsed": "Recently Used",
-    "allLanguages": "All Languages"
   },
   "update": {
     "title": "Update available",
@@ -85,7 +81,7 @@
   },
   "playbackLimit": {
     "title": "Daily Limit Reached",
-    "message": "You've reached your daily listening limit. It will reset tomorrow â€” please try again later.",
+    "message": "You've reached your daily listening limit. It will reset tomorrow — please try again later.",
     "ok": "OK"
   },
   "artist": {
@@ -97,7 +93,7 @@
     "albumCount": "{{n}} albums",
     "statAlbums": "Albums",
     "statTracks": "Tracks",
-    "noAlbums": "No albums available yet â€” new music from this artist is on the way."
+    "noAlbums": "No albums available yet — new music from this artist is on the way."
   },
   "library": {
     "title": "Library",
@@ -129,7 +125,7 @@
     "guest": "Guest",
     "notSignedIn": "Not signed in",
     "deleteTitle": "Delete account?",
-    "deleteMessage": "This permanently deletes your TorahSings account ({{email}}) and everything on it. This cannot be undone.\n\nYour Jubilee Account and other Jubilee sites are not affected — this removes you from TorahSings only.",
+    "deleteMessage": "This permanently deletes your account and all your data. This action cannot be undone.",
     "deletedTitle": "Account deleted",
     "deletedMessage": "Your account has been permanently deleted.",
     "deleteFailedTitle": "Couldn't delete account"
@@ -151,7 +147,7 @@
     "currentPlaceholder": "Current password",
     "newPlaceholder": "New password (min 8 characters)",
     "confirmPlaceholder": "Confirm new password",
-    "mismatch": "Passwords donâ€™t match.",
+    "mismatch": "Passwords don’t match.",
     "success": "Your password has been changed. You'll stay signed in here; other devices have been signed out.",
     "done": "Done",
     "submit": "Update Password",
@@ -179,7 +175,7 @@
       "email": "Email",
       "password": "Password (min 8 characters)",
       "confirm": "Confirm password",
-      "mismatch": "Passwords donâ€™t match.",
+      "mismatch": "Passwords don’t match.",
       "agreePrefix": "I agree to the ",
       "and": " and ",
       "submit": "Create Account",
@@ -216,7 +212,10 @@
   "errors": {
     "albumNotFound": "Album not found.",
     "artistNotFound": "Artist not found.",
-    "generic": "Something went wrong. Please try again."
+    "generic": "Something went wrong. Please try again.",
+    "articleNotFound": "Article not found.",
+    "levelNotFound": "Level not found.",
+    "verificationLoad": "Couldn’t load verification. Tap to retry."
   },
   "playlist": {
     "namePrompt": "Name your playlist",
@@ -234,7 +233,7 @@
     "removeFromPlaylist": "Remove from this playlist",
     "songCount": "{{count}} songs",
     "empty": "There is no music yet",
-    "emptyHint": "Tap â€œAdd songsâ€ to add music to this playlist.",
+    "emptyHint": "Tap “Add songs” to add music to this playlist.",
     "notFound": "Playlist not found.",
     "errorTitle": "Couldn't update playlist"
   },
@@ -272,16 +271,16 @@
     "communityRating": "Community rating",
     "tapToChange": "tap to change",
     "ratedConfirm": "You rated {{stars}}",
-    "averageSecondary": "Average {{avg}} Â· {{count}}",
+    "averageSecondary": "Average {{avg}} · {{count}}",
     "writeReview": "Write a review",
     "editReview": "Edit review",
     "basedOn": "Based on {{count}} ratings",
-    "noRatingsYet": "No ratings yet â€” be the first",
+    "noRatingsYet": "No ratings yet — be the first",
     "seeAllReviews": "Ratings & Reviews",
     "seeAllReviewsCount": "Ratings & Reviews ({{count}})",
     "rate": "Rate",
-    "yourRatingShort": "â˜… Your rating",
-    "noReviews": "No reviews yet â€” be the first to write one.",
+    "yourRatingShort": "★ Your rating",
+    "noReviews": "No reviews yet — be the first to write one.",
     "you": "You",
     "anonymous": "Anonymous",
     "edited": "edited",
@@ -292,5 +291,55 @@
   "stub": {
     "comingSoon": "Coming soon",
     "description": "This area is wired into the app architecture and ready to be built out."
+  },
+  "onboarding": {
+    "getStarted": "Get Started",
+    "signIn": "SIGN IN",
+    "privacy": "PRIVACY",
+    "emailOrMobile": "Email or mobile number",
+    "continue": "Continue",
+    "getHelp": "Get Help",
+    "chooseProfile": "Choose your profile",
+    "slides": {
+      "only": {
+        "headline": "Only on TorahSings",
+        "subtitle": "Thousands of songs, albums and artists — all in one place."
+      },
+      "new": {
+        "headline": "New arrivals weekly",
+        "subtitle": "Fresh albums, singles and playlists added every week."
+      },
+      "watchlist": {
+        "headline": "A library you’ll actually love",
+        "subtitle": "Smart recommendations tuned to your taste."
+      },
+      "playback": {
+        "headline": "Play it your way",
+        "subtitle": "Shuffle, repeat and seamless playback — full control of every track."
+      }
+    }
+  },
+  "discovery": {
+    "eyebrow": "● A SECRET HIDDEN IN THE TEXT",
+    "title": "There are songs inside the Scriptures. Almost no one knows.",
+    "body": "Not songs about the Scriptures. Songs <1>in</1> them — surfaced from the Paleo-Hebrew itself, read symbol by symbol, sung from the perspective of the ones who were already singing when the foundations went down. We have been quietly working on this for a long time. It is not theory. The songs exist.",
+    "aside": "Please don’t share this. (You will.)",
+    "begin": "BEGIN THE DISCOVERY",
+    "skip": "SKIP FOR NOW"
+  },
+  "learnHebrew": {
+    "title": "Learn Hebrew",
+    "twentyTwoLetters": "TWENTY-TWO LETTERS",
+    "threeLevels": "THREE LEVELS",
+    "allLevels": "ALL LEVELS",
+    "tryAgain": "TRY AGAIN",
+    "unlocksWithMembership": "UNLOCKS WITH MEMBERSHIP"
+  },
+  "hebraic": {
+    "title": "Hebraic Christianity",
+    "eyebrow": "THE DEEPENING BEGINS HERE",
+    "empty": "Nothing has surfaced under this heading yet. It will.",
+    "prong": "PRONG II · THE DEEPENING"
   }
 }
+

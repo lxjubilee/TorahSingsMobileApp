@@ -8,6 +8,7 @@ import { articles } from '@/content/articles/data';
 import { ARTICLE_CATEGORIES, type Article, type ArticleCategory } from '@/content/articles/types';
 import type { RootStackParamList } from '@/navigation/types';
 import { CHIP_ROW_HEIGHT } from '../components/HomeHeader';
+import { useTranslation } from 'react-i18next';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 type Filter = ArticleCategory | 'All';
@@ -25,6 +26,7 @@ const ArticleCard: React.FC<{ article: Article; featured?: boolean; onPress: () 
   featured,
   onPress,
 }) => {
+  const { t } = useTranslation();
   const locked = !article.freeTier;
   return (
     <Pressable
@@ -40,7 +42,7 @@ const ArticleCard: React.FC<{ article: Article; featured?: boolean; onPress: () 
         style={[styles.art, { height: featured ? 200 : 150 }]}
       />
       <View style={styles.cardBody}>
-        {featured ? <AppText style={styles.featuredFlag}>THE DEEPENING BEGINS HERE</AppText> : null}
+        {featured ? <AppText style={styles.featuredFlag}>{t('hebraic.eyebrow')}</AppText> : null}
         <AppText style={styles.category}>{article.category}</AppText>
         <AppText style={styles.title}>{article.title}</AppText>
         <AppText style={styles.dek} numberOfLines={3}>
@@ -62,6 +64,7 @@ const ArticleCard: React.FC<{ article: Article; featured?: boolean; onPress: () 
  * section; the shared header + hero above stay mounted and never reload.
  */
 const ArticleLibrary: React.FC<{ onOpen: (a: Article) => void }> = React.memo(({ onOpen }) => {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<Filter>('All');
 
   const visible = useMemo(
@@ -92,7 +95,7 @@ const ArticleLibrary: React.FC<{ onOpen: (a: Article) => void }> = React.memo(({
       ))}
 
       {rest.length === 0 && !featured ? (
-        <AppText style={styles.empty}>Nothing has surfaced under this heading yet. It will.</AppText>
+        <AppText style={styles.empty}>{t('hebraic.empty')}</AppText>
       ) : null}
     </>
   );
@@ -105,6 +108,7 @@ ArticleLibrary.displayName = 'ArticleLibrary';
  * filtering happens inside <ArticleLibrary>, so nothing above it re-renders.
  */
 export const HebraicChristianitySection: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const navigation = useNavigation<Nav>();
   const insets = useSafeAreaInsets();
 
@@ -121,8 +125,8 @@ export const HebraicChristianitySection: React.FC = React.memo(() => {
     >
       {/* Page hero (static). */}
       <View style={styles.hero}>
-        <AppText style={styles.eyebrow}>PRONG II · THE DEEPENING</AppText>
-        <AppText style={styles.heroTitle}>Hebraic Christianity</AppText>
+        <AppText style={styles.eyebrow}>{t('hebraic.prong')}</AppText>
+        <AppText style={styles.heroTitle}>{t('hebraic.title')}</AppText>
         <AppText style={styles.heroLede}>
           The songs are only the entry point. Underneath them lies a whole grammar of meaning —
           pictographs that predate the letters, appointed times kept on a calendar older than the
