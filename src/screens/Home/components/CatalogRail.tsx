@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SectionHeader } from '@/components/common';
-import { angelsCatalog } from '@/content/angelsCatalog/data';
+import { visibleCatalog } from '@/content/angelsCatalog/visible';
 import type { CatalogCategory } from '@/content/angelsCatalog/types';
 import type { RootStackParamList } from '@/navigation/types';
 import { CatalogTile } from './CatalogTile';
@@ -35,12 +35,13 @@ const CatalogRail: React.FC<{
   </View>
 );
 
-/** All six Angels' Catalog divisions as Home rails (ported from the web). */
+/** The Angels' Catalog divisions as Home rails (ported from the web). Divisions
+ *  with no listable album are dropped upstream by `visibleCatalog`. */
 export const CatalogRails: React.FC = () => {
   const navigation = useNavigation<Nav>();
   return (
     <>
-      {angelsCatalog.map((cat) => (
+      {visibleCatalog.map((cat) => (
         <CatalogRail
           key={cat.id}
           category={cat}

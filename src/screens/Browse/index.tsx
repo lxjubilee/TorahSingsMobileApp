@@ -6,7 +6,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context';
 import { Screen, AppText, IconButton } from '@/components/common';
-import { allCatalogAlbums } from '@/content/angelsCatalog/player';
+import { visibleCatalogAlbums } from '@/content/angelsCatalog/visible';
 import { CatalogTile } from '../Home/components/CatalogTile';
 import type { RootStackParamList } from '@/navigation/types';
 
@@ -25,8 +25,8 @@ export const BrowseScreen: React.FC = () => {
   // source book, updating on every keystroke.
   const term = query.trim().toLowerCase();
   const results = useMemo(() => {
-    if (!term) return allCatalogAlbums;
-    return allCatalogAlbums.filter(
+    if (!term) return visibleCatalogAlbums;
+    return visibleCatalogAlbums.filter(
       (a) => a.title.toLowerCase().includes(term) || a.book.toLowerCase().includes(term),
     );
   }, [term]);

@@ -12,6 +12,7 @@ import { usePlaylistMenu } from '@/components/playlists';
 import { CatalogCover } from '@/components/catalog';
 import { angelsCatalog } from '@/content/angelsCatalog/data';
 import { albumToPlayerTracks, catalogTrackId } from '@/content/angelsCatalog/player';
+import { isCatalogAlbumPublished } from '@/content/angelsCatalog/visible';
 import type { CatalogAlbum, CatalogCategory, CatalogTrack } from '@/content/angelsCatalog/types';
 import {
   useAppDispatch,
@@ -87,19 +88,24 @@ export const CatalogAlbumScreen: React.FC = () => {
 
   // Sibling albums for the bottom rail: same book first, else same division.
   // `moreBook` carries the book filter into the "View All" grid (undefined when
-  // the rail fell back to the whole division).
+  // the rail fell back to the whole division). Both rails list only published
+  // albums (art + audio), matching Home and the division grid they link into —
+  // THIS album still renders regardless, since it was reached by code.
   const { moreTitle, moreAlbums, moreBook } = useMemo(() => {
     if (!found) {
       return { moreTitle: '', moreAlbums: [] as CatalogAlbum[], moreBook: undefined as string | undefined };
     }
     const { album, category } = found;
-    const sameBook = category.albums.filter((a) => a.book === album.book && a.code !== album.code);
+    const siblings = category.albums.filter(
+      (a) => a.code !== album.code && isCatalogAlbumPublished(a),
+    );
+    const sameBook = siblings.filter((a) => a.book === album.book);
     if (sameBook.length) {
       return { moreTitle: t('album.moreFrom', { name: album.book }), moreAlbums: sameBook, moreBook: album.book };
     }
     return {
       moreTitle: t('album.moreFrom', { name: category.title }),
-      moreAlbums: category.albums.filter((a) => a.code !== album.code),
+      moreAlbums: siblings,
       moreBook: undefined,
     };
     // `t` in deps so the rail title re-resolves when the language changes.
@@ -107,7 +113,12 @@ export const CatalogAlbumScreen: React.FC = () => {
 
   // Division rail (shown before "More from"): this division's other albums.
   const divisionAlbums = useMemo(
-    () => (found ? found.category.albums.filter((a) => a.code !== found.album.code) : []),
+    () =>
+      found
+        ? found.category.albums.filter(
+            (a) => a.code !== found.album.code && isCatalogAlbumPublished(a),
+          )
+        : [],
     [found],
   );
 

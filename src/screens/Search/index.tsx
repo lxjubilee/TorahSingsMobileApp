@@ -10,7 +10,8 @@ import { TrackRow } from '@/components/cards';
 import { useAppDispatch, useAppSelector, usePlayer } from '@/hooks';
 import { addRecentSearch, clearRecentSearches } from '@/redux';
 import { usePlaylistMenu } from '@/components/playlists';
-import { allCatalogAlbums, allCatalogTracks } from '@/content/angelsCatalog/player';
+import { allCatalogTracks } from '@/content/angelsCatalog/player';
+import { visibleCatalogAlbums } from '@/content/angelsCatalog/visible';
 import type { CatalogAlbum } from '@/content/angelsCatalog/types';
 import type { Track } from '@/types';
 import { CatalogTile } from '../Home/components/CatalogTile';
@@ -39,11 +40,13 @@ export const SearchScreen: React.FC = () => {
   const hasQuery = term.length > 0;
 
   // Local, offline search over the bundled catalog: albums by title/book, songs
-  // by track title. Recomputed only when the term changes.
+  // by track title. Recomputed only when the term changes. Albums are drawn from
+  // the listable set (art + audio); songs stay unrestricted, so a track on an
+  // album without cover art is still findable and playable.
   const { albums, tracks } = useMemo(() => {
     if (!term) return { albums: [] as CatalogAlbum[], tracks: [] as Track[] };
     return {
-      albums: allCatalogAlbums
+      albums: visibleCatalogAlbums
         .filter((a) => a.title.toLowerCase().includes(term) || a.book.toLowerCase().includes(term))
         .slice(0, MAX_ALBUMS),
       tracks: allCatalogTracks

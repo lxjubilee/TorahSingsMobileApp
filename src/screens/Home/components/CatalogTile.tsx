@@ -25,7 +25,7 @@ export const CatalogTile: React.FC<{
     >
       <CatalogCover album={album} style={[styles.cover, square]} />
       <View style={styles.meta}>
-        <AppText variant="h3" numberOfLines={2}>
+        <AppText variant="h3" numberOfLines={1}>
           {album.title}
         </AppText>
         <AppText variant="body" color="textMuted" numberOfLines={1}>

@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Screen, AppText, IconButton } from '@/components/common';
-import { angelsCatalog } from '@/content/angelsCatalog/data';
+import { visibleCatalog } from '@/content/angelsCatalog/visible';
 import { CatalogTile } from '../Home/components/CatalogTile';
 import type { RootStackParamList, RootStackScreenProps } from '@/navigation/types';
 
@@ -21,7 +21,7 @@ export const CatalogCategoryScreen: React.FC = () => {
   const { params } = useRoute<RootStackScreenProps<'CatalogCategory'>['route']>();
   const navigation = useNavigation<Nav>();
   const insets = useSafeAreaInsets();
-  const category = angelsCatalog.find((c) => c.id === params.categoryId);
+  const category = visibleCatalog.find((c) => c.id === params.categoryId);
   const allAlbums = category?.albums ?? [];
   const albums = params.book ? allAlbums.filter((a) => a.book === params.book) : allAlbums;
 
