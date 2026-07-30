@@ -11,7 +11,7 @@ type Step = 'welcome' | 'signin';
 
 /**
  * First-launch onboarding flow:
- *  1. `welcome` — swipeable welcome slides (Get Started / Sign In).
+ *  1. `welcome` — swipeable welcome slides, with Get Started as the only exit.
  *  2. `signin`  — the "Ready to listen?" sign-in / get-started screen.
  * Finishing the sign-in step completes onboarding and reveals the app.
  */

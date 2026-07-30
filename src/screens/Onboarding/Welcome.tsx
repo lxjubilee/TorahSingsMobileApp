@@ -48,7 +48,8 @@ const ON_ACCENT = '#0B0B0F';
 /**
  * First-launch welcome: a horizontal pager of slides, each with its own visual
  * (a featured poster, or the tilted poster collage) above its headline/subtitle.
- * Top nav, animated pagination dots, and the Get Started button stay fixed.
+ * Top nav (logo + privacy link), animated pagination dots, and the Get Started
+ * button — which is the only way into sign-in from here — stay fixed.
  */
 export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
   const { t } = useTranslation();
@@ -63,21 +64,14 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <View style={styles.topNav}>
           <BrandLogo textStyle={styles.logo} />
-          <View style={styles.navLinks}>
-            <Pressable
-              hitSlop={8}
-              onPress={() => Linking.openURL('https://torahsings.com/privacy').catch(() => undefined)}
-            >
-              <AppText variant="label" color="textSecondary" style={styles.navLink}>
-                {t('onboarding.privacy')}
-              </AppText>
-            </Pressable>
-            <Pressable hitSlop={8} onPress={onGetStarted}>
-              <AppText variant="label" style={styles.navLink}>
-                {t('onboarding.signIn')}
-              </AppText>
-            </Pressable>
-          </View>
+          <Pressable
+            hitSlop={8}
+            onPress={() => Linking.openURL('https://torahsings.com/privacy').catch(() => undefined)}
+          >
+            <AppText variant="label" color="textSecondary" style={styles.navLink}>
+              {t('onboarding.privacy')}
+            </AppText>
+          </Pressable>
         </View>
 
         <Animated.ScrollView
@@ -167,7 +161,6 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   logo: { color: ACCENT, fontSize: 22, fontWeight: '900', letterSpacing: 1 },
-  navLinks: { flexDirection: 'row', alignItems: 'center', gap: 22 },
   navLink: { letterSpacing: 1 },
   pager: { flex: 1 },
   slide: { paddingHorizontal: 20, paddingTop: 6, justifyContent: 'flex-end' },
