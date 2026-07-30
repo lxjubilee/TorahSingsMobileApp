@@ -20,7 +20,13 @@ import { ProgressBar } from '@/components/player';
 import { TrackRow } from '@/components/cards';
 import { TrackOptionsModal, TrackOption } from '@/components/modals';
 import { usePlaylistMenu } from '@/components/playlists';
-import { useAppDispatch, useIsSongLiked, usePlayer, useSafeProgress } from '@/hooks';
+import {
+  useAppDispatch,
+  useIsSongLiked,
+  useIsSongInPlaylist,
+  usePlayer,
+  useSafeProgress,
+} from '@/hooks';
 import { shareAlbum } from '@/services/share';
 import { catalogAlbumByCode } from '@/content/angelsCatalog/player';
 import { toggleSongLike } from '@/redux';
@@ -55,6 +61,7 @@ export const MusicPlayerScreen: React.FC = () => {
   const { addToPlaylist } = usePlaylistMenu();
   const { position, duration } = useSafeProgress(250);
   const isFavorite = useIsSongLiked(currentTrack ?? { albumId: '', trackNumber: undefined });
+  const inPlaylist = useIsSongInPlaylist(currentTrack ?? { albumId: '', trackNumber: undefined });
   const [queueOpen, setQueueOpen] = useState(false);
   const [optionsOpen, setOptionsOpen] = useState(false);
 
@@ -172,8 +179,18 @@ export const MusicPlayerScreen: React.FC = () => {
             </Pressable>
           </View>
           <View style={styles.titleActions}>
-            <Pressable onPress={() => addToPlaylist(currentTrack)} hitSlop={10} style={styles.titleAction}>
-              <MaterialCommunityIcons name="playlist-plus" size={30} color={theme.colors.icon} />
+            <Pressable
+              onPress={() => addToPlaylist(currentTrack)}
+              hitSlop={10}
+              style={styles.titleAction}
+              accessibilityRole="button"
+              accessibilityLabel={inPlaylist ? t('playlist.inPlaylist') : t('playlist.addToPlaylist')}
+            >
+              <MaterialCommunityIcons
+                name={inPlaylist ? 'playlist-check' : 'playlist-plus'}
+                size={30}
+                color={inPlaylist ? theme.colors.accent : theme.colors.icon}
+              />
             </Pressable>
             <IconButton
               name={isFavorite ? 'heart' : 'heart-outline'}

@@ -23,5 +23,6 @@ export {
   useLikedAlbums,
   useLikedCatalogAlbums,
 } from './useLikes';
+export { useIsSongInPlaylist } from './usePlaylistMembership';
 export { useTheme } from '@/context/ThemeProvider';
 export { useAppDispatch, useAppSelector } from '@/redux';
