@@ -28,6 +28,7 @@ import { getMobileConfig, onMobileConfigUpdated } from '@/services/mobileConfig'
 import { CONFIG } from '@/constants';
 import { SplashScreen } from '@/components/SplashScreen';
 import { PlaybackLimitGate } from '@/components/PlaybackLimitGate';
+import { AppUpdateGate } from '@/components/AppUpdateGate';
 import { DiscoveryIntro } from '@/components/DiscoveryIntro';
 import { PlaylistErrorGate, PlaylistMenuProvider } from '@/components/playlists';
 import { storage, STORAGE_KEYS } from '@/services/storage';
@@ -148,8 +149,9 @@ export default function App() {
               <PlaybackLimitGate />
               {/* Reports a failed playlist write instead of rejecting silently. */}
               <PlaylistErrorGate />
-              {/* Post-splash "update available" prompt — disabled for now; remount
-                  <AppUpdateGate enabled={!showSplash && fontsLoaded} /> to restore. */}
+              {/* Post-splash "update available" prompt (checks once per launch).
+                  Outside RootGate so signed-out users are prompted too. */}
+              <AppUpdateGate enabled={!showSplash && fontsLoaded} />
               {/* Web-parity "a secret hidden in the text" intro, first launch only. */}
               <DiscoveryIntro enabled={!showSplash && fontsLoaded} />
             </ThemeProvider>
