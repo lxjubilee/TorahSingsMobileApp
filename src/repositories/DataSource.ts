@@ -2,8 +2,8 @@ import { Album, Artist, HomeRail, SearchResults, Track } from '@/types';
 
 /**
  * The contract every data source implements. Repositories depend ONLY on this
- * interface, so swapping MockDataSource <-> ApiDataSource is invisible to them
- * (and therefore to Redux and the UI).
+ * interface, so swapping MockDataSource <-> ManifestDataSource is invisible to
+ * them (and therefore to Redux and the UI).
  */
 export interface HomeConfig {
   heroAlbumId: string;

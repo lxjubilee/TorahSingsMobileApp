@@ -1,7 +1,8 @@
 /**
  * Domain models — the shapes the UI and Redux work with.
- * These are intentionally decoupled from API DTOs (see services/api/dto.ts);
- * repositories map DTO -> model, so a backend change never ripples into screens.
+ * These are intentionally decoupled from the wire formats they come from (the
+ * catalog manifest, the reviews/playlists DTOs); repositories and mappers
+ * translate, so a backend change never ripples into screens.
  */
 
 export type ID = string;

@@ -5,9 +5,9 @@ import { HomeConfig, MusicDataSource } from './DataSource';
 
 /**
  * Live data source backed by the CDN catalog manifest
- * (`cdn.jubileeverse.com/music/catalog-manifest.json`). Reads from the shared,
+ * (`cdn.torahsings.com/catalog-manifest.json`). Reads from the shared,
  * module-level catalog index (built once, refreshed in the background), so it
- * satisfies the same contract as Mock/Api with no work above the data source.
+ * satisfies the same contract as Mock with no work above the data source.
  *
  * Selected when `CONFIG.DATA_SOURCE === 'manifest'`.
  */

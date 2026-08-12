@@ -265,7 +265,6 @@
     "artistNotFound": "Artist not found.",
     "generic": "Something went wrong. Please try again.",
     "articleNotFound": "Article not found.",
-    "levelNotFound": "Level not found.",
     "verificationLoad": "Couldn’t load verification. Tap to retry."
   },
   "playlist": {
@@ -374,18 +373,10 @@
     "skip": "SKIP FOR NOW"
   },
   "learnHebrew": {
-    "title": "Learn Hebrew",
-    "twentyTwoLetters": "TWENTY-TWO LETTERS",
-    "threeLevels": "THREE LEVELS",
-    "allLevels": "ALL LEVELS",
-    "tryAgain": "TRY AGAIN",
-    "unlocksWithMembership": "UNLOCKS WITH MEMBERSHIP"
+    "title": "Learn Hebrew"
   },
   "hebraic": {
-    "title": "Hebraic Christianity",
-    "eyebrow": "THE DEEPENING BEGINS HERE",
-    "empty": "Nothing has surfaced under this heading yet. It will.",
-    "prong": "PRONG II · THE DEEPENING"
+    "title": "Hebraic Christianity"
   },
   "articles": {
     "eyebrow": "ARTICLES",

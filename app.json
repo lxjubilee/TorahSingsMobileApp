@@ -63,7 +63,6 @@
     ],
     "extra": {
       "cdnBaseUrl": "https://cdn.torahsings.com",
-      "apiBaseUrl": "https://api.jubileeverse.com/v1",
       "useMock": false,
       "dataSource": "manifest",
       "authBaseUrl": "https://api.torahsings.com",

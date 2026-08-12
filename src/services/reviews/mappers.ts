@@ -20,7 +20,7 @@ import type {
 
 /**
  * DTO -> domain-model mappers. The only place that knows the reviews API's
- * snake_case field naming (mirrors services/api/mappers.ts).
+ * snake_case field naming.
  */
 
 const mapDistribution = (d: DistributionDto | undefined): RatingDistribution => ({

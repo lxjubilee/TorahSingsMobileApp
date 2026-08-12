@@ -3,22 +3,22 @@ import { Album, Artist, ResolvedHomeFeed, ResolvedRail, SearchResults, Track } f
 import { pickByIds } from '@/utils';
 import { MusicDataSource } from './DataSource';
 import { MockDataSource } from './MockDataSource';
-import { ApiDataSource } from './ApiDataSource';
 import { ManifestDataSource } from './ManifestDataSource';
 
 /**
  * Single factory deciding which data source backs every repository.
  * THIS is the swap point: set CONFIG.DATA_SOURCE (app.json `extra.dataSource`):
  *  - 'mock'     → bundled JSON (offline dev),
- *  - 'manifest' → live CDN catalog manifest (cdn.jubileeverse.com),
- *  - 'api'      → future REST backend.
+ *  - 'manifest' → live CDN catalog manifest (cdn.torahsings.com).
+ *
+ * There was a third, 'api', backed by a REST service on api.jubileeverse.com.
+ * That host is retired and the source was never used in production, so it and
+ * its DTO/mapper/endpoint layer were removed rather than left to rot.
  */
 function createDataSource(): MusicDataSource {
   switch (CONFIG.DATA_SOURCE) {
     case 'manifest':
       return new ManifestDataSource();
-    case 'api':
-      return new ApiDataSource();
     case 'mock':
     default:
       return new MockDataSource();

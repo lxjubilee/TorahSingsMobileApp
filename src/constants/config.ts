@@ -2,13 +2,13 @@ import { ENV } from './env';
 
 /**
  * Global feature/config flags. `USE_MOCK` is the single switch that decides
- * whether repositories read local mock JSON or call the live jubileeverse API.
+ * whether repositories read local mock JSON or the live CDN catalog manifest.
  * Flip `useMock` in app.json `extra` (or override here) to swap data sources
  * with zero changes at any call site.
  */
 export const CONFIG = {
   USE_MOCK: ENV.USE_MOCK,
-  /** 'mock' | 'manifest' | 'api' — which data source repositories read from. */
+  /** 'mock' | 'manifest' — which data source repositories read from. */
   DATA_SOURCE: ENV.DATA_SOURCE,
   /** Identity API base URL — every /api/auth/* call (Bearer auth). */
   API_AUTH_BASE: ENV.API_AUTH_BASE,

@@ -16,7 +16,6 @@ import {
   CatalogAlbumScreen,
   HebraicChristianityScreen,
   LearnHebrewScreen,
-  LearnHebrewLevelScreen,
   ArticleScreen,
   PlaylistDetailsScreen,
   PlaylistAddSongsScreen,
@@ -58,7 +57,6 @@ export const RootNavigator: React.FC = () => {
         <Stack.Screen name="CatalogAlbum" component={CatalogAlbumScreen} />
         <Stack.Screen name="HebraicChristianity" component={HebraicChristianityScreen} />
         <Stack.Screen name="LearnHebrew" component={LearnHebrewScreen} />
-        <Stack.Screen name="LearnHebrewLevel" component={LearnHebrewLevelScreen} />
         <Stack.Screen name="Article" component={ArticleScreen} />
         <Stack.Screen name="PlaylistDetails" component={PlaylistDetailsScreen} />
         {/* Player + the song picker slide up as modals. */}

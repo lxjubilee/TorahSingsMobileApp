@@ -7,10 +7,10 @@ const LEARN_HEBREW_COLLECTION = 'learn-hebrew';
 /**
  * Learn Hebrew section body — the published article library, nothing else.
  *
- * The aleph-bet teaser and the three lesson-level rows used to live here and
- * were removed; the curriculum screens (`LearnHebrewLevel`) are still routed and
- * still reachable by deep link (`learn-hebrew/:slug`), but nothing in this
- * section links to them any more.
+ * The aleph-bet teaser and the three lesson-level rows used to live here. They
+ * and the bundled curriculum behind them (the `LearnHebrewLevel` screen, its
+ * lesson/exercise data and its `learn-hebrew/:slug` deep link) have been
+ * removed; this collection is the whole surface now.
  */
 export const LearnHebrewSection: React.FC = React.memo(() => (
   <ArticleLibrarySection collection={LEARN_HEBREW_COLLECTION} />

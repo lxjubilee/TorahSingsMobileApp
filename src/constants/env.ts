@@ -6,11 +6,10 @@ import Constants from 'expo-constants';
  * `Constants.expoConfig` directly, and swapping environments is a config change.
  */
 /** Which data source backs the repositories. See `repositories.ts`. */
-export type DataSourceKind = 'mock' | 'manifest' | 'api';
+export type DataSourceKind = 'mock' | 'manifest';
 
 type AppExtra = {
   cdnBaseUrl: string;
-  apiBaseUrl: string;
   useMock: boolean;
   /** Explicit source selector; takes precedence over `useMock` when set. */
   dataSource: DataSourceKind;
@@ -27,9 +26,12 @@ type AppExtra = {
   /**
    * Host for the dynamic-content config endpoint (`/api/mobile/config`) ONLY.
    *
-   * This is NOT on `authBaseUrl`: `/api/mobile/config` is 404 on
-   * api.torahsings.com and only served by api.jubilujah.com, so the mobile CMS
-   * host is tracked separately from the identity host.
+   * This is NOT on `authBaseUrl`, and the split is still load-bearing: verified
+   * 2026-08-12, api.jubilujah.com serves the real curated payload (~86 KB of
+   * categories) while api.torahsings.com answers the same path with an empty
+   * `{"version":2,"generated":null,"categories":[]}`. Pointing this at the
+   * identity host would silently blank the curated Home feed, so the mobile CMS
+   * host stays tracked separately until that content is migrated.
    */
   mobileConfigBaseUrl?: string;
   /**
@@ -51,15 +53,13 @@ const useMock = extra.useMock ?? true;
 
 export const ENV = {
   CDN_BASE_URL: extra.cdnBaseUrl ?? 'https://cdn.torahsings.com',
-  API_BASE_URL: extra.apiBaseUrl ?? 'https://api.jubileeverse.com/v1',
   USE_MOCK: useMock,
   // Backward-compatible: fall back to the old boolean when `dataSource` is unset.
-  DATA_SOURCE: (extra.dataSource ?? (useMock ? 'mock' : 'api')) as DataSourceKind,
+  DATA_SOURCE: (extra.dataSource ?? (useMock ? 'mock' : 'manifest')) as DataSourceKind,
   // Identity API — single host for every /api/auth/* call (Bearer).
   API_AUTH_BASE: extra.authBaseUrl ?? 'https://api.torahsings.com',
   // Host for the dynamic-content config ONLY. Deliberately NOT chained to
-  // `authBaseUrl`: /api/mobile/config is 404 on api.torahsings.com and lives
-  // only on api.jubilujah.com.
+  // `authBaseUrl` — see mobileConfigBaseUrl above for why.
   MOBILE_CONFIG_BASE: extra.mobileConfigBaseUrl ?? 'https://api.jubilujah.com',
   // Host for the catalog MANIFEST ONLY (albums/artists/categories). Defaults to
   // the CDN so prod is unchanged; override via extra.catalogBaseUrl to browse a
