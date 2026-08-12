@@ -3,6 +3,7 @@ import {
   ChangePasswordRequest,
   ChangePasswordResponseDTO,
   ForgotPasswordResponseDTO,
+  LookupResponseDTO,
   MeResponseDTO,
   RefreshResponseDTO,
   ResendResponseDTO,
@@ -21,6 +22,15 @@ import {
  * (Bearer auth + transparent 401 refresh).
  */
 export const authEndpoints = {
+  // --- One-door entry ---
+  /** Is this address known to the Jubilee Account authority, and/or to us? */
+  lookup: (email: string) =>
+    authClient
+      .get<LookupResponseDTO>(
+        `/api/auth/lookup?email=${encodeURIComponent(email.trim().toLowerCase())}`,
+      )
+      .then((r) => r.data),
+
   // --- Sign in / 2FA ---
   signin: (body: SigninRequest) =>
     authClient.post<SigninResponseDTO>('/api/auth/signin', body).then((r) => r.data),

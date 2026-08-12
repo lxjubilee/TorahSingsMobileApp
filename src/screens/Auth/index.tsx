@@ -1,6 +1,2 @@
-export { SignInScreen } from './SignInScreen';
-export { TwoFactorScreen } from './TwoFactorScreen';
-export { SignUpScreen } from './SignUpScreen';
-export { VerifySignupScreen } from './VerifySignupScreen';
+export { AuthScreen } from './AuthScreen';
 export { ForgotPasswordScreen } from './ForgotPasswordScreen';
-export { ChooseProfileScreen } from './ChooseProfileScreen';

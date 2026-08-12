@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Screen, AppText, IconButton, PasswordInput } from '@/components/common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { changePassword } from '@/redux';
+import type { AuthRejection } from '@/redux';
 import type { PlaylistsStackParamList } from '@/navigation/types';
 
 type Nav = NativeStackNavigationProp<PlaylistsStackParamList>;
@@ -44,7 +45,7 @@ export const ChangePasswordScreen: React.FC = () => {
       ).unwrap();
       setDone(true);
     } catch (e) {
-      setError(typeof e === 'string' ? e : t('changePassword.error'));
+      setError((e as AuthRejection)?.message ?? t('changePassword.error'));
     } finally {
       setSubmitting(false);
     }

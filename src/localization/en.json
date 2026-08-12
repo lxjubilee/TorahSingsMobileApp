@@ -154,34 +154,102 @@
     "error": "Could not change your password. Please try again."
   },
   "auth": {
-    "signin": {
-      "title": "Ready to listen?",
-      "subtitle": "Enter your email and password to sign in.",
-      "email": "Email",
-      "password": "Password",
-      "submit": "Sign In",
-      "forgot": "Forgot password?",
-      "newPrompt": "New to TorahSings? ",
-      "signUp": "Sign up",
-      "botNotice": "This page is protected to ensure you're not a bot."
+    "foot": "© {{year}} TorahSings.com",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
+    "email": {
+      "title": "Sign in with your Jubilee Account",
+      "subtitle": "One Jubilee Account works across all our sites.",
+      "field": "Email",
+      "placeholder": "you@example.com",
+      "submit": "Continue",
+      "busy": "Checking…",
+      "noAccount": "No account yet? We’ll set one up for you."
     },
-    "signup": {
-      "title": "Create your account",
-      "subtitle": "Join TorahSings to save your music, build playlists, and listen anywhere.",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "dateOfBirth": "Date of birth",
-      "ageError": "You must be at least {{age}} years old to create an account.",
-      "email": "Email",
-      "password": "Password (min 8 characters)",
-      "confirm": "Confirm password",
-      "mismatch": "Passwords don’t match.",
+    "welcome": {
+      "title": "Welcome back",
+      "password": "Password",
+      "submit": "Continue",
+      "busy": "Signing in…"
+    },
+    "confirm": {
+      "title": "Confirm it’s you",
+      "subtitle": "This email already has a Jubilee Account. Enter your password to continue and join {{site}}.",
+      "password": "Jubilee Account password",
+      "submit": "Continue",
+      "busy": "Checking…"
+    },
+    "createlinked": {
+      "title": "Create your {{site}} account",
+      "subtitle": "Your Jubilee Account is confirmed. Add a few details to finish creating your account here.",
+      "submit": "Create account",
+      "busy": "Creating…"
+    },
+    "new": {
+      "title": "Let’s create your Jubilee Account",
+      "subtitle": "One account gives you access to {{site}} and everything else across Jubilee. It only takes a moment.",
+      "password": "Create a Password",
+      "confirm": "Confirm Password",
       "agreePrefix": "I agree to the ",
       "and": " and ",
-      "submit": "Create Account",
-      "havePrompt": "Already have an account? ",
-      "signIn": "Sign in",
-      "error": "Could not start sign up. Please try again."
+      "agreeSuffix": ".",
+      "submit": "Create my Jubilee Account",
+      "busy": "Creating account…"
+    },
+    "code": {
+      "title": "Check your email",
+      "subtitlePrefix": "Enter the 6-digit code we sent to ",
+      "subtitleSuffix": ".",
+      "field": "6-digit code",
+      "submitLogin": "Verify & sign in",
+      "submitSignup": "Verify & create account",
+      "busy": "Verifying…",
+      "resend": "Resend code",
+      "resendIn": "Resend in {{seconds}}s",
+      "editLogin": "Use a different account",
+      "editSignup": "Edit details"
+    },
+    "common": {
+      "useDifferentEmail": "Use a different email",
+      "keepSignedIn": "Keep me signed in on this device",
+      "forgot": "Forgot your password?",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "dob": "Date of Birth",
+      "dobPlaceholder": "Select your date of birth",
+      "email": "Email",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password"
+    },
+    "strength": {
+      "1": "Weak password",
+      "2": "Fair password",
+      "3": "Good password",
+      "4": "Strong password"
+    },
+    "mismatchInline": "Passwords don’t match",
+    "errors": {
+      "invalidEmail": "Please enter a valid email address.",
+      "turnstile": "Please complete the human verification.",
+      "noPassword": "Please enter your password.",
+      "badPassword": "That password does not match. Try again, or reset it below.",
+      "noName": "Please enter your first and last name.",
+      "mismatch": "Those passwords do not match.",
+      "shortPassword": "Please choose a password of at least 8 characters.",
+      "noDob": "Please enter your date of birth.",
+      "minAge": "You must be at least {{age}} years old to create an account.",
+      "noAgree": "Please agree to the Terms of Use and Privacy Policy.",
+      "createFailed": "Could not create your account. Please try again.",
+      "unreachable": "Could not reach the server. Please try again.",
+      "verifyFailed": "Could not verify the code.",
+      "resendFailed": "Could not resend the code."
+    },
+    "info": {
+      "codeSentLogin": "We emailed you a 6-digit code. Enter it below to finish signing in.",
+      "codeSentSignup": "We emailed you a 6-digit code. Enter it below to finish creating your account.",
+      "resent": "A new code is on its way.",
+      "resentWithCount_one": "A new code is on its way ({{count}} resend left).",
+      "resentWithCount_other": "A new code is on its way ({{count}} resends left)."
     },
     "forgot": {
       "title": "Reset your password",
@@ -190,23 +258,6 @@
       "submit": "Send Reset Link",
       "sentMessage": "If an account exists for {{email}}, we've sent a reset link. Open it on the web to choose a new password, then come back and sign in.",
       "backToSignIn": "Back to Sign In"
-    },
-    "twoFactor": {
-      "title": "Verify it's you",
-      "subtitle": "Enter the verification code we sent to keep your account secure.",
-      "codePlaceholder": "6-digit code",
-      "trustDevice": "Trust this device",
-      "submit": "Verify"
-    },
-    "verify": {
-      "title": "Verify your email",
-      "subtitle": "Enter the 6-digit code we sent to {{email}} to finish creating your account.",
-      "submit": "Verify & Create Account",
-      "noCodePrompt": "Didn't get a code? ",
-      "resend": "Resend code",
-      "resendIn": "Resend in {{seconds}}s",
-      "failed": "Verification failed. Please try again.",
-      "resendFailed": "Could not resend the code."
     }
   },
   "errors": {
@@ -295,10 +346,6 @@
   "onboarding": {
     "getStarted": "Get Started",
     "privacy": "PRIVACY",
-    "emailOrMobile": "Email or mobile number",
-    "continue": "Continue",
-    "getHelp": "Get Help",
-    "chooseProfile": "Choose your profile",
     "slides": {
       "only": {
         "headline": "Only on TorahSings",

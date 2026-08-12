@@ -16,7 +16,28 @@ interface OtpInputProps {
   autoFocus?: boolean;
   /** Fired once all boxes are filled (e.g. to auto-submit). */
   onComplete?: (value: string) => void;
+  /**
+   * Box colours. Default to the app's white-on-near-black; the auth panel is a
+   * warm brown and passes its own gold set.
+   */
+  tint?: {
+    border: string;
+    borderFilled: string;
+    borderFocused: string;
+    background: string;
+    text: string;
+  };
+  /** Fired when any box takes focus (lets a parent scroll it clear of the keyboard). */
+  onFocus?: () => void;
 }
+
+const DEFAULT_TINT = {
+  border: 'rgba(255,255,255,0.45)',
+  borderFilled: 'rgba(255,255,255,0.6)',
+  borderFocused: '#FFFFFF',
+  background: 'rgba(255,255,255,0.04)',
+  text: '',
+} as const;
 
 /**
  * Segmented one-time-code field: `length` separate single-digit boxes that
@@ -29,8 +50,11 @@ export const OtpInput: React.FC<OtpInputProps> = ({
   length = 6,
   autoFocus = true,
   onComplete,
+  tint,
+  onFocus,
 }) => {
   const theme = useTheme();
+  const c = tint ?? { ...DEFAULT_TINT, text: theme.colors.text };
   const inputs = useRef<Array<TextInput | null>>([]);
   const [focused, setFocused] = useState<number | null>(autoFocus ? 0 : null);
 
@@ -89,7 +113,10 @@ export const OtpInput: React.FC<OtpInputProps> = ({
           value={digit}
           onChangeText={(t) => handleChange(index, t)}
           onKeyPress={(e) => handleKeyPress(index, e)}
-          onFocus={() => setFocused(index)}
+          onFocus={() => {
+            setFocused(index);
+            onFocus?.();
+          }}
           onBlur={() => setFocused((f) => (f === index ? null : f))}
           keyboardType="number-pad"
           maxLength={length} // allow paste/autofill; single typing handled above
@@ -101,12 +128,9 @@ export const OtpInput: React.FC<OtpInputProps> = ({
             styles.box,
             {
               borderColor:
-                focused === index
-                  ? '#FFFFFF'
-                  : digit
-                    ? 'rgba(255,255,255,0.6)'
-                    : 'rgba(255,255,255,0.45)',
-              color: theme.colors.text,
+                focused === index ? c.borderFocused : digit ? c.borderFilled : c.border,
+              backgroundColor: c.background,
+              color: c.text,
             },
           ]}
         />
@@ -122,7 +146,6 @@ const styles = StyleSheet.create({
     height: 58,
     borderWidth: 1,
     borderRadius: 8,
-    backgroundColor: 'rgba(255,255,255,0.04)',
     textAlign: 'center',
     fontSize: 22,
     fontWeight: '700',

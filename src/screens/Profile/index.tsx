@@ -17,6 +17,7 @@ import {
   useLikedSongCount,
 } from '@/hooks';
 import { signOut, deleteAccount, clearSession } from '@/redux';
+import type { AuthRejection } from '@/redux';
 import type { PlaylistsStackParamList, RootStackParamList } from '@/navigation/types';
 
 // Pushes within the Playlists stack; opens AlbumDetails on the root stack.
@@ -64,7 +65,7 @@ export const ProfileScreen: React.FC = () => {
       setMode('success');
     } catch (e) {
       setDeleting(false);
-      setErrorMsg(typeof e === 'string' ? e : t('errors.generic'));
+      setErrorMsg((e as AuthRejection)?.message ?? t('errors.generic'));
       setMode('error');
     }
   };

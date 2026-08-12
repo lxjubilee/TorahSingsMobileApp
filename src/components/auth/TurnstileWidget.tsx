@@ -1,5 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { AppText } from '@/components/common';
 import { CONFIG } from '@/constants';
@@ -11,6 +18,8 @@ interface TurnstileWidgetProps {
   onToken: (token: string) => void;
   /** Called when the widget errors or the token expires (so the screen can reset). */
   onError?: (reason: string) => void;
+  /** Spacing is the caller's call — the widget carries none of its own. */
+  style?: StyleProp<ViewStyle>;
 }
 
 type Status = 'loading' | 'ready' | 'error';
@@ -25,7 +34,7 @@ type Status = 'loading' | 'ready' | 'error';
  * failure observable: WebView load/HTTP errors and Turnstile error/expiry are
  * logged, and a visible "couldn't load — tap to retry" state replaces the blank.
  */
-export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({ onToken, onError }) => {
+export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({ onToken, onError, style }) => {
   const { t } = useTranslation();
   const siteKey = CONFIG.TURNSTILE_SITE_KEY;
   const [status, setStatus] = useState<Status>('loading');
@@ -106,7 +115,7 @@ export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({ onToken, onErr
   }
 
   return (
-    <View style={styles.wrap}>
+    <View style={[styles.wrap, style]}>
       <WebView
         key={reloadKey}
         originWhitelist={['*']}
@@ -142,7 +151,9 @@ export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({ onToken, onErr
 };
 
 const styles = StyleSheet.create({
-  wrap: { height: 78, marginTop: 18, justifyContent: 'center' },
+  // Height only — the widget is a fixed 65px box, and the few px either side come
+  // from centring it. No margin: the caller owns spacing.
+  wrap: { height: 70, justifyContent: 'center' },
   web: { flex: 1, backgroundColor: 'transparent' },
   overlay: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center' },
 });

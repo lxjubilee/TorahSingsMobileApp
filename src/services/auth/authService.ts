@@ -1,14 +1,38 @@
 import { authEndpoints } from './authEndpoints';
-import { isTwoFactor } from './authDto';
+import { isAuthSuccess, isNeedsProfile, isSignupRedirect, isTwoFactor } from './authDto';
+import type { LookupResponseDTO, SsoProfileDTO } from './authDto';
 import { AuthUser, mapUser } from './authMappers';
 import { tokenStore } from './tokenStore';
 import { buildDeviceInfo } from './deviceInfo';
 import { configureAuthClient } from './authClient';
 import { clearSessionCookies } from './cookieJar';
 
+/**
+ * Every outcome `/api/auth/signin` can produce. Only `authenticated` carries
+ * tokens — the rest are routing instructions for the one-door flow, and all four
+ * arrive as HTTP 200, so the caller must discriminate before storing anything.
+ */
 export type SignInResult =
   | { kind: 'authenticated'; user: AuthUser }
-  | { kind: '2fa'; verificationGuid: string };
+  | { kind: '2fa'; verificationGuid: string }
+  | { kind: 'needsProfile'; profile: SsoProfileDTO }
+  | { kind: 'redirectSignup' };
+
+/** Extra fields the one-door flow layers onto a sign-in call. */
+export interface SignInOptions {
+  cfTurnstileToken?: string;
+  /** Verify the credential and route WITHOUT creating a local account. */
+  preview?: boolean;
+  /** Create the local account for a confirmed Jubilee Account. */
+  provision?: boolean;
+  firstName?: string;
+  lastName?: string;
+  /** `yyyy-mm-dd`. */
+  dateOfBirth?: string;
+  /** Inline 2FA completion. */
+  verificationGuid?: string;
+  verificationCode?: string;
+}
 
 export interface SignupChallenge {
   verificationGuid: string;
@@ -34,23 +58,53 @@ export function initAuthClient(onAuthFailure: () => void): void {
 }
 
 export const authService = {
-  /** Email + password sign-in. Resolves to tokens, or a 2FA challenge. */
+  /**
+   * Look the email up at the Jubilee Account authority. Drives the one-door
+   * branch: local row → sign in, Jubilee Account only → confirm, neither → create.
+   */
+  lookupEmail(email: string): Promise<LookupResponseDTO> {
+    return authEndpoints.lookup(email);
+  },
+
+  /**
+   * Email + password sign-in. Resolves to a session, a 2FA challenge, or — in SSO
+   * mode — a routing hint (the credential is good but there's no local account
+   * yet, or there's no Jubilee Account at all). Tokens are only stored on a real
+   * session; the hint responses are HTTP 200 with no tokens at all.
+   */
   async signIn(
     email: string,
     password: string,
     rememberMe: boolean,
-    cfTurnstileToken?: string,
+    options: SignInOptions = {},
   ): Promise<SignInResult> {
     const deviceInfo = await buildDeviceInfo();
     const res = await authEndpoints.signin({
       email,
       password,
       rememberMe,
-      cfTurnstileToken,
+      cfTurnstileToken: options.cfTurnstileToken,
       deviceInfo,
+      verificationGuid: options.verificationGuid,
+      verificationCode: options.verificationCode,
+      ...(options.preview ? { preview: true } : {}),
+      ...(options.provision ? { provision: true } : {}),
+      ...(options.firstName ? { first_name: options.firstName } : {}),
+      ...(options.lastName ? { last_name: options.lastName } : {}),
+      ...(options.dateOfBirth ? { date_of_birth: options.dateOfBirth } : {}),
     });
     if (isTwoFactor(res)) {
       return { kind: '2fa', verificationGuid: res.verificationGuid };
+    }
+    if (isNeedsProfile(res)) {
+      return { kind: 'needsProfile', profile: res.profile ?? {} };
+    }
+    if (isSignupRedirect(res)) {
+      return { kind: 'redirectSignup' };
+    }
+    if (!isAuthSuccess(res)) {
+      // A 200 we don't recognise. Better a clear error than a half-built session.
+      throw new Error('Sign in failed. Please try again.');
     }
     await tokenStore.save(res.tokens);
     return { kind: 'authenticated', user: mapUser(res.user) };
@@ -95,6 +149,11 @@ export const authService = {
   /** Resend the sign-up code for an in-progress sign-up. */
   resendSignup(verificationGuid: string) {
     return authEndpoints.sendSignupVerification(verificationGuid);
+  },
+
+  /** Resend the 2FA code for an in-progress sign-in. */
+  resendLogin(email: string, verificationGuid: string) {
+    return authEndpoints.sendLoginVerification(email.trim(), verificationGuid);
   },
 
   // --- Password / account ---

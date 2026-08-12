@@ -74,14 +74,14 @@ const RootGate: React.FC = () => {
 
   if (!BYPASS_AUTH && (status === 'restoring' || hasOnboarded === null)) return null;
 
-  // The "Choose your profile" gate is disabled for now (functionality pending);
-  // ChooseProfileScreen is kept but unused. Authenticated users go to Home.
+  // The "Choose your profile" gate is disabled for now (functionality pending).
+  // Authenticated users go to Home.
   if (BYPASS_AUTH || isAuthenticated) {
     return <RootNavigator />;
   }
 
-  // Signed out / never signed in: Sign In (or first-run Welcome slides).
-  return <AuthNavigator initialRoute={hasOnboarded ? 'SignIn' : 'Welcome'} />;
+  // Signed out / never signed in: the one door (or first-run Welcome slides).
+  return <AuthNavigator initialRoute={hasOnboarded ? 'Auth' : 'Welcome'} />;
 };
 
 export default function App() {

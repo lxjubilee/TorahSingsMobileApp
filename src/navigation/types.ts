@@ -41,11 +41,14 @@ export type RootStackParamList = {
 /** Unauthenticated flow: welcome slides / profile gate → sign in → 2FA; plus sign up. */
 export type AuthStackParamList = {
   Welcome: undefined;
-  SignIn: undefined;
-  TwoFactor: undefined;
-  SignUp: undefined;
-  VerifySignup: { verificationGuid: string; email: string };
-  ForgotPassword: undefined;
+  /**
+   * The email-first "one door". Sign-in, sign-up, the Jubilee Account confirm
+   * step and both OTP challenges are phases inside this single screen, so there
+   * are no per-step routes to navigate between.
+   */
+  Auth: undefined;
+  /** `email` pre-fills the field when arriving from a password phase. */
+  ForgotPassword: { email?: string } | undefined;
   PrivacyPolicy: undefined;
   TermsOfUse: undefined;
 };

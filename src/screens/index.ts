@@ -21,4 +21,4 @@ export { PlaylistAddSongsScreen } from './PlaylistAddSongs';
 export { ProfileScreen } from './Profile';
 export { ChangePasswordScreen } from './ChangePassword';
 export { PrivacyPolicyScreen, TermsOfUseScreen } from './Legal';
-export { SignInScreen, TwoFactorScreen, SignUpScreen } from './Auth';
+export { AuthScreen, ForgotPasswordScreen } from './Auth';
