@@ -11,5 +11,7 @@ export { OtpInput } from './OtpInput';
 export { Loader } from './Loader';
 export { SectionHeader } from './SectionHeader';
 export { CelestialArt } from './CelestialArt';
+export { ArticleHero } from './ArticleHero';
+export { ArticleCard } from './ArticleCard';
 export { Placeholder } from './Placeholder';
 export { ConfirmDialog } from './ConfirmDialog';

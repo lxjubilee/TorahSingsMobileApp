@@ -62,7 +62,9 @@ fail silently (no-op) in Expo Go**. Use `expo prebuild` + `expo run:android` /
 Expo Go but must be finally validated on a real build.
 
 **Backends** (configured in `app.json` → `expo.extra`):
-- CDN catalog manifest — `https://cdn.jubileeverse.com` (anonymous)
+- CDN catalog + media — `https://cdn.torahsings.com` (anonymous). Manifest at
+  `/catalog-manifest.json` (the CDN root, not `/music/`); audio and artwork under
+  `/music/…`. Replaces the retired `https://cdn.jubileeverse.com`.
 - Unified jubilujah-api — `https://api.jubilujah.com` (Bearer JWT, powers auth,
   likes, playlists, reviews, analytics, listening gate, entitlement, mobile config)
 - jubileeverse REST — `https://api.jubileeverse.com/v1` (`DATA_SOURCE='api'`, not used in prod)

@@ -386,6 +386,10 @@
     "eyebrow": "THE DEEPENING BEGINS HERE",
     "empty": "Nothing has surfaced under this heading yet. It will.",
     "prong": "PRONG II · THE DEEPENING"
+  },
+  "articles": {
+    "eyebrow": "ARTICLES",
+    "empty": "Nothing has surfaced under this heading yet. It will."
   }
 }
 

@@ -33,7 +33,7 @@ type AppExtra = {
    */
   mobileConfigBaseUrl?: string;
   /**
-   * Dev override for the catalog manifest (`/music/catalog-manifest.json`) ONLY —
+   * Dev override for the catalog manifest (`/catalog-manifest.json`) ONLY —
    * the source of albums, artists and categories. Media (audio, covers) keeps
    * flowing through `cdnBaseUrl`, which is the only host that serves it. Point
    * this at a local web server to browse a locally-built catalog. Unset in prod.
@@ -50,7 +50,7 @@ const extra = (Constants.expoConfig?.extra ?? {}) as Partial<AppExtra>;
 const useMock = extra.useMock ?? true;
 
 export const ENV = {
-  CDN_BASE_URL: extra.cdnBaseUrl ?? 'https://cdn.jubileeverse.com',
+  CDN_BASE_URL: extra.cdnBaseUrl ?? 'https://cdn.torahsings.com',
   API_BASE_URL: extra.apiBaseUrl ?? 'https://api.jubileeverse.com/v1',
   USE_MOCK: useMock,
   // Backward-compatible: fall back to the old boolean when `dataSource` is unset.
@@ -64,7 +64,7 @@ export const ENV = {
   // Host for the catalog MANIFEST ONLY (albums/artists/categories). Defaults to
   // the CDN so prod is unchanged; override via extra.catalogBaseUrl to browse a
   // locally-built catalog. Media still resolves against CDN_BASE_URL.
-  CATALOG_BASE_URL: extra.catalogBaseUrl ?? extra.cdnBaseUrl ?? 'https://cdn.jubileeverse.com',
+  CATALOG_BASE_URL: extra.catalogBaseUrl ?? extra.cdnBaseUrl ?? 'https://cdn.torahsings.com',
   // Cloudflare Turnstile (sign-in CAPTCHA). Empty disables the widget.
   TURNSTILE_SITE_KEY: extra.turnstileSiteKey ?? '',
   TURNSTILE_BASE_URL: extra.turnstileBaseUrl ?? 'https://jubilujah.com',

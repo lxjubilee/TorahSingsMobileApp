@@ -13,7 +13,11 @@ import {
  *
  * Conventions (all relative paths are resolved + URL-encoded by cdnUrl()):
  *  - audio:  `music/<track.url>`
- *  - cover:  `music/<album.path>/artwork/<album.code>.png`
+ *  - cover:  `<album.cover>`, else `music/<album.path>/artwork/<album.code>.png`
+ *
+ * Note that the "artist" level is whatever the manifest puts there. Against the
+ * Torah Sings catalog it is the Bible book (Genesis, 1 Kings, …) and the
+ * category is the testament section — see `torahSingsManifest`.
  *
  * Albums whose cover isn't published (`hasArtwork === false`) or that have no
  * playable track (`isPlayable === false`) are dropped here, so the lookup
@@ -22,8 +26,12 @@ import {
 
 const MAX_RAIL_ITEMS = 20;
 
-/** Artists pinned to the front of the per-artist rails (after "Featured Artists"). */
-const PINNED_ARTIST_SLUGS = ['jubilee-inspire', 'melody-inspire'];
+/**
+ * Slugs pinned to the front of the per-artist rails (after "Featured Artists").
+ * These are book slugs against the Torah Sings catalog; empty means "keep
+ * canonical order", which for books is already the order you want.
+ */
+const PINNED_ARTIST_SLUGS: string[] = [];
 
 /** Deterministic dark accent color from an id, for placeholder tiles + hero backdrops. */
 function accentFor(id: string): string {
@@ -32,8 +40,13 @@ function accentFor(id: string): string {
   return `hsl(${h % 360}, 42%, 26%)`;
 }
 
+/**
+ * Prefer the cover path the manifest states outright (Torah Sings gives a full
+ * root-relative `.webp`); fall back to the legacy `.png` convention for
+ * manifests that only carry the album path.
+ */
 const coverPath = (album: ManifestAlbum): string =>
-  `music/${album.path}/artwork/${album.code}.png`;
+  album.cover ?? `music/${album.path}/artwork/${album.code}.png`;
 
 const isPlayable = (album: ManifestAlbum): boolean =>
   album.playable === 1 || album.tracks.some((t) => t.audio);
@@ -59,7 +72,9 @@ function buildTrack(
     title: t.title,
     url: `music/${t.url}`,
     artwork: coverPath(album),
-    duration: 0, // not in the manifest; track-player reports it from the file
+    // Real duration when the manifest carries one; otherwise 0 and
+    // track-player reports it from the file once loaded.
+    duration: Math.round(t.dur ?? 0),
     artistId: artist.slug,
     artistName: artist.name,
     albumId: album.code,
@@ -211,12 +226,13 @@ export function buildCatalogIndex(manifest: CatalogManifest): CatalogIndex {
     });
   }
 
-  // Hero carousel: pin a Jubilee Inspire album first, then a few other
-  // featured artists' albums (in featured order). Capped at HERO_COUNT.
+  // Hero carousel: pin one album first, then a few others (in featured order).
+  // Capped at HERO_COUNT. A pin slug that matches nothing simply falls through
+  // to featured order.
   const HERO_COUNT = 5;
-  const HERO_PIN_SLUG = 'jubilee-inspire';
-  /** Artists deliberately kept out of the hero carousel. */
-  const HERO_EXCLUDE_SLUGS = ['gabriel-inspire'];
+  const HERO_PIN_SLUG = 'genesis';
+  /** Slugs deliberately kept out of the hero carousel. */
+  const HERO_EXCLUDE_SLUGS: string[] = [];
   const heroAlbumIds: string[] = [];
   const pinCode = heroByArtist.get(HERO_PIN_SLUG);
   if (pinCode) heroAlbumIds.push(pinCode);

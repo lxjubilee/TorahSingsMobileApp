@@ -62,7 +62,7 @@
       "expo-secure-store"
     ],
     "extra": {
-      "cdnBaseUrl": "https://cdn.jubileeverse.com",
+      "cdnBaseUrl": "https://cdn.torahsings.com",
       "apiBaseUrl": "https://api.jubileeverse.com/v1",
       "useMock": false,
       "dataSource": "manifest",

@@ -5,7 +5,9 @@
 export type Block =
   | { type: 'p'; text: string }
   | { type: 'h'; text: string }
-  | { type: 'quote'; text: string; cite: string };
+  | { type: 'quote'; text: string; cite: string }
+  /** An inline figure. `src` is a CDN-relative path; `alt` is the caption. */
+  | { type: 'img'; src: string; alt: string };
 
 /** Celestial art seed — hue tints the panel, glyph is a Hebrew watermark. */
 export interface Art {

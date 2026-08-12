@@ -34,9 +34,11 @@ export type CoverFormat = (typeof COVER_FORMATS)[number];
 /**
  * CDN-relative cover path for a catalog album.
  *
- * Covers live under the `torahsings/` prefix — NOT the `music/` tree the catalog
- * manifest describes, which belongs to Jubilujah — laid out as
- * `torahsings/<NN>_<Book>/<CODE> <Title>/artwork/<CODE>.<ext>`.
+ * Covers live under the `music/` prefix, laid out as
+ * `music/<NN>_<Book>/<CODE> <Title>/artwork/<CODE>.<ext>` — the same tree the
+ * catalog manifest describes, since cdn.torahsings.com serves one catalog. (On
+ * the retired cdn.jubileeverse.com this tree was rooted at `torahsings/`
+ * instead, to sit beside an unrelated Jubilujah `music/`.)
  *
  * The album's folder is taken from its first track's `rel` when it has audio
  * (exact, since `rel` is the same folder plus `/tracks/...`), and otherwise
@@ -51,7 +53,7 @@ export function catalogCoverPath(album: CatalogAlbum, format: CoverFormat = 'web
   const folder = rel
     ? rel.split('/tracks/')[0]
     : `${String(album.bookNum).padStart(2, '0')}_${album.book}/${album.code} ${album.title}`;
-  return `torahsings/${folder}/artwork/${album.code}.${format}`;
+  return `music/${folder}/artwork/${album.code}.${format}`;
 }
 
 /**

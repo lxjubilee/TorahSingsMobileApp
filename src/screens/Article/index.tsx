@@ -1,11 +1,15 @@
-import React from 'react';
-import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Screen, AppText, IconButton, CelestialArt } from '@/components/common';
-import { articles } from '@/content/articles/data';
+import { Screen, AppText, IconButton, ArticleHero } from '@/components/common';
+import { articles as bundledArticles } from '@/content/articles/data';
 import type { Block } from '@/content/articles/types';
+import { Image } from 'expo-image';
+import { getArticle, getArticleBlocks } from '@/services/articles';
+import type { CatalogArticle } from '@/services/catalog/manifestTypes';
+import { cdnUrl, logger } from '@/utils';
 import type { RootStackParamList, RootStackScreenProps } from '@/navigation/types';
 import { ReadAloudButton } from './ReadAloudButton';
 import { useTranslation } from 'react-i18next';
@@ -21,27 +25,126 @@ const INK = '#f0ebe3';
 const INK_MUTED = '#7f86a8';
 const INK_BODY = '#b8bcd4';
 
-/** Render one article body block: paragraph, sub-heading, or pull-quote. */
+/** What the reader renders, whichever source the article came from. */
+interface Readable {
+  slug: string;
+  title: string;
+  dek: string;
+  eyebrow: string;
+  presenter: string;
+  minutes: number;
+  heroImage?: string;
+  blocks: Block[];
+  audioUrl: string | null;
+}
+
+/** Render one article body block: paragraph, sub-heading, pull-quote, or figure. */
 const BlockView: React.FC<{ block: Block }> = ({ block }) => {
   if (block.type === 'h') return <AppText style={styles.h}>{block.text}</AppText>;
+  if (block.type === 'img') {
+    return (
+      <View style={styles.figure}>
+        <Image source={{ uri: cdnUrl(block.src) }} style={styles.figureImage} contentFit="cover" transition={200} />
+        {block.alt ? <AppText style={styles.figureCaption}>{block.alt}</AppText> : null}
+      </View>
+    );
+  }
   if (block.type === 'quote') {
     return (
       <View style={styles.quote}>
         <AppText style={styles.quoteText}>“{block.text}”</AppText>
-        <AppText style={styles.quoteCite}>— {block.cite}</AppText>
+        {/* Published bodies cite scripture inline; a quote without one renders bare. */}
+        {block.cite ? <AppText style={styles.quoteCite}>— {block.cite}</AppText> : null}
       </View>
     );
   }
   return <AppText style={styles.p}>{block.text}</AppText>;
 };
 
-/** Article reader — category, title, dek, celestial masthead, then the body. */
+/** Adapt a CDN article + its fetched body to the reader's shape. */
+const fromCatalog = (a: CatalogArticle, blocks: Block[]): Readable => ({
+  slug: a.slug,
+  title: a.title,
+  dek: a.excerpt,
+  eyebrow: a.office ?? '',
+  presenter: a.author,
+  minutes: a.readingTimeMinutes,
+  heroImage: a.heroImage,
+  blocks,
+  // Read-aloud audio is not published for these yet; the button falls back to
+  // the device voice, exactly as it did for the bundled articles.
+  audioUrl: null,
+});
+
+/**
+ * Article reader.
+ *
+ * Articles come from the CDN catalog manifest and their bodies are Markdown
+ * fetched on open. The bundled articles remain a fallback purely so links to
+ * pre-CDN slugs (a saved deep link, an old share) still open something.
+ */
 export const ArticleScreen: React.FC = () => {
   const { t } = useTranslation();
   const { params } = useRoute<RootStackScreenProps<'Article'>['route']>();
   const navigation = useNavigation<Nav>();
   const insets = useSafeAreaInsets();
-  const article = articles.find((a) => a.slug === params.slug);
+
+  const [article, setArticle] = useState<Readable | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const load = async () => {
+      setLoading(true);
+      try {
+        const meta = await getArticle(params.slug);
+        if (meta) {
+          const blocks = await getArticleBlocks(meta);
+          if (mounted) setArticle(fromCatalog(meta, blocks));
+          return;
+        }
+        // Not in the published collection — fall back to a bundled article.
+        const legacy = bundledArticles.find((a) => a.slug === params.slug);
+        if (mounted) {
+          setArticle(
+            legacy
+              ? {
+                  slug: legacy.slug,
+                  title: legacy.title,
+                  dek: legacy.dek,
+                  eyebrow: legacy.category,
+                  presenter: legacy.presenter,
+                  minutes: legacy.readingTime,
+                  blocks: legacy.blocks,
+                  audioUrl: legacy.audioUrl,
+                }
+              : null,
+          );
+        }
+      } catch (err) {
+        logger.warn(`article ${params.slug} failed to load`, err);
+        if (mounted) setArticle(null);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    void load();
+    return () => {
+      mounted = false;
+    };
+  }, [params.slug]);
+
+  if (loading) {
+    return (
+      <Screen>
+        <View style={styles.center}>
+          <ActivityIndicator color={ACCENT_SOFT} />
+        </View>
+      </Screen>
+    );
+  }
 
   if (!article) {
     return (
@@ -58,20 +161,24 @@ export const ArticleScreen: React.FC = () => {
       <ScrollView
         style={styles.flex}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingTop: insets.top + HEADER_HEIGHT + 8, paddingBottom: 48 + insets.bottom }}
+        contentContainerStyle={{
+          paddingTop: insets.top + HEADER_HEIGHT + 8,
+          paddingBottom: 48 + insets.bottom,
+        }}
       >
         <View style={styles.wrap}>
-          <AppText style={styles.category}>{article.category.toUpperCase()}</AppText>
+          {article.eyebrow ? (
+            <AppText style={styles.category}>{article.eyebrow.toUpperCase()}</AppText>
+          ) : null}
           <AppText style={styles.title}>{article.title}</AppText>
           <AppText style={styles.dek}>{article.dek}</AppText>
         </View>
 
         <View style={styles.wrap}>
-          <CelestialArt
-            seed={article.slug}
-            hue={article.art.hue}
-            topic={article.category}
-            glyph={article.art.glyph}
+          <ArticleHero
+            slug={article.slug}
+            uri={article.heroImage}
+            topic={article.presenter}
             ring
             style={styles.art}
           />
@@ -83,7 +190,7 @@ export const ArticleScreen: React.FC = () => {
             blocks={article.blocks}
             presenter={article.presenter}
             audioUrl={article.audioUrl}
-            minutes={article.readingTime}
+            minutes={article.minutes}
           />
 
           {article.blocks.map((b, i) => (
@@ -92,7 +199,7 @@ export const ArticleScreen: React.FC = () => {
 
           <View style={styles.footRule}>
             <AppText style={styles.footMeta}>
-              Presented by {article.presenter} · {article.readingTime} min
+              Presented by {article.presenter} · {article.minutes} min
             </AppText>
             <AppText style={styles.footMeta}>Not canon · Something to consider</AppText>
           </View>
@@ -114,8 +221,14 @@ const styles = StyleSheet.create({
   title: { fontSize: 28, fontWeight: '800', lineHeight: 34, color: INK, marginBottom: 10 },
   dek: { fontSize: 15, lineHeight: 22, fontStyle: 'italic', color: INK_MUTED, marginBottom: 18 },
   art: { width: '100%', height: ART_H, borderRadius: 12, marginBottom: 20 },
-  p: { fontSize: 15, lineHeight: 25, color: INK_BODY, marginBottom: 16 },
+  // Justified body copy. Android honours this from API 26 (8.0) and falls back
+  // to left-aligned below that, which is a clean degradation.
+  p: { fontSize: 15, lineHeight: 25, color: INK_BODY, marginBottom: 16, textAlign: 'justify' },
   h: { fontSize: 19, fontWeight: '800', color: INK, marginTop: 8, marginBottom: 12 },
+  figure: { marginBottom: 20 },
+  // 16:9 — the aspect every published figure is rendered at.
+  figureImage: { width: '100%', aspectRatio: 16 / 9, borderRadius: 10 },
+  figureCaption: { fontSize: 12, lineHeight: 18, color: INK_MUTED, marginTop: 8, fontStyle: 'italic' },
   quote: {
     borderLeftWidth: 3,
     borderLeftColor: ACCENT_SOFT,
