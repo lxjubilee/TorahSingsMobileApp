@@ -2,6 +2,7 @@ import React from 'react';
 import { Dimensions, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { visibleCatalogAlbums } from '@/content/angelsCatalog/visible';
 import { CHIP_ROW_HEIGHT } from './HomeHeader';
 
 const { width: W } = Dimensions.get('window');
@@ -19,10 +20,20 @@ const INK = '#f0ebe3'; // title / emphasis (warm white)
 const INK_BODY = '#b8bcd4'; // lede body
 const SCRIM = '#0a0e14'; // hero backdrop
 
-// Counts come from the web catalog (auto-generated angels-catalog.ts header:
-// "285 albums · 303 tracks"). Kept in sync with TorahSings.com.
-const TOTAL_ALBUMS = '285';
-const TOTAL_SONGS = '303';
+/**
+ * Derived from the bundled catalog, never hand-written. These were hardcoded to
+ * "285 albums / 303 songs" and silently went stale the moment the catalog was
+ * regenerated from the CDN — the song count was out by a factor of six.
+ *
+ * Both describe LISTABLE albums (cover art AND at least one track), which is
+ * what Browse shows and what "press play" actually promises. Counting the whole
+ * catalog would advertise albums that open onto an empty track list.
+ */
+const TOTAL_ALBUMS = visibleCatalogAlbums.length;
+const TOTAL_SONGS = visibleCatalogAlbums.reduce((n, album) => n + album.tracks.length, 0);
+
+/** Thousands separators. `formatCount` abbreviates ("1.7K"), which reads wrong here. */
+const grouped = (n: number): string => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 const SERIF = Platform.select({ ios: 'Georgia', android: 'serif', default: 'serif' });
 const MONO = Platform.select({ ios: 'Courier New', android: 'monospace', default: 'monospace' });
@@ -79,9 +90,9 @@ export const HeroStatic: React.FC = () => {
 
       <View style={styles.copyBelow}>
         <Text style={styles.lede}>
-          <Text style={styles.ledeStrong}>{TOTAL_ALBUMS} albums.</Text> {TOTAL_SONGS} songs. Across
-          the Torah, the Prophets, and the Writings — press play, and the music keeps going as you
-          move through the site.
+          <Text style={styles.ledeStrong}>{grouped(TOTAL_ALBUMS)} albums.</Text>{' '}
+          {grouped(TOTAL_SONGS)} songs. Across the Torah, the Prophets, and the Writings — press
+          play, and the music keeps going as you move through the site.
         </Text>
       </View>
     </View>
