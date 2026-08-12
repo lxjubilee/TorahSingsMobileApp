@@ -44,10 +44,21 @@
           "action": "VIEW",
           "autoVerify": true,
           "data": [
-            { "scheme": "https", "host": "jubilujah.com", "pathPrefix": "/album" },
-            { "scheme": "https", "host": "www.jubilujah.com", "pathPrefix": "/album" }
+            {
+              "scheme": "https",
+              "host": "jubilujah.com",
+              "pathPrefix": "/album"
+            },
+            {
+              "scheme": "https",
+              "host": "www.jubilujah.com",
+              "pathPrefix": "/album"
+            }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -68,7 +79,11 @@
       "authBaseUrl": "https://api.torahsings.com",
       "mobileConfigBaseUrl": "https://api.jubilujah.com",
       "turnstileSiteKey": "0x4AAAAAADJah9FpwSaEzlLP",
-      "turnstileBaseUrl": "https://jubileeinspire.com"
-    }
+      "turnstileBaseUrl": "https://jubileeinspire.com",
+      "eas": {
+        "projectId": "4b4fe13b-2e6b-496f-8ff3-241581f3d72e"
+      }
+    },
+    "owner": "gabeungureanu"
   }
 }
