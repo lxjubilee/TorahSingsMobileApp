@@ -15,7 +15,7 @@
       "resizeMode": "contain"
     },
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.torahsings.app",
       "buildNumber": "1",
       "config": {
