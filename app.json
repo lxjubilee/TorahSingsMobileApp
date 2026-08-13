@@ -17,6 +17,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.torahsings.app",
+      "buildNumber": "1",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "associatedDomains": [
         "applinks:jubilujah.com",
         "applinks:www.jubilujah.com"
@@ -29,6 +33,7 @@
     },
     "android": {
       "package": "com.torahsings.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#000000",
         "foregroundImage": "./assets/TorahSings-Adaptive-Foreground.png"
