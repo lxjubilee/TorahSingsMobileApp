@@ -15,11 +15,15 @@
       "resizeMode": "contain"
     },
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.torahsings.app",
+      "buildNumber": "1",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "associatedDomains": [
-        "applinks:jubilujah.com",
-        "applinks:www.jubilujah.com"
+        "applinks:torahsings.com",
+        "applinks:www.torahsings.com"
       ],
       "infoPlist": {
         "UIBackgroundModes": [
@@ -29,6 +33,7 @@
     },
     "android": {
       "package": "com.torahsings.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#000000",
         "foregroundImage": "./assets/TorahSings-Adaptive-Foreground.png"
@@ -44,21 +49,10 @@
           "action": "VIEW",
           "autoVerify": true,
           "data": [
-            {
-              "scheme": "https",
-              "host": "jubilujah.com",
-              "pathPrefix": "/album"
-            },
-            {
-              "scheme": "https",
-              "host": "www.jubilujah.com",
-              "pathPrefix": "/album"
-            }
+            { "scheme": "https", "host": "torahsings.com", "pathPrefix": "/album" },
+            { "scheme": "https", "host": "www.torahsings.com", "pathPrefix": "/album" }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
     },
@@ -79,11 +73,7 @@
       "authBaseUrl": "https://api.torahsings.com",
       "mobileConfigBaseUrl": "https://api.jubilujah.com",
       "turnstileSiteKey": "0x4AAAAAADJah9FpwSaEzlLP",
-      "turnstileBaseUrl": "https://jubileeinspire.com",
-      "eas": {
-        "projectId": "4b4fe13b-2e6b-496f-8ff3-241581f3d72e"
-      }
-    },
-    "owner": "gabeungureanu"
+      "turnstileBaseUrl": "https://jubileeinspire.com"
+    }
   }
 }

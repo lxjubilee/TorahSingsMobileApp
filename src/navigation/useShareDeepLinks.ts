@@ -7,8 +7,10 @@ import type { RootStackParamList } from './types';
 type NavRef = NavigationContainerRefWithCurrent<RootStackParamList>;
 
 /**
- * Handles incoming share/deep links (e.g. https://jubilujah.com/album?c=CODE or
- * jubilujah://album/CODE): navigate to that album. Sharing is album-level, so a
+ * Handles incoming share/deep links (e.g. https://torahsings.com/album/CODE or
+ * torahsings://album/CODE): navigate to that album. `parseShareLink` still
+ * accepts the legacy jubilujah `…/album?c=CODE` form so older shares that are
+ * already out in the wild keep resolving. Sharing is album-level, so a
  * link always opens the album screen (which loads + displays the album, or
  * shows "album not found" if it's gone).
  *

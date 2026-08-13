@@ -14,15 +14,25 @@ interface ProfileButtonProps {
 }
 
 /**
- * Header profile control: shows the first letter of the signed-in user's name
- * in a circle. Falls back to the generic person icon when no name is available.
+ * Header profile control: shows the signed-in user's initials in a circle —
+ * first and last name, e.g. "Sandeep Agarwal" -> "SA". Users with only one
+ * name get a single letter. Falls back to the generic person icon when no
+ * name is available.
  */
 export const ProfileButton: React.FC<ProfileButtonProps> = ({ onPress, size = 32 }) => {
   const user = useAppSelector((s) => s.auth.user);
 
   const initial = useMemo(() => {
-    const name = user?.firstName || user?.displayName || user?.email || '';
-    return name.trim().charAt(0).toUpperCase();
+    const first = user?.firstName?.trim() ?? '';
+    const last = user?.lastName?.trim() ?? '';
+    if (first || last) return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase();
+
+    // No split name on the account: take the first two words of the display
+    // name, else fall back to a single letter from whatever is left.
+    const fallback = (user?.displayName || user?.email || '').trim();
+    const words = fallback.split(/\s+/).filter(Boolean);
+    if (words.length > 1) return `${words[0].charAt(0)}${words[1].charAt(0)}`.toUpperCase();
+    return fallback.charAt(0).toUpperCase();
   }, [user]);
 
   if (!initial) {
@@ -43,7 +53,10 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ onPress, size = 32
         },
       ]}
     >
-      <AppText style={[styles.text, { fontSize: Math.round(size * 0.47) }]} allowFontScaling={false}>
+      <AppText
+        style={[styles.text, { fontSize: Math.round(size * (initial.length > 1 ? 0.4 : 0.47)) }]}
+        allowFontScaling={false}
+      >
         {initial}
       </AppText>
     </Pressable>
