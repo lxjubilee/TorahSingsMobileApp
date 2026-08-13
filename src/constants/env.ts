@@ -26,12 +26,23 @@ type AppExtra = {
   /**
    * Host for the dynamic-content config endpoint (`/api/mobile/config`) ONLY.
    *
-   * This is NOT on `authBaseUrl`, and the split is still load-bearing: verified
-   * 2026-08-12, api.jubilujah.com serves the real curated payload (~86 KB of
-   * categories) while api.torahsings.com answers the same path with an empty
-   * `{"version":2,"generated":null,"categories":[]}`. Pointing this at the
-   * identity host would silently blank the curated Home feed, so the mobile CMS
-   * host stays tracked separately until that content is migrated.
+   * Kept as its own key (rather than chained to `authBaseUrl`) so the mobile CMS
+   * can move hosts independently, but both now point at api.torahsings.com.
+   *
+   * This used to point at api.jubilujah.com, on the theory that its ~86 KB
+   * curated payload was load-bearing here. It is not: that curation belongs to
+   * the Jubilujah catalog, and NONE of it resolves against ours — verified
+   * 2026-08-13, 0 of its 943 album refs and 0 of its 12 artist refs match the
+   * Torah Sings manifest (whose albums are book-coded, e.g. ANSMX01001EN, and
+   * whose "artists" are the 66 books, not the Inspire personas). Every rail and
+   * hero was therefore filtered out by `applyMobileConfig`, which fell back to
+   * the manifest-derived Home — so the payload was downloaded and discarded on
+   * every launch.
+   *
+   * api.torahsings.com answers the same path with an empty
+   * `{"version":2,"generated":null,"categories":[]}`, which takes the same
+   * fallback (Home is unchanged) and will start curating for real the moment
+   * that CMS is populated — no app update needed.
    */
   mobileConfigBaseUrl?: string;
   /**
@@ -58,9 +69,9 @@ export const ENV = {
   DATA_SOURCE: (extra.dataSource ?? (useMock ? 'mock' : 'manifest')) as DataSourceKind,
   // Identity API — single host for every /api/auth/* call (Bearer).
   API_AUTH_BASE: extra.authBaseUrl ?? 'https://api.torahsings.com',
-  // Host for the dynamic-content config ONLY. Deliberately NOT chained to
+  // Host for the dynamic-content config ONLY. Tracked separately from
   // `authBaseUrl` — see mobileConfigBaseUrl above for why.
-  MOBILE_CONFIG_BASE: extra.mobileConfigBaseUrl ?? 'https://api.jubilujah.com',
+  MOBILE_CONFIG_BASE: extra.mobileConfigBaseUrl ?? 'https://api.torahsings.com',
   // Host for the catalog MANIFEST ONLY (albums/artists/categories). Defaults to
   // the CDN so prod is unchanged; override via extra.catalogBaseUrl to browse a
   // locally-built catalog. Media still resolves against CDN_BASE_URL.
