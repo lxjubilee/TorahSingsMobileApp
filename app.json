@@ -22,8 +22,8 @@
         "usesNonExemptEncryption": false
       },
       "associatedDomains": [
-        "applinks:jubilujah.com",
-        "applinks:www.jubilujah.com"
+        "applinks:torahsings.com",
+        "applinks:www.torahsings.com"
       ],
       "infoPlist": {
         "UIBackgroundModes": [
@@ -49,8 +49,8 @@
           "action": "VIEW",
           "autoVerify": true,
           "data": [
-            { "scheme": "https", "host": "jubilujah.com", "pathPrefix": "/album" },
-            { "scheme": "https", "host": "www.jubilujah.com", "pathPrefix": "/album" }
+            { "scheme": "https", "host": "torahsings.com", "pathPrefix": "/album" },
+            { "scheme": "https", "host": "www.torahsings.com", "pathPrefix": "/album" }
           ],
           "category": ["BROWSABLE", "DEFAULT"]
         }
