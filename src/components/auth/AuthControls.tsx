@@ -96,9 +96,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: 10,
-    paddingVertical: 11,
+    // Same vertical box model as FloatingField's input (15/14 padding inside a
+    // 1.5px border) so this row stands exactly as tall as the password field
+    // it sits above.
+    paddingTop: 15,
+    paddingBottom: 14,
     paddingHorizontal: 13,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: C.accountBorder,
     borderRadius: 8,
     backgroundColor: C.accountBg,

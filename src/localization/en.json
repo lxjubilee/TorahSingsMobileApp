@@ -161,7 +161,7 @@
       "title": "Sign in with your Jubilee Account",
       "subtitle": "One Jubilee Account works across all our sites.",
       "field": "Email",
-      "placeholder": "you@example.com",
+      "placeholder": "Enter your email",
       "submit": "Continue",
       "busy": "Checking…",
       "noAccount": "No account yet? We’ll set one up for you."

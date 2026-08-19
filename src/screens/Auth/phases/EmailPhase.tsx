@@ -50,7 +50,9 @@ export const EmailPhase: React.FC<EmailPhaseProps> = ({
         placeholder={t('auth.email.placeholder')}
         value={email}
         onChangeText={onEmailChange}
-        autoFocus
+        // No autoFocus: this is the first thing shown after the splash, and
+        // grabbing focus there throws the keyboard up over the screen before
+        // the user has looked at it. They tap the field when they're ready.
         autoCapitalize="none"
         keyboardType="email-address"
         returnKeyType="next"
