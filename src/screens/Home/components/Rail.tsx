@@ -46,12 +46,12 @@ export const Rail: React.FC<RailProps> = ({ rail, onAlbumPress, onArtistPress, o
 
   if (!albums.length) return null;
   // Show "See all" when there's a full list to open — an artist rail, or any
-  // section with more than 10 albums. In the >10 case the horizontal row previews
-  // the first 10 and "See all" opens the full grid.
+  // section with more than 3 albums. The horizontal row still previews up to 10;
+  // "See all" opens the full grid.
   const MAX_PREVIEW = 10;
-  const hasMore = albums.length > MAX_PREVIEW;
-  const showSeeAll = !!rail.seeAllArtistId || hasMore;
-  const preview = hasMore ? albums.slice(0, MAX_PREVIEW) : albums;
+  const SEE_ALL_THRESHOLD = 3;
+  const showSeeAll = !!rail.seeAllArtistId || albums.length > SEE_ALL_THRESHOLD;
+  const preview = albums.length > MAX_PREVIEW ? albums.slice(0, MAX_PREVIEW) : albums;
   return (
     <>
       <SectionHeader

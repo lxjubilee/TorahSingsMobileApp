@@ -12,6 +12,9 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 // Preview the first N albums per division; "See all" opens the rest (web parity).
 const MAX_PREVIEW = 12;
+// "See all" only earns its place once the division holds more than 3 albums —
+// below that the row already shows everything there is.
+const SEE_ALL_THRESHOLD = 3;
 
 /** One horizontally-scrolling division rail (title + See all + cover tiles). */
 const CatalogRail: React.FC<{
@@ -20,7 +23,10 @@ const CatalogRail: React.FC<{
   onOpenAlbum: (code: string) => void;
 }> = ({ category, onSeeAll, onOpenAlbum }) => (
   <View style={styles.railWrap}>
-    <SectionHeader title={category.title} onSeeAll={onSeeAll} />
+    <SectionHeader
+      title={category.title}
+      onSeeAll={category.albums.length > SEE_ALL_THRESHOLD ? onSeeAll : undefined}
+    />
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
