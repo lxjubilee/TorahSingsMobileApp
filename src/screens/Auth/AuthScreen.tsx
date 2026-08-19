@@ -108,6 +108,39 @@ export const AuthScreen: React.FC = () => {
     setBusy(false);
   };
 
+  /**
+   * Typing into a credential field is the user acting on whatever the validation
+   * message just asked of them, so the message goes on the first keystroke
+   * rather than sitting there contradicting what they're now entering. The
+   * functional update returns the same value when there's nothing to clear, so
+   * React bails out instead of re-rendering the shell on every character.
+   */
+  const clearError = useCallback(() => setErr((e) => (e === null ? e : null)), []);
+
+  const onEmailChange = useCallback(
+    (v: string) => {
+      setEmail(v);
+      clearError();
+    },
+    [clearError],
+  );
+
+  const onPasswordChange = useCallback(
+    (v: string) => {
+      setPassword(v);
+      clearError();
+    },
+    [clearError],
+  );
+
+  const onConfirmChange = useCallback(
+    (v: string) => {
+      setConfirm(v);
+      clearError();
+    },
+    [clearError],
+  );
+
   // Resend cooldown ticker.
   useEffect(() => {
     if (cooldown <= 0) return undefined;
@@ -441,7 +474,7 @@ export const AuthScreen: React.FC = () => {
       {phase === 'email' && (
         <EmailPhase
           email={email}
-          onEmailChange={setEmail}
+          onEmailChange={onEmailChange}
           onSubmit={submitEmail}
           busy={busy}
           onTurnstileToken={(token) => {
@@ -461,7 +494,7 @@ export const AuthScreen: React.FC = () => {
           passwordLabel={t('auth.welcome.password')}
           email={email}
           password={password}
-          onPasswordChange={setPassword}
+          onPasswordChange={onPasswordChange}
           onSubmit={submitWelcome}
           onChangeEmail={useDifferentEmail}
           onForgot={openForgot}
@@ -479,7 +512,7 @@ export const AuthScreen: React.FC = () => {
           passwordLabel={t('auth.confirm.password')}
           email={email}
           password={password}
-          onPasswordChange={setPassword}
+          onPasswordChange={onPasswordChange}
           onSubmit={submitConfirm}
           onChangeEmail={useDifferentEmail}
           onForgot={openForgot}
@@ -518,8 +551,8 @@ export const AuthScreen: React.FC = () => {
           onFirstNameChange={setFirstName}
           onLastNameChange={setLastName}
           onDobChange={setDob}
-          onPasswordChange={setPassword}
-          onConfirmChange={setConfirm}
+          onPasswordChange={onPasswordChange}
+          onConfirmChange={onConfirmChange}
           onToggleRemember={() => setRememberMe((v) => !v)}
           onToggleAgree={() => setAgree((v) => !v)}
           onSubmit={submitNew}
